@@ -1,0 +1,113 @@
+<?php namespace App\Http\Controllers\Admin;
+
+use Illuminate\Http\Request;
+use App\Http\Requests;
+use\App\Http\Controllers\JoshController;
+use App\Http\Requests\UserRequest;
+use App\Http\Controllers\Controller;
+use App\Http\Controllers\Facade;
+use Illuminate\Database\Eloquent\Model;
+use Auth;
+use DB;
+use Input;
+use Response;
+USE json;
+use Carbon\Carbon;
+use Sentinel;
+use User;
+
+
+class ReservaController extends Controller {
+
+    public function index(Request $request){
+        $idUserSession = Sentinel::getUser()->id;   //almacena id de sesion activa      
+        $alltipo=DB::table('estadoplaza')->where('Flat', '2')->select('IdEstadoPlaza','Descripcion')->orderBy('Comentario')->Get();
+        return view('admin.reserva.index', compact('idUserSession','alltipo'));
+    }
+
+   public function GetDatosRserva(Request $request){  
+            if($request->ajax()) { 
+                $plz         = $request->input("reserva_plaza"); 
+                $data = DB::select("SELECT IdPersona AS persona,CONVERT(IdPlaza,CHAR(7)) as IdPlaza,
+                          (SELECT descripcion FROM estructura WHERE LEFT(IdEstructura,2)=LEFT((SELECT NewCodigo FROM estructura WHERE IdEstructura=cu.IdEstructura),2) LIMIT 1) AS sede,
+                          (SELECT descripcion FROM estructura WHERE LEFT(IdEstructura,4)=LEFT((SELECT NewCodigo FROM estructura WHERE IdEstructura=cu.IdEstructura),4) LIMIT 1) AS organo,
+                          (SELECT descripcion FROM estructura WHERE LEFT(IdEstructura,7)=LEFT((SELECT NewCodigo FROM estructura WHERE IdEstructura=cu.IdEstructura),7) LIMIT 1) AS gerencia,
+                          (SELECT descripcion FROM estructura WHERE LEFT(IdEstructura,11)=LEFT((SELECT NewCodigo FROM estructura WHERE IdEstructura=cu.IdEstructura),11) LIMIT 1) AS dep,
+                          (SELECT descripcion FROM estructura WHERE IdEstructura=cu.IdEstructura LIMIT 1) AS dependencia,
+                          IdNivel, c.Descripcion AS cargo,NroPlaza,c.IdCargo,IdEstructura
+                          FROM  cuadronominativo AS cu INNER JOIN cargo c ON c.IdCargo=cu.IdCargo
+                          WHERE NroPlaza= '$plz' and IdPersona='' and IdEstadoPlaza='2'");
+                return response()->json($data);
+           }           
+    }
+
+public function Procesareservaplaza(Request $request,$id){
+             $UserSession = Sentinel::findById($request->input("idUserSession"));
+                $ipAddress = '';               
+                if (isset($_SERVER['HTTP_X_FORWARDED_FOR']) && ('' !== trim($_SERVER['HTTP_X_FORWARDED_FOR']))) {
+                    $ipAddress = trim($_SERVER['HTTP_X_FORWARDED_FOR']);
+                } else {
+                    if (isset($_SERVER['REMOTE_ADDR']) && ('' !== trim($_SERVER['REMOTE_ADDR']))) {
+                        $ipAddress = trim($_SERVER['REMOTE_ADDR']);
+                    }
+                }
+               
+            if($request->ajax()){
+                $_NroPlaza         = $request->input("nroplazar");
+                $_IdCargo          = $request->input("txtidcargo");
+                $_IdPlaza          = $request->input("txtidplaza");
+                $_IdEstructura     = $request->input("txtestructura");
+
+                $_tiporeserva      = $request->input("IdTipoMotivoreser");
+                $_fechareserv      = $request->input("fechaRserv");
+
+                $_DocRefere        = $request->input("DocRefRser");
+                $_obserreser       = $request->input("obserRser");
+           
+                           
+                if($_NroPlaza!=""){
+                        $aff=DB::table('cuadronominativo')->where('NroPlaza', $_NroPlaza)->where('IdCargo', $_IdCargo)
+                        ->update([                                           
+                                    'IdEstadoPlaza' =>$_tiporeserva,
+                                    'IdUsuario'     =>$UserSession->email,
+                                    'Ip'            =>$ipAddress,
+                                    'updated_at'    =>date('Y-m-d H:i:s'),
+                                    'created_at'    =>date('Y-m-d H:i:s')
+                                    ]);
+                    }
+
+                             $GetTipoR         =DB::table('estadoplaza')->where('IdEstadoPlaza','=',$_tiporeserva)->select('Descripcion')->get('Descripcion');   
+                                $DesTipo="";
+                            foreach ($GetTipoR as $key) $DesTipo  =$key->Descripcion; 
+                                  
+                        $Resp = DB::table('historiamovimiento')->insert([
+                            'IdPersona'     => '',
+                            'IdPlaza'       => $_IdPlaza,
+                            'IdEstructura'  => $_IdEstructura,
+                            'IdCargo'       => $_IdCargo,
+                            'NroPlaza'      => $_NroPlaza,
+                            'IdTipoMov'     => "",
+                            'IdTipoBaja'    => "",
+                            'IdEstadoPlaza' => $_tiporeserva,
+                            'FechaDocRef'   => Carbon::parse($_fechareserv)->format('Y-m-d H:i:s'),
+                            'FechaMov'      => date('Y-m-d H:i:s'),
+                            'DocRef'        => $_DocRefere,
+                            'FileAdjunto'   => "",
+                            'Observacion'   => $DesTipo.' | '.$_obserreser,
+                            'IdUsuario'     => $UserSession->email,
+                            'Ip'            => $ipAddress,
+                            'created_at'    => date('Y-m-d H:i:s'),
+                            'updated_at'    => date('Y-m-d H:i:s')
+                        ]);
+                                     
+                if($Resp)                  
+                    return Response::json($Resp); 
+                    else                  
+                return Response::json($Resp);  
+
+                               
+            }           
+        }   
+
+
+}
