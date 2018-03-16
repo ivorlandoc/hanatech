@@ -35,7 +35,7 @@ class ReservaController extends Controller {
                           (SELECT descripcion FROM estructura WHERE LEFT(IdEstructura,7)=LEFT((SELECT NewCodigo FROM estructura WHERE IdEstructura=cu.IdEstructura),7) LIMIT 1) AS gerencia,
                           (SELECT descripcion FROM estructura WHERE LEFT(IdEstructura,11)=LEFT((SELECT NewCodigo FROM estructura WHERE IdEstructura=cu.IdEstructura),11) LIMIT 1) AS dep,
                           (SELECT descripcion FROM estructura WHERE IdEstructura=cu.IdEstructura LIMIT 1) AS dependencia,
-                          (SELECT  Descripcion FROM estadoplaza WHERE IdEstadoPlaza=cU.IdEstadoPlaza)AS estado,
+                          (SELECT  Descripcion FROM estadoplaza WHERE IdEstadoPlaza=cu.IdEstadoPlaza)AS estado,
                           IdNivel, c.Descripcion AS cargo,NroPlaza,c.IdCargo,IdEstructura
                           FROM  cuadronominativo AS cu INNER JOIN cargo c ON c.IdCargo=cu.IdCargo
                           WHERE NroPlaza= '$plz' and IdPersona='' -- and IdEstadoPlaza='2'");
