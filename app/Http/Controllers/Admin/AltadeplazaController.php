@@ -44,11 +44,11 @@ class AltadeplazaController extends JoshController {
 
     public function getPlaza($id){   
         $data = DB::select("SELECT CONVERT(IdPlaza, CHAR(6)) AS IdPlaza,IdPersona,IdEstructura,
-                (SELECT Descripcion FROM Estructura WHERE LEFT(IdEstructura,2)=LEFT((SELECT NewCodigo FROM estructura WHERE IdEstructura=c.IdEstructura),2) LIMIT 1) AS sede,
-                (SELECT Descripcion FROM Estructura WHERE LEFT(IdEstructura,4)=LEFT((SELECT NewCodigo FROM estructura WHERE IdEstructura=c.IdEstructura),4) LIMIT 1) AS organo,
-                (SELECT Descripcion FROM Estructura WHERE LEFT(IdEstructura,7)=LEFT((SELECT NewCodigo FROM estructura WHERE IdEstructura=c.IdEstructura),7) LIMIT 1) AS dep,
-                (SELECT Descripcion FROM Estructura WHERE LEFT(IdEstructura,11)=LEFT((SELECT NewCodigo FROM estructura WHERE IdEstructura=c.IdEstructura),11) LIMIT 1) AS dep2,
-                (SELECT Descripcion FROM Estructura WHERE IdEstructura=c.IdEstructura ) AS descrip,
+                (SELECT Descripcion FROM estructura WHERE LEFT(IdEstructura,2)=LEFT((SELECT NewCodigo FROM estructura WHERE IdEstructura=c.IdEstructura),2) LIMIT 1) AS sede,
+                (SELECT Descripcion FROM estructura WHERE LEFT(IdEstructura,4)=LEFT((SELECT NewCodigo FROM estructura WHERE IdEstructura=c.IdEstructura),4) LIMIT 1) AS organo,
+                (SELECT Descripcion FROM estructura WHERE LEFT(IdEstructura,7)=LEFT((SELECT NewCodigo FROM estructura WHERE IdEstructura=c.IdEstructura),7) LIMIT 1) AS dep,
+                (SELECT Descripcion FROM estructura WHERE LEFT(IdEstructura,11)=LEFT((SELECT NewCodigo FROM estructura WHERE IdEstructura=c.IdEstructura),11) LIMIT 1) AS dep2,
+                (SELECT Descripcion FROM estructura WHERE IdEstructura=c.IdEstructura ) AS descrip,
                 c.IdCargo,NroPlaza, IF(ca.IdTipo='1','ADMINISTRATIVO','ASISTENCIAL') AS tipo, IdNivel,ca.Descripcion AS cargo 
                 FROM cuadronominativo AS c INNER JOIN cargo ca ON ca.IdCargo=c.IdCargo WHERE NroPlaza='$id'");
 
