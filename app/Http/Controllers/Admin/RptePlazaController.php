@@ -61,7 +61,7 @@ class RptePlazaController extends Controller {
      public function GetDetalleGeneralPlaza($id){ 
         if(strlen($id)==16) {  
               $Plaza  =   substr($id,0,8); 
-                $DataM = DB::select("SELECT persona,sede,organo,gerencia,dependencia,tipo,IdNivel,nivel,cargo,NroPlaza,dni,CONCAT(ApellidoPat, ' ', ApellidoMat,' ', Nombres) AS nom,DATE_FORMAT(FechaNac, '%d/%m/%Y')  AS FechaNac,  DATE_FORMAT(FechaIngreso, '%d/%m/%Y')  AS fingreso,(SELECT Descripcion FROM regimen WHERE IdRegimen=p.IdRegimen) AS regimen,Direccion,Genero  FROM (
+                $DataM = DB::select("SELECT persona,sede,organo,gerencia,dep2,dependencia,tipo,IdNivel,nivel,cargo,NroPlaza,dni,CONCAT(ApellidoPat, ' ', ApellidoMat,' ', Nombres) AS nom,DATE_FORMAT(FechaNac, '%d/%m/%Y')  AS FechaNac,  DATE_FORMAT(FechaIngreso, '%d/%m/%Y')  AS fingreso,(SELECT Descripcion FROM regimen WHERE IdRegimen=p.IdRegimen) AS regimen,Direccion,Genero  FROM (
                                       SELECT IdPersona AS persona,
                                       (SELECT descripcion FROM estructura WHERE LEFT(IdEstructura,2)=LEFT((SELECT NewCodigo FROM estructura WHERE IdEstructura=cu.IdEstructura),2) LIMIT 1) AS sede,
                                       (SELECT descripcion FROM estructura WHERE LEFT(IdEstructura,4)=LEFT((SELECT NewCodigo FROM estructura WHERE IdEstructura=cu.IdEstructura),4) LIMIT 1) AS organo,
@@ -76,7 +76,7 @@ class RptePlazaController extends Controller {
                                     ) xc INNER JOIN persona p ON xc.persona=p.IdPersona
                                     WHERE NroPlaza= '$Plaza'");  
                 }else{
-                                $DataM = DB::select("SELECT persona,sede,organo,gerencia,dependencia,tipo,IdNivel,nivel,cargo,NroPlaza,dni,CONCAT(ApellidoPat, ' ', ApellidoMat,' ', Nombres) AS nom,DATE_FORMAT(FechaNac, '%d/%m/%Y')  AS FechaNac,  DATE_FORMAT(FechaIngreso, '%d/%m/%Y')  AS fingreso,(SELECT Descripcion FROM regimen WHERE IdRegimen=p.IdRegimen) AS regimen,Direccion,Genero  FROM (
+                                $DataM = DB::select("SELECT persona,sede,organo,gerencia,dep2,dependencia,tipo,IdNivel,nivel,cargo,NroPlaza,dni,CONCAT(ApellidoPat, ' ', ApellidoMat,' ', Nombres) AS nom,DATE_FORMAT(FechaNac, '%d/%m/%Y')  AS FechaNac,  DATE_FORMAT(FechaIngreso, '%d/%m/%Y')  AS fingreso,(SELECT Descripcion FROM regimen WHERE IdRegimen=p.IdRegimen) AS regimen,Direccion,Genero  FROM (
                                     SELECT IdPersona AS persona,
                                     (SELECT descripcion FROM estructura WHERE LEFT(IdEstructura,2)=LEFT((SELECT NewCodigo FROM estructura WHERE IdEstructura=cu.IdEstructura),2) LIMIT 1) AS sede,
                                     (SELECT descripcion FROM estructura WHERE LEFT(IdEstructura,4)=LEFT((SELECT NewCodigo FROM estructura WHERE IdEstructura=cu.IdEstructura),4) LIMIT 1) AS organo,

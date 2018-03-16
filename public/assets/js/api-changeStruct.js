@@ -17,15 +17,17 @@ $('#sel4').on('click',OnLoadSelectQuintoNivel);
 		$("#string_search_ChangeStru").keypress(function(e) {
 			var code = (e.keyCode ? e.keyCode : e.which);
 	        if(code ==13) {  
-	        var _string=$("#string_search_ChangeStru").val();	   
-	        ShowDetaSearchChangeStruct(_string);  
-	        return false;
-	                   
+	       	serach_ ();
+	        return false;	                   
 	        }
 	      }); 	
 	/* =============================*/	
 })
 
+function serach_ (){
+	 var _string=$("#string_search_ChangeStru").val();	   
+	        ShowDetaSearchChangeStruct(_string);  
+}
 function ShowDetaSearchChangeStruct(id){	
 	//console.log('ID==>'+id);
 	$.get('../../api/admin/mantestruct/list/'+id,function(datap){

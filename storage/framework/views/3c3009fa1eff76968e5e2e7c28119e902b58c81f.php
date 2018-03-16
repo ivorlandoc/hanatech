@@ -98,12 +98,13 @@ Consulta - Plazas
                                                         <thead>
                                                             <tr class="filters">
                                                                     <th>#</th>
+                                                                    <!--<th>CARGO</th> -->
+                                                                    <th># PLAZA</th>
+                                                                    <th>NIVEL</th> 
                                                                     <th># Dni</th> 
                                                                     <th>NOMBRES</th>
                                                                     <!--<th>DEPENDENCIA</th>-->
-                                                                    <th>NIVEL</th>  
-                                                                    <!--<th>CARGO</th> -->
-                                                                    <th># PLAZA</th>
+                                                                   
                                                                                    
                                                                     <th style="text-align: center;" colspan="2">ACCIONES</th>                       
                                                             </tr>
@@ -115,13 +116,14 @@ Consulta - Plazas
                                                             <?php $__currentLoopData = $DataM; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $Data): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?> 
                                                             <?php $i++; $plaz=$Data->NroPlaza; $_dni=$Data->dni; ?>                                           
                                                             <tr>
-                                                                <td><?php echo e($i); ?></td>
+                                                                <td><?php echo e($i); ?></td>                                                                
+                                                                <!-- <td><?php echo e($Data->cargo); ?></td>  -->
+                                                                <td><?php echo e($Data->NroPlaza); ?></td> 
+                                                                <td><?php echo e($Data->IdNivel); ?></td>                                                              
                                                                  <td><?php echo e($Data->dni); ?></td>
                                                                 <td><?php echo e($Data->nom); ?> </td>
                                                                <!-- <td><?php echo e($Data->sede); ?> - <?php echo e($Data->dependencia); ?></td>     -->                                          
-                                                                <td><?php echo e($Data->IdNivel); ?></td>
-                                                                <!-- <td><?php echo e($Data->cargo); ?></td>  -->
-                                                                <td><?php echo e($Data->NroPlaza); ?></td>
+                                                                
                                                                
                                                                 
                                                                 <td>
@@ -169,7 +171,7 @@ Consulta - Plazas
                                                             <div id="IdGetShowEstadoPlaza" >                                                                
                                                                
                                                             </div>
-                                                            <div id="IdGetShowEstadoPlazaDet" >                                                                
+                                                            <div id="IdGetShowEstadoPlazaDet" >   dddddd                                                             
                                                                  <div class="loading">
                                                                    
                                                                     <br>

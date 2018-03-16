@@ -355,13 +355,10 @@ Gestionar Plazas
 <script type="text/javascript" src="{{ asset('assets/js/api-gesplazas.js') }}"> </script>
     
 
-<script>
+<!--<script>
 $(function () {
     $('body').on('hidden.bs.modal', '.modal', function () {
         $(this).removeData('bs.modal');
     });
-/*=================================*/
- 
-
-</script>
+</script>-->
 @stop

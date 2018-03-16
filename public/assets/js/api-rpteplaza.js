@@ -137,8 +137,8 @@ function GetDetalleGeneralPlaza(id,dni){
 				tableHtml += '<tr><th colspan="2" width="1">PERSONA:</th></tr>'+
 							 '<tr ><td colspan="2"><p style="margin: 0px 0px 0px 30px;">'+dataDet[i].dni+' | '+dataDet[i].nom+'</p></td></tr>'+
 							 '<tr><th colspan="2">DEPENDENCIA</th></tr>'+
-							 '<tr><td colspan="2"><p style="margin: 0px 0px 0px 30px;">'+dataDet[i].sede+' / '+dataDet[i].organo+'</p></td></tr>'+					
-							 '<tr><td colspan="2"><p style="margin: 0px 0px 0px 30px;">'+dataDet[i].gerencia+' / '+dataDet[i].dependencia+'</p></td></tr>'+						
+							 '<tr><td colspan="2"><p style="margin: 0px 0px 0px 30px;">'+dataDet[i].sede+' | '+dataDet[i].organo+'</p></td></tr>'+					
+							 '<tr><td colspan="2"><p style="margin: 0px 0px 0px 30px;">'+dataDet[i].gerencia+' | '+dataDet[i].dep2+' | '+dataDet[i].dependencia+'</p></td></tr>'+						
 							 '<tr><th style="width:1px">TIPO&nbspDE&nbspCARGO:</th><td><p style="margin: 0px 0px 0px 30px;">'+dataDet[i].tipo+' </p></td></tr> '+							
 							 '<tr><th>NIVEL:</th><td><p style="margin: 0px 0px 0px 30px;">'+dataDet[i].IdNivel+' | '+dataDet[i].nivel+' </p></td></tr> '+					
 							 '<tr><th>CARGO:</th><td><p style="margin: 0px 0px 0px 30px;">'+dataDet[i].cargo+' </p></td></tr> '+							 

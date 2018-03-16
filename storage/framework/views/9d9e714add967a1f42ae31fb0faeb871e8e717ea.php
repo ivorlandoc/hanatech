@@ -352,14 +352,11 @@ Gestionar Plazas
 <script type="text/javascript" src="<?php echo e(asset('assets/js/api-gesplazas.js')); ?>"> </script>
     
 
-<script>
+<!--<script>
 $(function () {
     $('body').on('hidden.bs.modal', '.modal', function () {
         $(this).removeData('bs.modal');
     });
-/*=================================*/
- 
-
-</script>
+</script>-->
 <?php $__env->stopSection(); ?>
 <?php echo $__env->make('admin/layouts/default', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

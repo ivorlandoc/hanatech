@@ -80,7 +80,7 @@ class GestionarPlazasController extends Controller {
                 }
             if($_IdTipoMov==6 && $_IdPersona==""){ // Unicamente cuando es transferencia, la plaza debe estar vacante. Se actualiza la dependencia en el nominativo y se add al movimiento
                 $aff=DB::table('cuadronominativo')->where('IdPlaza',$_IdPlaza)->update(['IdEstructura' =>$_IdEstrDestino,'IdUsuario' =>$UserSession->email,'Ip' =>$ipAddress]);
-           }elseif($_IdTipoMov==1 || $_IdTipoMov==2) { // Desplazamientos y/o Rotaciones Permanentes, se actualiza la dependencia en elnominativo y se add al movimiento
+           }elseif($_IdTipoMov==1 || $_IdTipoMov==2) { // Desplazamientos y/o Rotaciones Permanentes, se actualiza la dependencia en el nominativo y se add al movimiento
                 $aff=DB::table('cuadronominativo')->where('IdPersona', $_IdPersona)->where('IdPlaza',$_IdPlaza)->update(['IdEstructura' =>$_IdEstrDestino,'IdUsuario' =>$UserSession->email,'Ip' =>$ipAddress]);
            }elseif($_IdTipoMov==3 && $_IdPersona!="") { // Para Permutas: debe existir la persona en la plaza. Se actualiza la dependencia en el nominativo y se add a la movimiento
             $aff=DB::table('cuadronominativo')->where('IdPersona', $_IdPersona)->where('IdPlaza',$_IdPlaza)->update(['IdEstructura' =>$_IdEstrDestino,'IdUsuario' =>$UserSession->email,'Ip' =>$ipAddress]);
@@ -89,6 +89,8 @@ class GestionarPlazasController extends Controller {
                 $_IdEstrDestino=$_IdEstrOrigen;
            }
 
+            if( $_IdTipoMov==21) $_IdEstrDestino=$_IdEstrOrigen;
+            
                 $Resp = DB::table('historiamovimiento')->insert([
                     'IdPersona'     => $_IdPersona,
                     'IdPlaza'       => $_IdPlaza,

@@ -100,12 +100,13 @@ Consulta - Plazas
                                                         <thead>
                                                             <tr class="filters">
                                                                     <th>#</th>
+                                                                    <!--<th>CARGO</th> -->
+                                                                    <th># PLAZA</th>
+                                                                    <th>NIVEL</th> 
                                                                     <th># Dni</th> 
                                                                     <th>NOMBRES</th>
                                                                     <!--<th>DEPENDENCIA</th>-->
-                                                                    <th>NIVEL</th>  
-                                                                    <!--<th>CARGO</th> -->
-                                                                    <th># PLAZA</th>
+                                                                   
                                                                                    
                                                                     <th style="text-align: center;" colspan="2">ACCIONES</th>                       
                                                             </tr>
@@ -117,13 +118,14 @@ Consulta - Plazas
                                                             @foreach($DataM as $Data) 
                                                             <?php $i++; $plaz=$Data->NroPlaza; $_dni=$Data->dni; ?>                                           
                                                             <tr>
-                                                                <td>{{$i}}</td>
+                                                                <td>{{$i}}</td>                                                                
+                                                                <!-- <td>{{$Data->cargo}}</td>  -->
+                                                                <td>{{$Data->NroPlaza}}</td> 
+                                                                <td>{{$Data->IdNivel}}</td>                                                              
                                                                  <td>{{$Data->dni}}</td>
                                                                 <td>{{$Data->nom}} </td>
                                                                <!-- <td>{{$Data->sede}} - {{$Data->dependencia}}</td>     -->                                          
-                                                                <td>{{$Data->IdNivel}}</td>
-                                                                <!-- <td>{{$Data->cargo}}</td>  -->
-                                                                <td>{{$Data->NroPlaza}}</td>
+                                                                
                                                                
                                                                 
                                                                 <td>

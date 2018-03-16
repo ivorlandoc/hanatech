@@ -9,22 +9,16 @@ Reserva de Plazas
 {{-- page level styles --}}
 @section('header_styles')
 
-<!-- <link rel="stylesheet" type="text/css" href="{{ asset('assets/vendors/datatables/css/dataTables.bootstrap.css') }}" />
-<link href="{{ asset('assets/css/pages/tables.css') }}" rel="stylesheet" type="text/css" />
-
- <link href="{{ asset('assets/vendors/modal/css/component.css') }}" rel="stylesheet"/>
- <link href="{{ asset('assets/css/pages/advmodals.css') }}" rel="stylesheet"/>*/
-<!-- =============== -->
-
 <link rel="stylesheet" type="text/css" href="{{ asset('assets/vendors/datatables/css/dataTables.bootstrap.css') }}" />
 <link href="{{ asset('assets/css/pages/tables.css') }}" rel="stylesheet" type="text/css" />
-
 <!-- =================================================== -->
  <link rel="stylesheet" href="{{ asset('assets/css/pages/buttons.css') }}" />
 
  <link href="{{ asset('assets/vendors/modal/css/component.css') }}" rel="stylesheet"/>
  <link href="{{ asset('assets/css/pages/advmodals.css') }}" rel="stylesheet"/>
  <link href="{{ asset('assets/css/loading.css') }}" rel="stylesheet" type="text/css" />
+
+<link href="{{ asset('assets/css/pages/timeline.css') }}" rel="stylesheet" />
 
 @stop
 
@@ -95,8 +89,20 @@ Reserva de Plazas
                                     <input type="hidden" class="form-control" id="txtestructura" name="txtestructura" value="">
 
                                     <div class="form-group">
-                                         <label for="formEmail"># PLAZA</label> 
-                                          <input type="text" class="form-control" id="nroplazar" name="nroplazar" readonly=""> 
+                                         <label for="formEmail"># PLAZA:</label>                                            
+                                            <div class="input-group select2-bootstrap-append">                                           
+                                                    <input type="text" class="form-control" id="nroplazar" name="nroplazar" readonly="">
+                                                    <span class="input-group-btn">
+
+                                                        <a data-href="#responsive-changeEs" href="#responsive-changeEs" data-toggle="modal" >
+                                                                <button class="btn btn-default" type="button" data-select2-open="single-append-text">
+                                                                    <span class="glyphicon glyphicon" id="idestadop"></span>
+                                                                </button>
+                                                        </a>
+
+                                                    </span>
+                                              </div>
+
                                     </div>  
 
                                     <div class="form-group">                                            
@@ -163,6 +169,86 @@ Reserva de Plazas
     <!-- row-->
 </section>
         <!-- =======================================  -->
+                <div class="modal fade expandOpen" id="responsive-changeEs" tabindex="-1" role="dialog" aria-hidden="false">
+                <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header bg-info">
+                               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                        <h5 class="modal-title" id="Idhead"></h5>
+                            </div> 
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="table-responsive" > 
+                                        <div id="IdMensajeAlertChange"></div>
+                                            {{ Form::open(array('route' => ['procesa-ChangeEstado','1','0'], 'method' => 'post', 'id' => 'frmChangeEstado','name' => 'frmChangeEstado'))}}
+                                                <div class="col-md-12">
+                                                    <!-- ==========draw table========== -->
+                                                    <input type="hidden" name="idUserSession" value="{{ $idUserSession }}"> 
+                                                    <div class="form-group">       
+                                                        <input type="hidden" class="form-control" id="nroplazarEst" name="nroplazarEst">
+                                                    </div>
+
+                                                     
+                                                   <!-- -->
+
+                                                   <ul class="timeline">
+                                                        <li>
+                                                            <div class="timeline-badge">
+                                                                <i class="livicon" data-name="hammer" data-c="#fff" data-hc="#fff" data-size="18" data-loop="true"></i>
+
+                                                            </div>
+                                                            <div class="timeline-panel" >
+                                                                <div class="timeline-heading">
+                                                                    <h4 class="timeline-title">Cuidado! Tenga en cuenta los Siguiente.</h4>
+                                                                    <p>
+                                                                        <small class="text-muted">
+                                                                            <i class="livicon" data-name="bell" data-c="#F89A14" data-hc="#F89A14" data-size="18" data-loop="true"></i>
+                                                                            Advertencia!
+                                                                        </small>
+                                                                    </p>
+                                                                </div>
+                                                                <div class="timeline-body">
+                                                                    <p>
+                                                                        Al realizar el cambio de estado a una plaza, significa que se esta cambiando en el nominativo de plazas. Por ej. Si una plaza esta reservada para un Mandato Judicial, y lo cambia para otra acción, es responsabilidad propiamente del usuario. Esta acción guarda una bitácora de la acción para su posterior seguimiento en caso se requiera.
+                                                                    </p>
+                                                                </div>
+
+                                                                 <div class="form-group">                                                                                                 
+                                                                            <div class="input-group select2-bootstrap-append">
+                                                                                    <select id="IdEstadoPlazaChange" class="form-control select2" name="IdEstadoPlazaChange" >
+                                                                                        <option value="">Elegir Estado</option>                                             
+                                                                                         @foreach($allEsta as $key) 
+                                                                                            <option value="{{ $key->IdEstadoPlaza }}">{{ $key->IdEstadoPlaza }} | {{ $key->Descripcion }}</option>
+                                                                                            @endforeach
+                                                                                    </select>
+
+                                                                                    <span class="input-group-btn">                                                                       
+                                                                                                <button class="btn btn-default" type="button" data-select2-open="single-append-text" onclick="SaveProcesaChangeEst()">
+                                                                                                    <span class="glyphicon glyphicon"> Guardar Cambios</span>
+                                                                                                </button>                                                                        
+                                                                                    </span>
+                                                                              </div>
+                                                                    </div>
+
+                                                            </div>
+                                                        </li>
+                                                         
+
+                                                    </ul>
+                                                   <!-- ->
+                                                    <!-- ================ -->                        
+                                                </div>
+                                             {{ Form::close()}}
+                                    </div>
+                                </div>
+                            <div class="modal-footer">
+                                <button type="button" data-dismiss="modal" class="btn btn-default" id="CierrameModalResult">Ciérrame!</button>
+                           
+                            </div>
+                        </div>
+                </div>
+            </div>
+        </div>
 
 @stop
 
@@ -175,16 +261,11 @@ Reserva de Plazas
 <script src="{{ asset('assets/vendors/jasny-bootstrap/js/jasny-bootstrap.js') }}" type="text/javascript"></script>
 <script type="text/javascript" src="{{ asset('assets/js/js-reserva-plaza.js') }}"> </script>
 
-
-
-
 <div class="modal fade" id="delete_confirm" tabindex="-1" role="dialog" aria-labelledby="user_delete_confirm_title" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content"></div>
   </div>
 </div>
-
-
   <script>
 
 $(function () {
@@ -196,3 +277,4 @@ $(function () {
 
 </script>
 @stop
+

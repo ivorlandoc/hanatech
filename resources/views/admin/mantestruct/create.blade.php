@@ -57,7 +57,7 @@ Población
                                     <div class="input-group select2-bootstrap-append">  
                                          <input type="search" class="form-control" id="string_search_ChangeStru" name="string_search_ChangeStru" placeholder="Apellidos | #Dni">
                                                 <span class="input-group-btn">
-                                                    <button class="btn btn-default" type="button" data-select2-open="single-append-text">
+                                                    <button class="btn btn-default" type="button" data-select2-open="single-append-text" onclick="serach_ ()">
                                                         <span class="glyphicon glyphicon-search"></span>
                                                     </button>
                                                 </span>

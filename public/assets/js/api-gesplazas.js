@@ -29,8 +29,32 @@ $("#search_plaza").keypress(function(e) {
         }
       });
 	/*================================*/
- 	
+ 	$('#IdTipoMovimiento').on('change',showhideEstru);
 })
+
+function showhideEstru(){
+var xy=$('#IdTipoMovimiento').val();
+
+if(xy=="21"){	
+	$('#select_10').attr('disabled',true);
+	$('#select_11').attr('disabled',true);
+	$('#select_22').attr('disabled',true);
+	$('#select_33').attr('disabled',true);
+	$('#select_44').attr('disabled',true);
+}else{
+	$('#select_10').attr('disabled',false);
+	$('#select_11').attr('disabled',false);
+	$('#select_22').attr('disabled',false);
+	$('#select_33').attr('disabled',false);
+	$('#select_44').attr('disabled',false);
+}
+
+}
+
+
+
+
+
 
 function OnSelectOneGest(){
 		var getSelectOne= $('#select_10').val();		
@@ -168,12 +192,12 @@ $("#IdSaveMovimientosDePlazas").click(function (e) {
 	var	_FileAdjuntomov	= $('#FileAdjuntomov').val();
 	
 		 if(_IdTipoMov==""){		messages="Por favor, seleccione el Tipo de Moviemiento";} 
-	else if(_select_44==""){		messages="Por favor, seleccione la dependencia";} 
-	else if(_FechaMov==""){			messages="Por favor, Seleccione la fecha de Moviemiento";} 
-	else if(_FechaDocRef==""){		messages="Por favor, Seleccione la fecha de documento";} 
-	else if(_DocRefmov==""){		messages="Por favor, Ingrese el docuemento de referencia(Resolución /Carta, etc)";} 
-	else if(_FileAdjuntomov==""){	messages="Por favor, seleccione el archivo .pdf";} else{messages="";}
-	
+			else if(_select_44=="" && _IdTipoMov!="21"){		messages="Por favor, seleccione la dependencia";} 
+			else if(_FechaMov==""){			messages="Por favor, Seleccione la fecha de Moviemiento";} 
+			else if(_FechaDocRef==""){		messages="Por favor, Seleccione la fecha de documento";} 
+			else if(_DocRefmov==""){		messages="Por favor, Ingrese el docuemento de referencia(Resolución /Carta, etc)";} 
+			else if(_FileAdjuntomov==""){	messages="Por favor, seleccione el archivo .pdf";} else{messages="";}
+			
 		if(messages==""){
 		    $.ajax({
 		        type: "post",

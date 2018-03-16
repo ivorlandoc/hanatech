@@ -17,11 +17,9 @@ class EstructurasController extends Controller {
     }
 
 public function GetSelectSegundoNivel($id){
-        if(strlen($id)=="2"){
-          //$data=DB::table('estructura')->select('IdEstructura','Descripcion')->where('IdEstructura', 'like', $id.'%')->where('IdEstructura', 'like','____000000%')->orderBy('Descripcion')->get();
+        if(strlen($id)=="2"){    
             $data=DB::table('estructura')->select('NewCodigo as IdEstructura','Descripcion')->where(DB::raw('LENGTH(NewCodigo)'), '=', "4")->where('NewCodigo', 'like', $id.'%')->get();
         } elseif (strlen($id)=="4") { 
-             //$data=DB::table('estructura')->select('IdEstructura','Descripcion')->where('IdEstructura', 'like', $id.'%')->where('IdEstructura', 'like','_______000')->orderBy('Descripcion')->get();
              $data=DB::table('estructura')->select('NewCodigo as IdEstructura','Descripcion')->where(DB::raw('LENGTH(NewCodigo)'), '=', "7")->where('NewCodigo', 'like', $id.'%')->get();
 
          }elseif (strlen($id)=="7") {           
@@ -54,11 +52,11 @@ public function showdata($id){
       if($newflag=="0") $string=' AND c.IdPersona=""'; else   $string=' AND IdTipo="'.$newflag.'" AND c.IdPersona<>""';
 
       $sql='SELECT  c.IdPersona,IdPlaza, c.NroPlaza, c.IdEstructura,e.Descripcion AS descripcion,
-                      car.IdNivel,car.Descripcion AS cargo,IF(p.ApellidoPat IS NULL,"-",p.ApellidoPat)  AS ApellidoPat,
+                      car.IdNivel,IF(LEFT(car.IdNivel,1)="A",CONCAT("Z",RIGHT(car.IdNivel,1)),car.IdNivel) AS niv_orden,car.Descripcion AS cargo,IF(p.ApellidoPat IS NULL,"-",p.ApellidoPat)  AS ApellidoPat,
                       IF(p.ApellidoMat IS NULL,"-",p.ApellidoMat) AS ApellidoMat,IF(p.Nombres IS NULL,"-",p.Nombres) AS Nombres
                       FROM cuadronominativo  c  LEFT JOIN persona p ON p.IdPersona=c.IdPersona
                         INNER JOIN cargo car ON car.IdCargo=c.IdCargo   INNER JOIN estructura e ON e.IdEstructura=c.IdEstructura
-                         WHERE  c.IdEstructura = "'.$NewId.'" '.$string ;
+                         WHERE  c.IdEstructura = "'.$NewId.'" '.$string.'ORDER BY niv_orden' ;
      $dataP =DB::select($sql);
 
       return $dataP;

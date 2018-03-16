@@ -46,12 +46,15 @@ function getAllRows(data) {
       $.each(data, function( key, value ) {      
       $('#IdDivDependencia').html(value.sede+' <b>|</b> '+ value.organo+' | ' +value.gerencia+' | '+value.dep +' | '+value.dependencia);
       $('#IdDivNivel').html(value.IdNivel);
-      $('#IdDivCargo').html(value.cargo);  
+      $('#IdDivCargo').html(value.cargo); 
+      $('#idestadop').html("<b> PLAZA | "+value.estado+"</b> | <span style='font-family: Helvetica;font-size: 11px;font-style: italic;font-variant: normal;font-weight: 400;line-height: 12.1px;'>[Puede Cambiar de Estado Aquí]</span>");  
       $('#nroplazar').val(value.NroPlaza); 
       $('#txtidcargo').val(value.IdCargo);  
       $('#txtidplaza').val(value.IdPlaza); 
       $('#txtestructura').val(value.IdEstructura);
-           
+      $('#nroplazarEst').val(value.NroPlaza); 
+      $('#Idhead').html("<b>CAMBIANDO DE ESTADO A LA PLAZA ["+value.NroPlaza+"]</b>"); 
+
       });       
   }else{
     $("#IdMensajeAlert").html('<div class="alert alert-danger" role="alert"></span> No existe registros</div>').fadeIn().delay(4000).fadeOut('slow');
@@ -85,6 +88,38 @@ function SaveProcesaRserva(){
                                $("#IdMensajeAlert").html('<div class="alert alert-danger" role="alert"></span> </strong>La Operación no se realizó</div>').fadeIn().delay(4000).fadeOut('slow');
                         }
                        $('.loading').hide();          
+                    },
+                    error: function (xhr, status, error) {
+                        alert(xhr.responseText);
+                    }
+                });
+        }
+
+}
+
+function SaveProcesaChangeEst(){    
+   var formData = new FormData($("form[name='frmChangeEstado']")[0]);       
+      var plaz=$('#nroplazarEst').val();
+    if(plaz.trim()==""){
+      $('#IdMensajeAlertChange').html('<div class="alert alert-danger" role="alert"></span>Vuelve a buscar con el # de Plaza</div>').fadeIn().delay(4000).fadeOut('slow');
+    }else{
+                $.ajax({  
+                        type: "post",
+                        headers: {'X-CSRF-TOKEN':$('#token').val()},
+                        url:  $('#frmChangeEstado').attr('action'),
+                        dataType: 'json',
+                        data: formData,
+                        cache: false,
+                        contentType: false,
+                        processData: false,
+                    success: function (data) {            
+                        if(data===true) {               
+                               $("#IdMensajeAlertChange").html('<div class="alert alert-success" role="alert">La Operación se realizó con éxito</div>').fadeIn().delay(4000).fadeOut('slow');                   
+                               $("#frmChangeEstado")[0].reset();
+                               //$('#IdSalir').click();
+                            } else {
+                               $("#IdMensajeAlertChange").html('<div class="alert alert-danger" role="alert"></span> </strong>La Operación no se realizó</div>').fadeIn().delay(4000).fadeOut('slow');
+                        }                             
                     },
                     error: function (xhr, status, error) {
                         alert(xhr.responseText);

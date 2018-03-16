@@ -20,9 +20,10 @@ use User;
 class ReservaController extends Controller {
 
     public function index(Request $request){
-        $idUserSession = Sentinel::getUser()->id;   //almacena id de sesion activa      
+        $idUserSession = Sentinel::getUser()->id;   //almacena id de sesion activa    SELECT IdEstadoPlaza,Descripcion FROM estadoplaza ORDER BY 1   
+        $allEsta=DB::table('estadoplaza')->select('IdEstadoPlaza','Descripcion')->orderBy('IdEstadoPlaza')->Get();
         $alltipo=DB::table('estadoplaza')->where('Flat', '2')->select('IdEstadoPlaza','Descripcion')->orderBy('Comentario')->Get();
-        return view('admin.reserva.index', compact('idUserSession','alltipo'));
+        return view('admin.reserva.index', compact('idUserSession','alltipo','allEsta'));
     }
 
    public function GetDatosRserva(Request $request){  
@@ -34,9 +35,10 @@ class ReservaController extends Controller {
                           (SELECT descripcion FROM estructura WHERE LEFT(IdEstructura,7)=LEFT((SELECT NewCodigo FROM estructura WHERE IdEstructura=cu.IdEstructura),7) LIMIT 1) AS gerencia,
                           (SELECT descripcion FROM estructura WHERE LEFT(IdEstructura,11)=LEFT((SELECT NewCodigo FROM estructura WHERE IdEstructura=cu.IdEstructura),11) LIMIT 1) AS dep,
                           (SELECT descripcion FROM estructura WHERE IdEstructura=cu.IdEstructura LIMIT 1) AS dependencia,
+                          (SELECT  Descripcion FROM estadoplaza WHERE IdEstadoPlaza=cU.IdEstadoPlaza)AS estado,
                           IdNivel, c.Descripcion AS cargo,NroPlaza,c.IdCargo,IdEstructura
                           FROM  cuadronominativo AS cu INNER JOIN cargo c ON c.IdCargo=cu.IdCargo
-                          WHERE NroPlaza= '$plz' and IdPersona='' and IdEstadoPlaza='2'");
+                          WHERE NroPlaza= '$plz' and IdPersona='' -- and IdEstadoPlaza='2'");
                 return response()->json($data);
            }           
     }
@@ -107,7 +109,55 @@ public function Procesareservaplaza(Request $request,$id){
 
                                
             }           
+    }   
+
+public function ProcesaChangeEstado(Request $request,$id,$idx){
+             $UserSession = Sentinel::findById($request->input("idUserSession"));
+                $ipAddress = '';               
+                if (isset($_SERVER['HTTP_X_FORWARDED_FOR']) && ('' !== trim($_SERVER['HTTP_X_FORWARDED_FOR']))) {
+                    $ipAddress = trim($_SERVER['HTTP_X_FORWARDED_FOR']);
+                } else {
+                    if (isset($_SERVER['REMOTE_ADDR']) && ('' !== trim($_SERVER['REMOTE_ADDR']))) {
+                        $ipAddress = trim($_SERVER['REMOTE_ADDR']);
+                    }
+                }
+               
+            if($request->ajax()){
+                $_NroPlaza         = $request->input("nroplazarEst");
+                $_IdEstado          = $request->input("IdEstadoPlazaChange");
+                           
+                if($_NroPlaza!=""){
+                        $aff=DB::table('cuadronominativo')->where('NroPlaza', $_NroPlaza)
+                        ->update([                                           
+                                    'IdEstadoPlaza' =>$_IdEstado,
+                                    'IdUsuario'     =>$UserSession->email,
+                                    'Ip'            =>$ipAddress,
+                                    'updated_at'    =>date('Y-m-d H:i:s'),
+                                    'created_at'    =>date('Y-m-d H:i:s')
+                                    ]);
+                    }
+
+                              $GetTipoR =DB::table('estadoplaza')->where('IdEstadoPlaza','=',$_IdEstado)->select('Descripcion')->get('Descripcion');   
+                             $DesTipo="";
+                            foreach ($GetTipoR as $key) $DesTipo  =$key->Descripcion;
+                        $strin="Cambió el estado de la plaza: ".$_NroPlaza." a ".$DesTipo;
+                        $Resp = DB::table('_log')->insert([
+                            'Actividad'     => $strin,                           
+                            'IdUsuario'     => $UserSession->email,
+                            'Ip'            => $ipAddress,
+                            'created_at'    => date('Y-m-d H:i:s'),
+                            'updated_at'    => date('Y-m-d H:i:s')
+                        ]);
+                                     
+                if($Resp)                  
+                    return Response::json($Resp); 
+                    else                  
+                return Response::json($Resp);  
+
+                               
+            }           
         }   
+
 
 
 }

@@ -275,14 +275,14 @@
             <li <?php echo (Request::is('admin/bajaplazas') ? 'class="active"' : ''); ?>>
                 <a href="<?php echo e(URL::to('admin/bajaplazas')); ?>">
                     <i class="fa fa-angle-double-right"></i>
-                    Dar de Baja Plazas
+                    Baja de Plazas
                 </a>
             </li>
             
             <li <?php echo (Request::is('admin/rpteplazas') ? 'class="active"' : ''); ?>>
                 <a href="<?php echo e(URL::to('admin/rpteplazas')); ?>">
                     <i class="fa fa-angle-double-right"></i>
-                    Consulta por Persona
+                    Consulta por Plaza
                 </a>
             </li>
 
@@ -334,14 +334,14 @@
             <li <?php echo (Request::is('admin/bajaplazas') ? 'class="active"' : ''); ?>>
                 <a href="<?php echo e(URL::to('admin/bajaplazas')); ?>">
                     <i class="fa fa-angle-double-right"></i>
-                    Dar de Baja Plazas
+                    Baja de Plazas
                 </a>
             </li>
             
             <li <?php echo (Request::is('admin/rpteplazas') ? 'class="active"' : ''); ?>>
                 <a href="<?php echo e(URL::to('admin/rpteplazas')); ?>">
                     <i class="fa fa-angle-double-right"></i>
-                    Consulta por Persona
+                    Consulta por Plaza
                 </a>
             </li>
 

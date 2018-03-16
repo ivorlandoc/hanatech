@@ -76,14 +76,14 @@ Estructuras
                         </div>
 
                         <div class="form-group">
-                            <select id="select_nivel-3" class="form-control select2" name="select_7dig" onchange="GetIdSelectLevelThree()">
+                            <select id="select_nivel-3" class="form-control select2" name="select_7dig" onclick ="GetIdSelectLevelThree()">
                                 <option value="%">Todos</option>                                
                             </select>                            
                         </div>
                     
                          <div class="form-group">
                             <!--<label for="e1" class="control-label">Todos</label>-->
-                            <select id="select_nivel-4" class="form-control select2" name="select_10dig" onchange="GetIdSelectLevelFive()">
+                            <select id="select_nivel-4" class="form-control select2" name="select_10dig" onclick="GetIdSelectLevelFive()">
                                 <option value="%">Todos</option>                                
                             </select>                            
                         </div>

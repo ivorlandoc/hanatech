@@ -104,6 +104,7 @@ Route::group(['prefix' => 'admin', 'namespace'=>'admin','middleware' => 'admin']
     Route::get('reserva', 'ReservaController@index');
     Route::post('reserva', array('as' => 'get-datos-parareserva','uses' => 'ReservaController@GetDatosRserva'));
     Route::post('reserva/{id}', array('as' => 'get-datos-procesareserva','uses' => 'ReservaController@Procesareservaplaza'));
+    Route::post('reserva/{id}/{idx}', array('as' => 'procesa-ChangeEstado','uses' => 'ReservaController@ProcesaChangeEstado'));
     /*==================================Crea plazas=============================================*/
     Route::get('creaplaza', 'CrearplazaController@index');  
     Route::post('creaplaza/{id}', array('as' => 'get-all-estruct','uses' => 'CrearplazaController@getStructuras'));
