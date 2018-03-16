@@ -117,7 +117,7 @@ Route::group(['prefix' => 'admin', 'namespace'=>'admin','middleware' => 'admin']
 });
 
 
-Route::group(['prefix' => 'admin', 'namespace'=>'admin','middleware' => 'admin'], function () {   
+Route::group(['prefix' => 'admin', 'namespace'=>'Admin','middleware' => 'admin'], function () {   
     /*==================================Crea plazas=============================================*/
     Route::get('creaplaza', 'CrearplazaController@index');  
     Route::post('creaplaza/{id}', array('as' => 'get-all-estruct','uses' => 'CrearplazaController@getStructuras'));
@@ -140,7 +140,7 @@ Route::resource('mantestruct','ManteEstructurasController');
 
 
 
-Route::group(['prefix' => 'admin','namespace'=>'Admin', 'middleware' => 'admin'], function () {
+Route::group(['prefix' => 'admin','namespace'=>'Admin', 'middleware' => 'admin', 'as' => 'Admin.'], function () {
     # User Management
         Route::group([ 'prefix' => 'users'], function () {
         Route::get('data', 'UsersController@data')->name('users.data');
