@@ -37,7 +37,7 @@ public function showdata($id){
             IF(c.IdPersona="",1,0) AS vac
             FROM cuadronominativo c 
             INNER JOIN  cargo ca ON ca.IdCargo=c.IdCargo
-            INNER JOIN Estructura e ON e.IdEstructura=c.IdEstructura
+            INNER JOIN estructura e ON e.IdEstructura=c.IdEstructura
             WHERE c.IdEstructura LIKE "'.$id.'%" GROUP BY e.IdEstructura,IdTipo,NroPlaza
             ) AS d GROUP BY IdEstructura');  
 
