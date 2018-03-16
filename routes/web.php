@@ -116,7 +116,7 @@ Route::group(['prefix' => 'admin', 'namespace'=>'Admin','middleware' => 'admin']
     /*==========================================================================================*/
 });
 
-Route::resource('admin', 'CrearplazaController'); 
+//Route::resource('admin', 'CrearplazaController'); 
 
 
  Route::group(['prefix' => 'admin', 'namespace'=>'Admin','middleware' => 'admin'], function () {    
