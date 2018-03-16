@@ -65,6 +65,7 @@ public function Procesaintegraplaza(Request $Request,$id){
                 //----------------Get contador-------------
                  $getdata     =DB::table('cuadronominativo')->where('NroPlaza', $_NroPlazaInteg)->select(DB::raw('CONVERT(IdPlaza,CHAR(6)) AS IdPlaza'),'IdEstructura','IdCargo')->get();
                  $_idPlaza=""; $_idEstr=""; $_idcargo="";
+                 $key="";
                 foreach ($getdata as $key) $_idPlaza  =$key->IdPlaza;   $_idEstr  =$key->IdEstructura;  $_idcargo  =$key->IdCargo; 
        
                    
