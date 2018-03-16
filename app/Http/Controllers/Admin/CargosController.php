@@ -15,7 +15,7 @@ class CargosController extends Controller {
             ->join('tipocargo', 'tipocargo.IdTipo', '=', 'cargo.IdTipo')
             ->select('cargo.*', 'tipocargo.Descripcion as TipoCargo', 'nivel.Descripcion as Nivel')
             ->where('cargo.Descripcion', 'like', '%')
-            ->orderby('TipoCargo.Descripcion','DESC')->paginate(10);
+            ->orderby('TipoCargo.Descripcion','DESC');//->paginate(10);
             
             return view('admin.cargo.index',compact('getAll')); 
     }
