@@ -75,13 +75,13 @@ Route::group(['prefix' => 'admin', 'middleware' => 'admin', 'as' => 'admin.'], f
 //    Route::get('/', 'JoshController@index')->name('index');
 });
 
-Route::group(['prefix' => 'servicio', 'namespace'=>'servicio','middleware' => 'admin'], function () {
+Route::group(['prefix' => 'servicio', 'namespace'=>'Servicio','middleware' => 'admin'], function () {
     Route::get('reservas', 'ReservaPlazaController@index');
     Route::get('reservas/bandeja', 'ReservaPlazaController@getshow');      
 });
 
 
-Route::group(['prefix' => 'reportes', 'namespace'=>'reporte','middleware' => 'admin'], function () {
+Route::group(['prefix' => 'reportes', 'namespace'=>'Reporte','middleware' => 'admin'], function () {
     /*==================================rpte de plazas activas, inactivas y vacantes, etc=============================================*/
     Route::get('rplazas', 'RptegeneralplazasController@index');  
     Route::post( '/rplazas', array('as' => 'get-rpte-plaza','uses' => 'RptegeneralplazasController@getrpteplazas'));
@@ -99,16 +99,16 @@ Route::group(['prefix' => 'reportes', 'namespace'=>'reporte','middleware' => 'ad
 
 Route::resource('reportes', 'PlazasporcargoController'); // add by iv.orlando.c 22.02.18
 
-Route::group(['prefix' => 'admin', 'namespace'=>'admin','middleware' => 'admin'], function () {
+Route::group(['prefix' => 'admin', 'namespace'=>'Admin','middleware' => 'admin'], function () {
     /*==================================reservas=============================================*/
     Route::get('reserva', 'ReservaController@index');
     Route::post('reserva', array('as' => 'get-datos-parareserva','uses' => 'ReservaController@GetDatosRserva'));
     Route::post('reserva/{id}', array('as' => 'get-datos-procesareserva','uses' => 'ReservaController@Procesareservaplaza'));
     Route::post('reserva/{id}/{idx}', array('as' => 'procesa-ChangeEstado','uses' => 'ReservaController@ProcesaChangeEstado'));
     /*==================================Crea plazas=============================================*/
-   //Route::get('creaplaza', 'CrearplazaController@index');  
-    //Route::post('creaplaza/{id}', array('as' => 'get-all-estruct','uses' => 'CrearplazaController@getStructuras'));
-    //Route::post('creaplaza/{id}/{idx}', array('as' => 'set-save-contador_plaza','uses' => 'CrearplazaController@Procesacreaplaza'));
+     Route::get('creaplaza', 'CrearplazaController@index');  
+    Route::post('creaplaza/{id}', array('as' => 'get-all-estruct','uses' => 'CrearplazaController@getStructuras'));
+    Route::post('creaplaza/{id}/{idx}', array('as' => 'set-save-contador_plaza','uses' => 'CrearplazaController@Procesacreaplaza'));
      /*==================================Recategorización de  plazas=============================================*/
     Route::get('integra', 'IntegrarPlazaController@index'); 
     Route::post('integra', array('as' => 'get-datos-paraintegra','uses' => 'IntegrarPlazaController@getdatosintegra'));
@@ -116,20 +116,10 @@ Route::group(['prefix' => 'admin', 'namespace'=>'admin','middleware' => 'admin']
     /*==========================================================================================*/
 });
 
-
-Route::group(['prefix' => 'admin', 'namespace'=>'Admin','middleware' => 'admin'], function () {   
-    /*==================================Crea plazas=============================================*/
-    Route::get('creaplaza', 'CrearplazaController@index');  
-    Route::post('creaplaza/{id}', array('as' => 'get-all-estruct','uses' => 'CrearplazaController@getStructuras'));
-    Route::post('creaplaza/{id}/{idx}', array('as' => 'set-save-contador_plaza','uses' => 'CrearplazaController@Procesacreaplaza'));    
-});
 Route::resource('admin', 'CrearplazaController'); 
 
 
-
-
-
- Route::group(['prefix' => 'admin', 'namespace'=>'admin','middleware' => 'admin'], function () {    
+ Route::group(['prefix' => 'admin', 'namespace'=>'Admin','middleware' => 'admin'], function () {    
     route::get('mantestruct','ManteEstructurasController@index');      
     Route::post('mantestruct',array('as'=>'save-update-mantestruct','uses'=>'ManteEstructurasController@updateOficinaEstruct')); 
     route::get('mantestruct/{id}','ManteEstructurasController@create')->name("create");
