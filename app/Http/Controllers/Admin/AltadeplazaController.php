@@ -176,12 +176,13 @@ public function ProcesaInsertAlta(Request $Request){
                                 $res=array($_IdPlaza);
                                 $fileName=$_IdPersona.$_IdPlaza.$_NroPlaza;// nombre del archivo .pdf
                                 $name="";
-                                if($_FileAdjuntoAlta) {
-                                    $file = $Request->file('FileAdjuntoAlta'); 
-                                    $path = public_path('uploads/files/');
-                                    array_push($res, $path);
-                                    $name = $fileName.'.'.$file->getClientOriginalExtension();
-                                    $file->move($path, $name);
+                                if($_FileAdjuntoAlta) 
+                                    {
+                                        $file = $Request->file('FileAdjuntoAlta'); 
+                                        $path = public_path('uploads/files/');
+                                        array_push($res, $path);
+                                        $name = $fileName.'.'.$file->getClientOriginalExtension();
+                                        $file->move($path, $name);
                                     }               
                                 $Resp = DB::table('historiamovimiento')->insert([
                                     'IdPersona'     => $_IdPersona,

@@ -75,13 +75,13 @@ Route::group(['prefix' => 'admin', 'middleware' => 'admin', 'as' => 'admin.'], f
 //    Route::get('/', 'JoshController@index')->name('index');
 });
 
-Route::group(['prefix' => 'servicio', 'namespace'=>'servicio','middleware' => 'admin'], function () {
+Route::group(['prefix' => 'servicio', 'namespace'=>'Servicio','middleware' => 'admin'], function () {
     Route::get('reservas', 'ReservaPlazaController@index');
     Route::get('reservas/bandeja', 'ReservaPlazaController@getshow');      
 });
 
 
-Route::group(['prefix' => 'reportes', 'namespace'=>'reporte','middleware' => 'admin'], function () {
+Route::group(['prefix' => 'reportes', 'namespace'=>'Reporte','middleware' => 'admin'], function () {
     /*==================================rpte de plazas activas, inactivas y vacantes, etc=============================================*/
     Route::get('rplazas', 'RptegeneralplazasController@index');  
     Route::post( '/rplazas', array('as' => 'get-rpte-plaza','uses' => 'RptegeneralplazasController@getrpteplazas'));
@@ -119,7 +119,7 @@ Route::group(['prefix' => 'admin', 'namespace'=>'Admin','middleware' => 'admin']
     /*==========================================================================================*/
 });
 
- Route::group(['prefix' => 'admin', 'namespace'=>'admin','middleware' => 'admin'], function () {    
+ Route::group(['prefix' => 'admin', 'namespace'=>'Admin','middleware' => 'admin'], function () {    
     route::get('mantestruct','ManteEstructurasController@index');      
     Route::post('mantestruct',array('as'=>'save-update-mantestruct','uses'=>'ManteEstructurasController@updateOficinaEstruct')); 
     route::get('mantestruct/{id}','ManteEstructurasController@create')->name("create");
