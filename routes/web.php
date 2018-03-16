@@ -106,16 +106,27 @@ Route::group(['prefix' => 'admin', 'namespace'=>'admin','middleware' => 'admin']
     Route::post('reserva/{id}', array('as' => 'get-datos-procesareserva','uses' => 'ReservaController@Procesareservaplaza'));
     Route::post('reserva/{id}/{idx}', array('as' => 'procesa-ChangeEstado','uses' => 'ReservaController@ProcesaChangeEstado'));
     /*==================================Crea plazas=============================================*/
-    Route::get('creaplaza', 'CrearplazaController@index');  
-    Route::post('creaplaza/{id}', array('as' => 'get-all-estruct','uses' => 'CrearplazaController@getStructuras'));
-    Route::post('creaplaza/{id}/{idx}', array('as' => 'set-save-contador_plaza','uses' => 'CrearplazaController@Procesacreaplaza'));
+   //Route::get('creaplaza', 'CrearplazaController@index');  
+    //Route::post('creaplaza/{id}', array('as' => 'get-all-estruct','uses' => 'CrearplazaController@getStructuras'));
+    //Route::post('creaplaza/{id}/{idx}', array('as' => 'set-save-contador_plaza','uses' => 'CrearplazaController@Procesacreaplaza'));
      /*==================================Recategorización de  plazas=============================================*/
     Route::get('integra', 'IntegrarPlazaController@index'); 
     Route::post('integra', array('as' => 'get-datos-paraintegra','uses' => 'IntegrarPlazaController@getdatosintegra'));
     Route::post('integra/{id}', array('as' => 'save-paraintegra-plazas','uses' => 'IntegrarPlazaController@Procesaintegraplaza'));
     /*==========================================================================================*/
 });
+
+
+Route::group(['prefix' => 'admin', 'namespace'=>'admin','middleware' => 'admin'], function () {   
+    /*==================================Crea plazas=============================================*/
+    Route::get('creaplaza', 'CrearplazaController@index');  
+    Route::post('creaplaza/{id}', array('as' => 'get-all-estruct','uses' => 'CrearplazaController@getStructuras'));
+    Route::post('creaplaza/{id}/{idx}', array('as' => 'set-save-contador_plaza','uses' => 'CrearplazaController@Procesacreaplaza'));    
+});
 Route::resource('admin', 'CrearplazaController'); 
+
+
+
 
 
  Route::group(['prefix' => 'admin', 'namespace'=>'admin','middleware' => 'admin'], function () {    
