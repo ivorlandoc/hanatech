@@ -99,7 +99,7 @@ Route::group(['prefix' => 'reportes', 'namespace'=>'reporte','middleware' => 'ad
 
 Route::resource('reportes', 'PlazasporcargoController'); // add by iv.orlando.c 22.02.18
 
-Route::group(['prefix' => 'admin', 'namespace'=>'admin','middleware' => 'admin'], function () {
+Route::group(['prefix' => 'admin', 'namespace'=>'Admin','middleware' => 'admin'], function () {
     /*==================================reservas=============================================*/
     Route::get('reserva', 'ReservaController@index');
     Route::post('reserva', array('as' => 'get-datos-parareserva','uses' => 'ReservaController@GetDatosRserva'));
