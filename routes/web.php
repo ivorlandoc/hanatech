@@ -115,6 +115,8 @@ Route::group(['prefix' => 'admin', 'namespace'=>'admin','middleware' => 'admin']
     Route::post('integra/{id}', array('as' => 'save-paraintegra-plazas','uses' => 'IntegrarPlazaController@Procesaintegraplaza'));
     /*==========================================================================================*/
 });
+Route::resource('admin', 'CrearplazaController'); 
+
 
  Route::group(['prefix' => 'admin', 'namespace'=>'admin','middleware' => 'admin'], function () {    
     route::get('mantestruct','ManteEstructurasController@index');      
