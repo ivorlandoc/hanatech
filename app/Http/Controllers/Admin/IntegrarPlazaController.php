@@ -69,8 +69,8 @@ public function Procesaintegraplaza(Request $Request,$id){
                   {
                     $_idPlaza  =$key->IdPlaza;
                     $_idEstr  =$key->IdEstructura; 
-                    $_idcargo  =$key->IdCargo
-                  }; 
+                    $_idcargo  =$key->IdCargo;
+                  }
        
                    
                  
