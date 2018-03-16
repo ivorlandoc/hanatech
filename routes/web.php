@@ -140,7 +140,7 @@ Route::resource('mantestruct','ManteEstructurasController');
 
 
 
-Route::group(['prefix' => 'admin','namespace'=>'Admin', 'middleware' => 'admin', 'as' => 'admin.'], function () {
+Route::group(['prefix' => 'admin','namespace'=>'Admin', 'middleware' => 'admin'], function () {
     # User Management
         Route::group([ 'prefix' => 'users'], function () {
         Route::get('data', 'UsersController@data')->name('users.data');
