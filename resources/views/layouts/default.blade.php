@@ -55,11 +55,11 @@
                         <ul class="list-inline icon-position">
                             <li>
                                 <a href="mailto:"><i class="livicon" data-name="mail" data-size="18" data-loop="true" data-c="#fff" data-hc="#fff"></i></a>
-                                <label class="hidden-xs"><a href="mailto:" class="text-white">admin@essalud.gob.pe</a></label>
+                                <label class="hidden-xs"><a href="mailto:" class="text-white">admin@admin.com.pe</a></label>
                             </li>
                             <li>
                                 <a href="tel:"><i class="livicon" data-name="phone" data-size="18" data-loop="true" data-c="#fff" data-hc="#fff"></i></a>
-                                <label class="hidden-xs"><a href="tel:" class="text-white">(703) 717-4200</a></label>
+                                <label class="hidden-xs"><a href="tel:" class="text-white">(703) 717-0200</a></label>
                             </li>
                         </ul>
                     </li>
@@ -182,7 +182,7 @@
             <div class="col-sm-4">
                 <h4>Sobre Nosotros</h4>
                 <p>
-                    El Seguro Social de Salud o también conocido como EsSalud es la institución peruana de la seguridad social en salud, comprometida con la atención integral de las necesidades y expectativas de la población asegurada, con equidad y solidaridad hacia la universalización de la seguridad social en salud.
+                    Somos una empresa con  alta solvencia técnica en el rubro tecnológico.
                 </p>
                
                 <!-- <hr id="hr_border">-->
@@ -193,7 +193,7 @@
             <div class="col-sm-4">
                 <h4>Contáctanos</h4>
                 <ul class="list-unstyled">
-                    <li>Av. Arenales 1402,Lince-Lima</li>                   
+                    <li>Av.Canevaro,Lince-Lima</li>                   
                     <li><i class="livicon icon4 icon3" data-name="cellphone" data-size="18" data-loop="true" data-c="#ccc" data-hc="#ccc"></i>Phone:9140 123 4588</li>
                     <li><i class="livicon icon4 icon3" data-name="printer" data-size="18" data-loop="true" data-c="#ccc" data-hc="#ccc"></i> Fax:400 423 1456</li>
                     <li><i class="livicon icon3" data-name="mail-alt" data-size="20" data-loop="true" data-c="#ccc" data-hc="#ccc"></i> Email:<span class="text-success" style="cursor: pointer;">
