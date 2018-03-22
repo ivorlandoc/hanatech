@@ -20,17 +20,20 @@ $(document).ready(function(){
 function GetAllPlazas(id){
 	$.get('../api/admin/rpteplazas/getplaza/'+id,function(dataDet){
 		console.log("===>"+dataDet);
-		var tableHtml='';
+		var tableHtml='';		
 		var htmlHead="";
 		var htmlNombre="";
 		var Tinesino="";
+		var url="";
+
        	var ErrorHtml='<tr><td colspan="2"><div class="alert alert-danger alert-dismissable margin5"><strong>Ups</strong> no existe registros!</div></td></tr>';
        	if(dataDet.length!=0){        		
-       		$('#IdGetShowEstadoPlaza').html("");
+       		$('#IdGetShowEstadoPlaza').html(""); // "{{ URL::to('admin/bajaplazas') }}?x={{$plaz}}"
 			for (var i=0; i < dataDet.length; i++) 	{	
-				if(dataDet[i].fcese!=""){ Tinesino= dataDet[i].sino;} else{ Tinesino="PLAZA "+dataDet[i].estado;}
+				if(dataDet[i].fcese!=""){ Tinesino= '<p class="btn btn-info start">'+dataDet[i].sino+'</p>';} else{ Tinesino=" ";}				
+				url= "altaplaza?x="+dataDet[i].NroPlaza;			
+				if(dataDet[i].IdPersona=="") htmlNombre="<p class='btn btn-info start'>"+dataDet[i].estado+"</p><a href="+url+ ' class="btn btn-info start">DAR DE ALTA</a>'; else htmlNombre=dataDet[i].ApellidoPat+'  '+dataDet[i].ApellidoMat+' '+dataDet[i].Nombres;
 
-				if(dataDet[i].IdPersona=="") htmlNombre="<p class='btn btn-info start'>"+dataDet[i].estado+"</p>"; else htmlNombre=dataDet[i].ApellidoPat+'  '+dataDet[i].ApellidoMat+' '+dataDet[i].Nombres;
 				tableHtml += '<table><tr><th width="23%"># DE PLAZA:</th><td ><p style="margin: 0px 0px 0px 0px;">'+dataDet[i].NroPlaza+' </p></td></tr> '+
 							 '<tr><th>PERSONA:</th><td><p style="margin: 0px 0px 0px 30px;">'+htmlNombre+'</p></td></tr> '+
 							 '<tr><th colspan="2">DEPENDENCIA</th></tr>'+
@@ -39,7 +42,7 @@ function GetAllPlazas(id){
 							 '<tr><th>NIVEL:</th><td><p style="margin: 0px 0px 0px 0px;">'+dataDet[i].IdNivel+'  <b>|</b>  '+dataDet[i].Nivel+' </p></td></tr> '+					
 							 '<tr><th>CARGO:</th><td><p style="margin: 0px 0px 0px 0px;">'+dataDet[i].cargo+' </p></td></tr> '+
 							 '<tr><th>FECHA DE CESE:</th><td><p style="margin: 0px 0px 0px 0px;">'+dataDet[i].fcese+' </p></td></tr> '+	
-							 '<tr><th>CUENTA CON PRESUPUESTO?</th><td><p class="btn btn-info start">'+Tinesino+' </p></td></tr> '+						 							
+							 '<tr><th>CUENTA CON PRESUPUESTO?</th><td>'+Tinesino+' </td></tr> '+						 							
 							 '</tr></table>';
 				$('#IdGetShowEstadoPlaza').html(tableHtml);	
 			}

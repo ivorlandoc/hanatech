@@ -71,7 +71,7 @@ Baja de Plazas
                                 <div class="input-group select2-bootstrap-append">                          
                                             {!! Form::text('string_search',null, ['class'=>'form-control','placeholder'=>'Apellidos | #Dni | #Plaza','type'=>'search','id'=>'string_search']) !!}                     
                                             <span class="input-group-btn">
-                                                <button class="btn btn-default" type="button" data-select2-open="single-append-text">
+                                                <button class="btn btn-default" type="submit" data-select2-open="single-append-text" id="getsubmnit">
                                                     <span class="glyphicon glyphicon-search"></span>
                                                 </button>
                                             </span>

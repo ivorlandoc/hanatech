@@ -123,15 +123,20 @@ Route::group(['prefix' => 'admin', 'namespace'=>'Admin','middleware' => 'admin']
         Route::post('cambio/{id}', array('as' => 'get-datos-saveChange','uses' => 'CambiodenominacController@SaveChangeCargo'));
      });
     Route::resource('cambio', 'CambiodenominacController');    
-
+    /*=========================Persmisos========================*/  
       Route::get('permisos', 'PermisosController@index');//->middleware('permission:users.index');
     /*Route::get('users', 'UserController@index')->name('users.index')->middleware('permission:users.index');
     Route::put('users/{user}', 'UserController@update')->name('users.update')->middleware('permission:users.edit');
     Route::get('users/{user}', 'UserController@show')->name('users.show')->middleware('permission:users.show');
     Route::delete('users/{user}', 'UserController@destroy')->name('users.destroy')->middleware('permission:users.destroy');
     Route::get('users/{user}/edit', 'UserController@edit')->name('users.edit')->middleware('permission:users.edit');*/
-    Route::resource('permisos','PermisosController');
-    
+    //Route::resource('permisos','PermisosController');
+    /*=========================Actualizar Periodos de PPTO========================*/  
+     Route::get('periodop', 'PeriodopptoController@index');
+    /*=========================Actualizar movimiento de plazas========================*/
+    Route::get('upmov', 'UpdateMovPlazasController@index'); 
+    Route::post('upmov', array('as' => 'search_mov','uses' => 'UpdateMovPlazasController@_getalldatosMov')); 
+
 });
 
  Route::group(['prefix' => 'admin', 'namespace'=>'Admin','middleware' => 'admin'], function () {    
@@ -143,7 +148,7 @@ Route::group(['prefix' => 'admin', 'namespace'=>'Admin','middleware' => 'admin']
 Route::resource('mantestruct','ManteEstructurasController');
 
 
- /*=========================Persmisos========================*/    
+  
 
    
    

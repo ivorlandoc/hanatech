@@ -2,13 +2,7 @@ $(function(){
 $("#search_plaza").keypress(function(e) {
 		var code = (e.keyCode ? e.keyCode : e.which);
         if(code == 13) {
-         $("#frmSaveAlta")[0].reset();
-         var strin=$("#search_plaza").val();
-          GetDatosPlazaForAlta(strin);  
-          getTipoDoc("1");   
-          getProfesionForAlta("1");    
-          getTipoAltaForAlta("1");
-          getRegimenForAlta("1");
+        loaddatosform();
         }
       });
  	$('#FormAltaPlaza').hide();
@@ -25,6 +19,16 @@ $("#search_plaza").keypress(function(e) {
 	/*================================*/
 
 })
+
+function loaddatosform(){
+	 $("#frmSaveAlta")[0].reset();
+         var strin=$("#search_plaza").val();
+          GetDatosPlazaForAlta(strin);  
+          getTipoDoc("1");   
+          getProfesionForAlta("1");    
+          getTipoAltaForAlta("1");
+          getRegimenForAlta("1");
+}
 /*===================================================*/
 function GetDataPerSeach(id){	
 	//console.log("=1==>"+id);
@@ -308,4 +312,17 @@ function checkboxS(){
 	var select= "0";
 	if($("#idResidentado").is(':checked')) {select="1";} else {select="0";}
 	$("#idresid").val(select);
+}
+
+var paramstr = window.location.search.substr(1);
+var paramarr = paramstr.split ("&");
+var params = {};
+
+for ( var i = 0; i < paramarr.length; i++) {
+    var tmparr = paramarr[i].split("=");
+    params[tmparr[0]] = tmparr[1];
+}
+if (params['x']) {
+  $("#search_plaza").val(params['x']);
+  $("#idsearchaltaform").click();  
 }

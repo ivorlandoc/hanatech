@@ -72,7 +72,7 @@ $("#IdSavebajaPlaza").click(function (e) {
 
 
 function ShowFormBaja(idx){	
-console.log("---1------->"+idx); 
+
 	$.get('../api/admin/bajaplazas/'+idx,function(dataPlz){	
        		var xy=0;   
        	
@@ -143,13 +143,17 @@ function GetTipoBaja(idx){
 		
 	});	
 }
+/* ======= recibe las variables enviadas por la url====*/
+var paramstr = window.location.search.substr(1);
+var paramarr = paramstr.split ("&");
+var params = {};
 
- var dato = params['x'];
-                    var variableAevaluar = dato;
-                    switch (variableAevaluar) { 
-                    case 1:
-                    prim ();
-                    break;
-                    }
-                    document.write(dato);
-                    $("#search_plaza"),val(dato)
+for ( var i = 0; i < paramarr.length; i++) {
+    var tmparr = paramarr[i].split("=");
+    params[tmparr[0]] = tmparr[1];
+}
+if (params['x']) {
+  $("#string_search").val(params['x']);
+  $("#getsubmnit").click();  
+} 
+/* ===================fin================*/
