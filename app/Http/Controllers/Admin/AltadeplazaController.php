@@ -223,7 +223,7 @@ public function getEstructuraShowLink($id){
     }
 
     public function getResultSearchPer($id){
-    $dataP =DB::select("SELECT Dni,CONCAT(ApellidoPat,' ',ApellidoMat,' ',Nombres) AS Nombres,convert(NroPlaza, char(8)) as NroPlaza FROM persona p LEFT JOIN cuadronominativo c ON c.IdPersona=p.IdPersona WHERE (Dni LIKE '".$id."%' OR CONCAT(ApellidoPat,' ', ApellidoMat,' ',Nombres) LIKE '".$id."%') limit 10");  
+    $dataP =DB::select("SELECT Dni,CONCAT(ApellidoPat,' ',ApellidoMat,' ',Nombres) AS Nombres,convert(NroPlaza, char(8)) as NroPlaza FROM persona p LEFT JOIN cuadronominativo c ON c.IdPersona=p.IdPersona WHERE (Dni LIKE '".$id."%' OR CONCAT(ApellidoPat,' ', ApellidoMat,' ',Nombres) LIKE '".$id."%') GROUP BY c.IdPersona limit 10");  
         return $dataP;
     }
 

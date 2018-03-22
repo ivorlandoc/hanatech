@@ -84,7 +84,7 @@ Consulta - Plazas
                                                 <input type="hidden" name="token" value="{{ csrf_token()}}">
                                                 <div class="form-group">                            
                                                     <div class="input-group select2-bootstrap-append">                          
-                                                                {!! Form::text('stri_search',null, ['class'=>'form-control','placeholder'=>'Buscar:: Dni | Apellidos |  Plaza','type'=>'search']) !!}                     
+                                                                {!! Form::text('stri_search',null, ['class'=>'form-control','placeholder'=>'Buscar:: Dni | Apellidos |  Plaza','type'=>'search','id'=>'stri_search']) !!}                     
                                                                 <span class="input-group-btn">
                                                                     <button class="btn btn-default" type="button" data-select2-open="single-append-text">
                                                                         <span class="glyphicon glyphicon-search"></span>
@@ -105,10 +105,9 @@ Consulta - Plazas
                                                                     <th>NIVEL</th> 
                                                                     <th># Dni</th> 
                                                                     <th>NOMBRES</th>
-                                                                    <!--<th>DEPENDENCIA</th>-->
-                                                                   
-                                                                                   
-                                                                    <th style="text-align: center;" colspan="2">ACCIONES</th>                       
+                                                                    <th>DEPENDENCIA</th>
+                                                                    <th style="text-align: center;" colspan="2">ACCIONES</th> 
+                                                                    <th style="text-align: center;">BAJA</th>                      
                                                             </tr>
                                                         </thead>
                                                         <tbody > 
@@ -124,7 +123,7 @@ Consulta - Plazas
                                                                 <td>{{$Data->IdNivel}}</td>                                                              
                                                                  <td>{{$Data->dni}}</td>
                                                                 <td>{{$Data->nom}} </td>
-                                                               <!-- <td>{{$Data->sede}} - {{$Data->dependencia}}</td>     -->                                          
+                                                                <td>{{$Data->sede}} - {{$Data->dependencia}}</td>                                          
                                                                 
                                                                
                                                                 
@@ -140,7 +139,15 @@ Consulta - Plazas
                                                                             <span class="livicon" data-name="notebook" data-size="14" data-loop="true" data-c="#fff" data-hc="white"></span>
                                                                             <br/> Movimientos
                                                                         </a>
-                                                                </td>                                   
+                                                                </td>
+
+                                                                <td>  
+                                                                  
+                                                                   <div class="ui-group-buttons">                                                                      
+                                                                         <a href="{{ URL::to('admin/bajaplazas') }}?x={{$plaz}}" class="btn btn-danger btn-lg"> </i> Baja</a>
+                                                                    </div>
+                                                                </td>
+
                                                             </tr>
                                                             @endforeach   
                                                     </tbody>

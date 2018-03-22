@@ -12,25 +12,35 @@ $("#searchPlazaForRpte").keypress(function(e) {
  	
 })
 
+$(document).ready(function(){
+    $('#searchPlazaForRpte').keyup(function(){$(this).val($(this).val().toUpperCase());});
+    $('#stri_search').keyup(function(){$(this).val($(this).val().toUpperCase());});    
+});
+
 function GetAllPlazas(id){
 	$.get('../api/admin/rpteplazas/getplaza/'+id,function(dataDet){
 		console.log("===>"+dataDet);
 		var tableHtml='';
 		var htmlHead="";
 		var htmlNombre="";
+		var Tinesino="";
        	var ErrorHtml='<tr><td colspan="2"><div class="alert alert-danger alert-dismissable margin5"><strong>Ups</strong> no existe registros!</div></td></tr>';
        	if(dataDet.length!=0){        		
        		$('#IdGetShowEstadoPlaza').html("");
-			for (var i=0; i < dataDet.length; i++) 	{				
+			for (var i=0; i < dataDet.length; i++) 	{	
+				if(dataDet[i].fcese!=""){ Tinesino= dataDet[i].sino;} else{ Tinesino="PLAZA "+dataDet[i].estado;}
+
 				if(dataDet[i].IdPersona=="") htmlNombre="<p class='btn btn-info start'>"+dataDet[i].estado+"</p>"; else htmlNombre=dataDet[i].ApellidoPat+'  '+dataDet[i].ApellidoMat+' '+dataDet[i].Nombres;
-				tableHtml += '<tr><th># DE PLAZA:</th><td><p style="margin: 0px 0px 0px 30px;">'+dataDet[i].NroPlaza+' </p></td></tr> '+
+				tableHtml += '<table><tr><th width="23%"># DE PLAZA:</th><td ><p style="margin: 0px 0px 0px 0px;">'+dataDet[i].NroPlaza+' </p></td></tr> '+
 							 '<tr><th>PERSONA:</th><td><p style="margin: 0px 0px 0px 30px;">'+htmlNombre+'</p></td></tr> '+
 							 '<tr><th colspan="2">DEPENDENCIA</th></tr>'+
-							 '<tr><td colspan="2"><p style="margin: 0px 0px 0px 30px;">'+dataDet[i].sede+'  <b>|</b>  '+dataDet[i].organo+' </p></td></tr>'+												
-							 '<tr><td colspan="2"><p style="margin: 0px 0px 0px 30px;">'+dataDet[i].dep+'  <b> | </b>  '+dataDet[i].dep2+'<b> | </b>  '+dataDet[i].descripcion+'</p></td></tr>'+							
-							 '<tr><th>NIVEL:</th><td><p style="margin: 0px 0px 0px 30px;">'+dataDet[i].IdNivel+'  <b>|</b>  '+dataDet[i].Nivel+' </p></td></tr> '+					
-							 '<tr><th>CARGO:</th><td><p style="margin: 0px 0px 0px 30px;">'+dataDet[i].cargo+' </p></td></tr> '+							 							
-							 '</tr>';
+							 '<tr><td colspan="2"><p style="margin: 0px 0px 0px 0px;">'+dataDet[i].sede+'  <b>|</b>  '+dataDet[i].organo+' </p></td></tr>'+												
+							 '<tr><td colspan="2"><p style="margin: 0px 0px 0px 0px;">'+dataDet[i].dep+'  <b> | </b>  '+dataDet[i].dep2+'<b> | </b>  '+dataDet[i].descripcion+'</p></td></tr>'+							
+							 '<tr><th>NIVEL:</th><td><p style="margin: 0px 0px 0px 0px;">'+dataDet[i].IdNivel+'  <b>|</b>  '+dataDet[i].Nivel+' </p></td></tr> '+					
+							 '<tr><th>CARGO:</th><td><p style="margin: 0px 0px 0px 0px;">'+dataDet[i].cargo+' </p></td></tr> '+
+							 '<tr><th>FECHA DE CESE:</th><td><p style="margin: 0px 0px 0px 0px;">'+dataDet[i].fcese+' </p></td></tr> '+	
+							 '<tr><th>CUENTA CON PRESUPUESTO?</th><td><p class="btn btn-info start">'+Tinesino+' </p></td></tr> '+						 							
+							 '</tr></table>';
 				$('#IdGetShowEstadoPlaza').html(tableHtml);	
 			}
 		}else{
@@ -48,7 +58,7 @@ function GetAllPlazasMov(id){
        	if(dataDet.length!=0){  
        		$('.loading').show();
     
-       	tableHtml  +='<table class="table dataTable no-footer dtr-inline"><tr> <th>#</th><th>PERSONA</th><th>TIPO.MOV.</th><th>DEPENDENCIA</th><th>CARGO</th> <th> DOC.REF.</th> <th>OBSERVACION</th> <th>F:&nbsp;MOV.&nbsp;&nbsp;|&nbsp;&nbsp;F:DOC.REF&nbsp;</th></tr>';    		
+       	tableHtml  +='<table class="table dataTable no-footer dtr-inline"><tr> <th>#</th><th>PERSONA</th><th>TIPO.MOV.</th><th>DEPENDENCIA</th><th>CARGO</th> <th> DOC.REF.</th> <th>OBSERVACION</th> <th>F:&nbsp;MOV.&nbsp;&nbsp;|&nbsp;&nbsp;F:DOC.REF&nbsp;</th><th>ACCIÓN</th></tr>';    		
        		$('#IdGetShowEstadoPlazaDet').html("");
 			for (var i=0; i < dataDet.length; i++) 	{ xy++;
 				if(dataDet[i].Persona=="") persona="---"; else persona=dataDet[i].Persona;
@@ -57,10 +67,11 @@ function GetAllPlazasMov(id){
 							 		'<td>'+dataDet[i].tipomov+'</td> '+							 		
 							 		'<td>'+dataDet[i].organo+' | '+dataDet[i].dep+' | '+dataDet[i].dep2+'</td>'+	
 							 		'<td>'+dataDet[i].cargo+'</td>'+											
-							 		'<td>'+dataDet[i].DocRef+'</td>'+							
+							 		'<td><a href="../uploads/files/'+dataDet[i].FileAdjunto+'" target="_blank">'+dataDet[i].DocRef+'</a></td>'+							
 							 		'<td>'+dataDet[i].Observacion+'</td>'+					
 							 		'<td>'+dataDet[i].fm+' | '+dataDet[i].fd+'</td>'+							 							
 							 '</tr>';
+
 				//$('#IdGetShowEstadoPlazaDet').html(tableHtml);	
 			}
 			$('.loading').hide();
@@ -146,7 +157,7 @@ function GetDetalleGeneralPlaza(id,dni){
 							 '<tr><th>RÉGIMEN:</th><td><p style="margin: 0px 0px 0px 30px;">'+dataDet[i].regimen+' </p></td></tr> '+						
 							 '<tr><th>FECHA&nbspNACIMIENTO/INGRESO:</th><td><p style="margin: 0px 0px 0px 30px;">'+dataDet[i].FechaNac+' | '+dataDet[i].fingreso+'</p></td>'+
 							 
-							 '<tr><th>DIRECCIÓN:</th><td><p style="margin: 0px 0px 0px 30px;">'+dataDet[i].Direccion+' </p></td></tr> '+
+							 '<tr><th>DOCUMENTO:</th><td><p style="margin: 0px 0px 0px 30px;">'+dataDet[i].documento+' </p></td></tr> '+
 							 '</tr>';
 				$('#IdShowDetailsMov').html(tableHtml);	
 			}

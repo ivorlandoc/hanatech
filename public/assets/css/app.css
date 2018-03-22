@@ -13,7 +13,7 @@
 /*   Core: General style
 ----------------------------*/
 html, body {
-    background             : none repeat scroll 0 0 #ebebeb;
+    background             : none repeat scroll 0 0 #ebebeb; /* background: none repeat scroll 0 0 #ebebeb; by iv.orlando.c*/
     overflow-x             : hidden;
     -webkit-font-smoothing : antialiased;
     min-height             : 100vh;
@@ -172,7 +172,7 @@ a, a:hover, li.active a {
 }
 /* skin-josh logo */
 .skin-josh .logo {
-    background-color : #515763;
+    background-color : #0B3861;/*background-color : #515763; by iv.orlando.c*/
 }
 .skin-josh .logo > h1 {
     margin-top     : 0;
@@ -211,7 +211,7 @@ body > .header .navbar .sidebar-toggle {
     float                 : left;
     padding               : 15px 10px 10px 10px;
     margin                : 8px 0 8px 5px;
-    background-color      : #444954;
+    background-color      : #0B3861; /* background-color      : #444954; by iv.orlando.c*/
     background-image      : none;
     color                 : #f9c3c3;
     border                : 1px solid transparent;
@@ -1085,7 +1085,7 @@ li.dropdown-footer {
     z-index       : 1049;
 }
 .navbar-right .nav .open > a, .navbar-right .nav .open > a:hover, .navbar-right .nav .open > a:focus, .navbar-right .nav > li > a:hover, .navbar-right .nav > li > a:focus {
-    background-color : #414151;
+    background-color : #274771; /*background-color : #414151;  by iv.orlando.c  over user_right*/
     border-color     : #428bca;
 }
 .riot {
@@ -1133,7 +1133,7 @@ li.dropdown-footer {
     width   : auto;
 }
 .sidebar-nav {
-    background : #515763;
+    background : #515763; /*background : #515763;  by iv.orlando.c*/
 }
 .sidebar-nav ul {
     padding    : 0;
@@ -1149,7 +1149,8 @@ li.dropdown-footer {
     -webkit-font-smoothing : antialiased;
 }
 .skin-josh .navbar {
-    background-color : #515763; /*	box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2); */
+    /*background-color : #515763; */  /*	box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2); by iv.orlando.c, barra de título*/
+    background-color : #0B3861; /*	box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);*/
 }
 .skin-josh .navbar .nav a {
     color : #333;
@@ -1167,14 +1168,14 @@ li.dropdown-footer {
     border-bottom : 1px solid #515763;
 }
 .skin-josh .sidebar .page-sidebar-menu > li:hover {
-    background    : #3a4252;
+    background    : #8892A0; /*background    : #3a4252; by iv.orlando.c */    
     border-bottom : 1px solid rgba(54, 60, 70, 0.5);
 }
 .skin-josh .sidebar > .sidebar-menu > li > a {
     margin-right : 1px;
 }
 .skin-josh .left-side {
-    background   : #515763;
+    background   : #274771;  /*background   : #515763; by iv.orlando.c*/
     border-right : none;
 }
 .skin-josh .sidebar a {
@@ -1184,7 +1185,7 @@ li.dropdown-footer {
     text-decoration        : none;
 }
 .skin-josh .sidebar li ul {
-    background : #464d5a;
+    background : #464d5a; /* background : #464d5a; bby iv.orlando.c*/
     border-top : 0.08em solid #666;
 }
 .skin-josh .sidebar li.open a:hover {
@@ -1199,17 +1200,18 @@ li.dropdown-footer {
     text-decoration : none !important;
 }
 .left-side .active {
-    background : #414151 !important;
+    background : #8892A0 !important; /*background : #414151 !important; by iv.orlando.c*/
 }
 #active {
-    color           : #e0e0e0;
+    color           : #e0e0e0; 
     text-decoration : none;
 }
 .sidebar li .sub-menu li i {
     padding-right : 10px;
 }
 .sidebar_threeicons li:hover {
-    background : #3a4252;
+    background : #8892A0; /*background : #3a4252;*/
+    
 }
 /*dashboard top 4 panels css*/
 .squarebox h4 {
@@ -1621,7 +1623,7 @@ img.flag {
 }
 .alert-info {
     color            : #fff;
-    background-color : #62aceb;
+    background-color : #6094cb; /*background-color : #62aceb;  los botones*/
     border-color     : #67C5DF;
 }
 .alert-info .alert-link {
@@ -1648,8 +1650,8 @@ img.flag {
     border-color     : #A9B6BC;
 }
 .alert-message-success {
-    background-color : #F4FDF0;
-    border-color     : #01BC8C;
+    background-color : #C78679; /*background-color : #F4FDF0;*/
+    border-color     : #01BC8C;background-color : #F4FDF0;
 }
 .btn-orange {
     color            : white;
@@ -1681,7 +1683,7 @@ Customized Bootstrap Panels
 }
 .panel-info > .panel-heading {
     color            : #fff;
-    background-color : #67C5DF;
+    background-color : #6094CB; /* background-color : #67C5DF; barra de título de las ventanas*/
     border-color     : #67C5DF;
 }
 .panel-info > .panel-heading + .panel-collapse .panel-body {

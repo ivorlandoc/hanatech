@@ -69,7 +69,7 @@ Baja de Plazas
                             <input type="hidden" name="token" value="{{ csrf_token()}}">
                             <div class="form-group">                            
                                 <div class="input-group select2-bootstrap-append">                          
-                                            {!! Form::text('string_search',null, ['class'=>'form-control','placeholder'=>'Apellidos | #Dni | #Plaza','type'=>'search']) !!}                     
+                                            {!! Form::text('string_search',null, ['class'=>'form-control','placeholder'=>'Apellidos | #Dni | #Plaza','type'=>'search','id'=>'string_search']) !!}                     
                                             <span class="input-group-btn">
                                                 <button class="btn btn-default" type="button" data-select2-open="single-append-text">
                                                     <span class="glyphicon glyphicon-search"></span>

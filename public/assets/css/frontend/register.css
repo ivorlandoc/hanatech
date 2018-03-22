@@ -24,6 +24,9 @@ body {
     padding:20px 20px;
     border-top:5px solid #128bc6;
     margin: auto;
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+    border-radius: 8px;
 }
 .box img{
     margin:auto;
@@ -54,12 +57,12 @@ input[type="submit"]{
 }
 
 .animation{
-    -webkit-animation-duration: 1s;
+ /*   -webkit-animation-duration: 1s;
     animation-duration: 1s;
     -webkit-animation-fill-mode: both;
     animation-fill-mode: both;
     -webkit-animation-timing-function: ease-in;
-    animation-timing-function: ease-in;
+    animation-timing-function: ease-in;*/
 }
 
 @-webkit-keyframes flipInX {
@@ -99,6 +102,9 @@ input[type="submit"]{
     -webkit-animation-name: flipInX;
     backface-visibility: visible !important;
     animation-name: flipInX;
+       -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
 }
 .help-block{
     float: left;

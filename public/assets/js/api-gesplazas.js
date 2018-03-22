@@ -35,7 +35,7 @@ $("#search_plaza").keypress(function(e) {
 function showhideEstru(){
 var xy=$('#IdTipoMovimiento').val();
 
-if(xy=="21"){	
+if(xy=="21" || xy=="23"){	
 	$('#select_10').attr('disabled',true);
 	$('#select_11').attr('disabled',true);
 	$('#select_22').attr('disabled',true);
@@ -192,7 +192,7 @@ $("#IdSaveMovimientosDePlazas").click(function (e) {
 	var	_FileAdjuntomov	= $('#FileAdjuntomov').val();
 	
 		 if(_IdTipoMov==""){		messages="Por favor, seleccione el Tipo de Moviemiento";} 
-			else if(_select_44=="" && _IdTipoMov!="21"){		messages="Por favor, seleccione la dependencia";} 
+			else if(_select_44=="" && _IdTipoMov!="21" && _IdTipoMov!="23"){		messages="Por favor, seleccione la dependencia";} 
 			else if(_FechaMov==""){			messages="Por favor, Seleccione la fecha de Moviemiento";} 
 			else if(_FechaDocRef==""){		messages="Por favor, Seleccione la fecha de documento";} 
 			else if(_DocRefmov==""){		messages="Por favor, Ingrese el docuemento de referencia(Resolución /Carta, etc)";} 

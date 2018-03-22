@@ -46,7 +46,7 @@ public function show($id){
       IF(c.IdEstadoPlaza IS NULL," ",(SELECT Descripcion FROM estadoplaza WHERE IdEstadoplaza=c.IdEstadoPlaza)) AS Estado,c.IdPersona
       FROM cuadronominativo  c  LEFT JOIN persona p ON p.IdPersona=c.IdPersona
         INNER JOIN cargo car ON car.IdCargo=c.IdCargo   INNER JOIN estructura e ON e.IdEstructura=c.IdEstructura
-         WHERE  c.IdEstructura LIKE "'.$id.'%"'.$where;
+         WHERE  c.IdEstructura LIKE "'.$id.'%"'.$where. " AND IdEstadoplaza<>'0'";
       $dataP =DB::select($sql);  
 
     /*substr('abcdef', -1, 1); // f

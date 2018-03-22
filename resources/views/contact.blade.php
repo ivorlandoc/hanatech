@@ -38,9 +38,9 @@ Contacto
 {{-- Page content --}}
 @section('content')
     <!-- Map Section Start -->
-   <!-- <div class="">
+   <div class="">
         <div id="map" style="width:100%; height:400px;"></div>
-    </div>-->
+    </div>
     <!-- //map Section End -->
     <!-- Container Section Start -->
     <div class="container">
@@ -58,10 +58,10 @@ Contacto
                         <input type="text" name="contact-name" class="form-control input-lg" placeholder="Tu Nombre" required>
                     </div>
                     <div class="form-group">
-                        <input type="email" name="contact-email" class="form-control input-lg" placeholder="Tu Dirección de email" required>
+                        <input type="email" name="contact-email" class="form-control input-lg" placeholder="Tu email" required>
                     </div>
                     <div class="form-group">
-                        <textarea name="contact-msg" class="form-control input-lg no-resize resize_vertical" rows="6" placeholder="Tu comentario" required></textarea>
+                        <textarea name="contact-msg" class="form-control input-lg no-resize resize_vertical" rows="5" placeholder="Tu comentario" required></textarea>
                     </div>
                     <div class="input-group">
                         <button class="btn btn-primary" type="submit">Enviar</button>

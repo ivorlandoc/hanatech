@@ -2,7 +2,7 @@
 
 {{-- Page title --}}
 @section('title')
-Nivel Ocupacional
+Persmisos
 @parent
 @stop
 
@@ -16,7 +16,7 @@ Nivel Ocupacional
 {{-- Page content --}}
 @section('content')
 <section class="content-header">
-    <h1>´Niveles Ocupacionales</h1>
+    <h1>Persmisos</h1>
     <ol class="breadcrumb">
         <li>
             <a href="{{ route('admin.dashboard') }}">
@@ -24,8 +24,8 @@ Nivel Ocupacional
                 Dashboard
             </a>
         </li>
-        <li><a href="#"> Nivel Ocupacional</a></li>
-        <li class="active">Lista Niveles </li>
+        <li><a href="#"> Persmisos</a></li>
+        <li class="active">Lista de Persmisos </li>
     </ol>
 </section>
 
@@ -35,7 +35,7 @@ Nivel Ocupacional
         <div class="panel panel-info">
             <div class="panel-heading">
                 <h4 class="panel-title"> <i class="livicon" data-name="user" data-size="16" data-loop="true" data-c="#fff" data-hc="white"></i>
-                    Lista de Niveles Ocupacionales
+                    Lista de Persmisos
                 </h4>
             </div>
             <br />
@@ -43,37 +43,14 @@ Nivel Ocupacional
                 <div class="table-responsive">
                 <table class="table dataTable no-footer dtr-inline">
                     <thead>
-                        <tr class="filters">
-                            <th>#</th>
-                            <th>DESCRIPCION</th>
-                            <!--<th>REMUN</th>
-                            <th>BONIF</th>
-                            <th>BONO-PROD</th>
-                            <th>BONO-ALTA-RESP</th>
-                            <th>BONO-EXTRAORD</th>
-                            <th>BONO-ESP</th>
-                            <th>TOTAL</th>-->                          
-                        </tr>
+                      
                     </thead>
-            <tbody><?php $total=0;?>
-                  @foreach ($getAllnivel as $getAll)  
-                        <?php $total=round($getAll->Remuneracion+$getAll->Bonif+$getAll->BonoProd+$getAll->BonoAltaResp+$getAll->BonoExtraord+$getAll->BonoEspecialidad,2) ?>          
-                        <tr>
-                            <td>{{ $getAll->IdNivel }}</td>
-                            <td>{{ $getAll->Descripcion }}</td> 
-                            <!--<td>{{ $getAll->Remuneracion }}</td>
-                            <td>{{ $getAll->Bonif }}</td>
-                            <td>{{ $getAll->BonoProd }}</td>
-                            <td>{{ $getAll->BonoAltaResp }}</td>
-                            <td>{{ $getAll->BonoExtraord }}</td>
-                            <td>{{ $getAll->BonoEspecialidad }}</td>
-                            <td>{{ $total }}</td>-->
-                        </tr>
-                    @endforeach 
-            </tbody>
+                    <tbody><h1>EN CONSTRUCCION</h1>
+                   
+                </tbody>
                    
                 </table>
-                 {{$getAllnivel->render()}}
+              
                 </div>
             </div>
         </div>

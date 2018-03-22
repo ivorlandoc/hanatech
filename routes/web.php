@@ -116,7 +116,22 @@ Route::group(['prefix' => 'admin', 'namespace'=>'Admin','middleware' => 'admin']
     Route::get('integra', 'IntegrarPlazaController@index'); 
     Route::post('integra', array('as' => 'get-datos-paraintegra','uses' => 'IntegrarPlazaController@getdatosintegra'));
     Route::post('integra/{id}', array('as' => 'save-paraintegra-plazas','uses' => 'IntegrarPlazaController@Procesaintegraplaza'));
-    /*==========================================================================================*/
+    /*============================Cambio de denominación==============================================================*/
+    Route::group([ 'prefix' => 'cambio'], function () {
+        Route::get('cambio', 'CambiodenominacController@index'); 
+        Route::post('cambio', array('as' => 'get-datos-search','uses' => 'CambiodenominacController@SearchCargo'));
+        Route::post('cambio/{id}', array('as' => 'get-datos-saveChange','uses' => 'CambiodenominacController@SaveChangeCargo'));
+     });
+    Route::resource('cambio', 'CambiodenominacController');    
+
+      Route::get('permisos', 'PermisosController@index');//->middleware('permission:users.index');
+    /*Route::get('users', 'UserController@index')->name('users.index')->middleware('permission:users.index');
+    Route::put('users/{user}', 'UserController@update')->name('users.update')->middleware('permission:users.edit');
+    Route::get('users/{user}', 'UserController@show')->name('users.show')->middleware('permission:users.show');
+    Route::delete('users/{user}', 'UserController@destroy')->name('users.destroy')->middleware('permission:users.destroy');
+    Route::get('users/{user}/edit', 'UserController@edit')->name('users.edit')->middleware('permission:users.edit');*/
+    Route::resource('permisos','PermisosController');
+    
 });
 
  Route::group(['prefix' => 'admin', 'namespace'=>'Admin','middleware' => 'admin'], function () {    
@@ -128,6 +143,12 @@ Route::group(['prefix' => 'admin', 'namespace'=>'Admin','middleware' => 'admin']
 Route::resource('mantestruct','ManteEstructurasController');
 
 
+ /*=========================Persmisos========================*/    
+
+   
+   
+
+Route::resource('permisos','PermisosController');
 
 
 Route::group(['prefix' => 'admin','namespace'=>'Admin', 'middleware' => 'admin', 'as' => 'admin.'], function () {
@@ -332,16 +353,12 @@ Route::get('/', ['as' => 'home', function () {
     return view('index');
 }]);
 
- 
-      
+       
 /*
 Route::get('blog','BlogController@index')->name('blog');
 Route::get('blog/{slug}/tag', 'BlogController@getBlogTag');
 Route::get('blogitem/{slug?}', 'BlogController@getBlog');
 Route::post('blogitem/{blog}/comment', 'BlogController@storeComment');
 */
-
 Route::get('{name?}', 'FrontEndController@showFrontEndView');
 # End of frontend views9
-
-Auth::routes();

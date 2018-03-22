@@ -74,34 +74,51 @@
             </li>
         </ul>
     </li>
-<!--
+
+    <li {!! (Request::is('admin/permisos') || Request::is('admin/permisos/create') || Request::is('admin/permisos/*') ? 'class="active"' : '') !!}>
+        <a href="#">
+            <i class="livicon" data-name="wrench" data-size="18" data-c="#418BCA" data-hc="#418BCA"
+               data-loop="true"></i>
+            <span class="title">Permisos</span>
+            <span class="fa arrow"></span>
+        </a>
+        <ul class="sub-menu">
+            <li {!! (Request::is('admin/permisos') ? 'class="active" id="active"' : '') !!}>
+                <a href="{{ URL::to('admin/permisos') }}">
+                    <i class="fa fa-angle-double-right"></i>
+                    Lista de permisos
+                </a>
+            </li>
+           
+        </ul>
+    </li>
+
     <li {!! (Request::is('admin/groups') || Request::is('admin/groups/create') || Request::is('admin/groups/*') ? 'class="active"' : '') !!}>
         <a href="#">
             <i class="livicon" data-name="users" data-size="18" data-c="#418BCA" data-hc="#418BCA"
                data-loop="true"></i>
-            <span class="title">Groupo Usuario</span>
+            <span class="title">Roles y Permisos</span>
             <span class="fa arrow"></span>
         </a>
         <ul class="sub-menu">
             <li {!! (Request::is('admin/groups') ? 'class="active" id="active"' : '') !!}>
                 <a href="{{ URL::to('admin/groups') }}">
                     <i class="fa fa-angle-double-right"></i>
-                    Lista de Grupos
+                    Lista de Roles
                 </a>
             </li>
             <li {!! (Request::is('admin/groups/create') ? 'class="active" id="active"' : '') !!}>
                 <a href="{{ URL::to('admin/groups/create') }}">
                     <i class="fa fa-angle-double-right"></i>
-                    Nuevo Grupo
+                    Nuevo Rol
                 </a>
             </li>
         </ul>
     </li>
--->
 
     <li {!! (Request::is('admin/mantestruct') || Request::is('admin/mantestruct/create') || Request::is('admin/mantestruct/*') ? 'class="active"' : '') !!}>
         <a href="#">
-            <i class="livicon" data-name="shield" data-size="18" data-c="#418BCA" data-hc="#418BCA"
+            <i class="livicon" data-name="doc-portrait" data-size="18" data-c="#418BCA" data-hc="#418BCA"
                data-loop="true"></i>
             <span class="title">Mantenedores</span>
             <span class="fa arrow"></span>
@@ -123,10 +140,108 @@
     </li>
 
  
-
-    <li {!! (Request::is('admin/rptetempo') || Request::is('admin/rptetempo/create') || Request::is('reportes/rplazas') || Request::is('reportes/rbajas') || Request::is('reportes/plazacargo')|| Request::is('admin/rptetempo/*') ? 'class="active"' : '') !!}>
+<li {!! ((Request::is('admin/tipo') || Request::is('admin/tipo/create') || Request::is('admin/cargo') || Request::is('admin/nivel') || Request::is('admin/estructura') || Request::is('admin/plazas/create') || Request::is('admin/plazas') || Request::is('admin/bajaplazas') || Request::is('admin/gesplazas') || Request::is('admin/rpteplazas') || Request::is('admin/altaplaza') || Request::is('admin/creaplaza') || Request::is('admin/reserva') || Request::is('admin/cambio') || Request::is('admin/integra')  ) ||  Request::is('admin/tipo/*') ? 'class="active"' : '') !!}>
         <a href="#">
-            <i class="livicon" data-name="show" data-size="18" data-c="#418BCA" data-hc="#418BCA"
+            <i class="livicon" data-name="users" data-c="#F89A14" data-hc="#F89A14" data-size="18"
+               data-loop="true"></i>
+            <span class="title">Gestión RRHH</span>
+            <span class="fa arrow"></span>
+        </a>
+        <ul class="sub-menu">
+            <li {!! (Request::is('admin/creaplaza') ? 'class="active"' : '') !!}>
+                <a href="{{ URL::to('admin/creaplaza') }}">
+                    <i class="fa fa-angle-double-right"></i>
+                    Crear Plaza
+                </a>
+            </li>
+
+             <li {!! (Request::is('admin/reserva') ? 'class="active"' : '') !!}>
+                <a href="{{ URL::to('admin/reserva') }}">
+                    <i class="fa fa-angle-double-right"></i>
+                    Reserva de Plaza
+                </a>
+            </li>
+
+            <li {!! (Request::is('admin/integra') ? 'class="active"' : '') !!}>
+                <a href="{{ URL::to('admin/integra') }}">
+                    <i class="fa fa-angle-double-right"></i>
+                    Recategorización Plaza
+                </a>
+            </li>
+
+             <li {!! (Request::is('admin/cambio') ? 'class="active"' : '') !!}>
+                <a href="{{ URL::to('admin/cambio') }}">
+                    <i class="fa fa-angle-double-right"></i>
+                    Cambio de Denominación
+                </a>
+            </li>
+
+            <li {!! (Request::is('admin/tipo') ? 'class="active"' : '') !!}>
+                <a href="{{ URL::to('admin/tipo') }}">
+                    <i class="fa fa-angle-double-right"></i>
+                    Tipos de Cargos
+                </a>
+            </li>
+
+            <li {!! (Request::is('admin/nivel') ? 'class="active"' : '') !!}>
+                <a href="{{ URL::to('admin/nivel') }}">
+                    <i class="fa fa-angle-double-right"></i>
+                    Nivel Ocupacional
+                </a>
+            </li>
+
+               <li {!! (Request::is('admin/cargo') ? 'class="active" id="active"' : '') !!}>
+                <a href="{{ URL::to('admin/cargo') }}">
+                    <i class="fa fa-angle-double-right"></i>
+                    Cargos
+                </a>
+            </li>
+
+             <li {!! (Request::is('admin/estructura') ? 'class="active"' : '') !!}>
+                <a href="{{ URL::to('admin/estructura') }}">
+                    <i class="fa fa-angle-double-right"></i>
+                    Población x Dependencia
+                </a>
+            </li> 
+             <li {!! (Request::is('admin/plazas') ? 'class="active"' : '') !!}>
+                <a href="{{ URL::to('admin/plazas') }}">
+                    <i class="fa fa-angle-double-right"></i>
+                    Nominativo | Depend.
+                </a>
+            </li>
+
+             <li {!! (Request::is('admin/altaplaza') ? 'class="active"' : '') !!}>
+                <a href="{{ URL::to('admin/altaplaza') }}">
+                    <i class="fa fa-angle-double-right"></i>
+                    Alta de Plazas
+                </a>
+            </li>
+
+            <li {!! (Request::is('admin/gesplazas') ? 'class="active"' : '') !!}>
+                <a href="{{ URL::to('admin/gesplazas') }}">
+                    <i class="fa fa-angle-double-right"></i>
+                    Movimiento de Plazas
+                </a>
+            </li>
+
+            <li {!! (Request::is('admin/bajaplazas') ? 'class="active"' : '') !!}>
+                <a href="{{ URL::to('admin/bajaplazas') }}">
+                    <i class="fa fa-angle-double-right"></i>
+                    Baja de Plazas
+                </a>
+            </li>
+            
+            <li {!! (Request::is('admin/rpteplazas') ? 'class="active"' : '') !!}>
+                <a href="{{ URL::to('admin/rpteplazas') }}">
+                    <i class="fa fa-angle-double-right"></i>
+                    Consulta por Plaza
+                </a>
+            </li>
+
+        </ul>
+        <li {!! (Request::is('admin/rptetempo') || Request::is('admin/rptetempo/create') || Request::is('reportes/rplazas') || Request::is('reportes/rbajas') || Request::is('reportes/plazacargo')|| Request::is('admin/rptetempo/*') ? 'class="active"' : '') !!}>
+        <a href="#">
+            <i class="livicon" data-name="barchart" data-size="18" data-c="#6CC66C" data-hc="#6CC66C"
                data-loop="true"></i>
             <span class="title">Reportes</span>
             <span class="fa arrow"></span>
@@ -194,100 +309,6 @@
         </ul>
     </li>
 
-
-<li {!! ((Request::is('admin/tipo') || Request::is('admin/tipo/create') || Request::is('admin/cargo') || Request::is('admin/nivel') || Request::is('admin/estructura') || Request::is('admin/plazas/create') || Request::is('admin/plazas') || Request::is('admin/bajaplazas') || Request::is('admin/gesplazas') || Request::is('admin/rpteplazas') || Request::is('admin/altaplaza') || Request::is('admin/creaplaza') || Request::is('admin/reserva') || Request::is('admin/integra')  ) ||  Request::is('admin/tipo/*') ? 'class="active"' : '') !!}>
-        <a href="#">
-            <i class="livicon" data-name="users" data-c="#F89A14" data-hc="#F89A14" data-size="18"
-               data-loop="true"></i>
-            <span class="title">Gestión RRHH</span>
-            <span class="fa arrow"></span>
-        </a>
-        <ul class="sub-menu">
-            <li {!! (Request::is('admin/creaplaza') ? 'class="active"' : '') !!}>
-                <a href="{{ URL::to('admin/creaplaza') }}">
-                    <i class="fa fa-angle-double-right"></i>
-                    Crear Plaza
-                </a>
-            </li>
-
-             <li {!! (Request::is('admin/reserva') ? 'class="active"' : '') !!}>
-                <a href="{{ URL::to('admin/reserva') }}">
-                    <i class="fa fa-angle-double-right"></i>
-                    Reserva de Plaza
-                </a>
-            </li>
-
-            <li {!! (Request::is('admin/integra') ? 'class="active"' : '') !!}>
-                <a href="{{ URL::to('admin/integra') }}">
-                    <i class="fa fa-angle-double-right"></i>
-                    Recategorización Plaza
-                </a>
-            </li>
-
-            <li {!! (Request::is('admin/tipo') ? 'class="active"' : '') !!}>
-                <a href="{{ URL::to('admin/tipo') }}">
-                    <i class="fa fa-angle-double-right"></i>
-                    Tipos de Cargos
-                </a>
-            </li>
-
-            <li {!! (Request::is('admin/nivel') ? 'class="active"' : '') !!}>
-                <a href="{{ URL::to('admin/nivel') }}">
-                    <i class="fa fa-angle-double-right"></i>
-                    Nivel Ocupacional
-                </a>
-            </li>
-
-               <li {!! (Request::is('admin/cargo') ? 'class="active" id="active"' : '') !!}>
-                <a href="{{ URL::to('admin/cargo') }}">
-                    <i class="fa fa-angle-double-right"></i>
-                    Cargos
-                </a>
-            </li>
-
-             <li {!! (Request::is('admin/estructura') ? 'class="active"' : '') !!}>
-                <a href="{{ URL::to('admin/estructura') }}">
-                    <i class="fa fa-angle-double-right"></i>
-                    Población x Dependencia
-                </a>
-            </li> 
-             <li {!! (Request::is('admin/plazas') ? 'class="active"' : '') !!}>
-                <a href="{{ URL::to('admin/plazas') }}">
-                    <i class="fa fa-angle-double-right"></i>
-                    Nominativo | Depend.
-                </a>
-            </li>
-
-             <li {!! (Request::is('admin/altaplaza') ? 'class="active"' : '') !!}>
-                <a href="{{ URL::to('admin/altaplaza') }}">
-                    <i class="fa fa-angle-double-right"></i>
-                    Alta de Plazas
-                </a>
-            </li>
-
-            <li {!! (Request::is('admin/gesplazas') ? 'class="active"' : '') !!}>
-                <a href="{{ URL::to('admin/gesplazas') }}">
-                    <i class="fa fa-angle-double-right"></i>
-                    Registrar Mov. Plazas
-                </a>
-            </li>
-
-            <li {!! (Request::is('admin/bajaplazas') ? 'class="active"' : '') !!}>
-                <a href="{{ URL::to('admin/bajaplazas') }}">
-                    <i class="fa fa-angle-double-right"></i>
-                    Baja de Plazas
-                </a>
-            </li>
-            
-            <li {!! (Request::is('admin/rpteplazas') ? 'class="active"' : '') !!}>
-                <a href="{{ URL::to('admin/rpteplazas') }}">
-                    <i class="fa fa-angle-double-right"></i>
-                    Consulta por Plaza
-                </a>
-            </li>
-
-        </ul>
-    
   @elseif(Sentinel::getUser()->permissions === 4)
     <li {!! ((Request::is('admin/estructura') || Request::is('admin/plazas') || Request::is('admin/bajaplazas') || Request::is('admin/gesplazas') || Request::is('admin/rpteplazas') || Request::is('admin/reserva')) ||  Request::is('admin/tipo/*') ? 'class="active"' : '') !!}>
         <a href="#">
@@ -327,7 +348,7 @@
             <li {!! (Request::is('admin/gesplazas') ? 'class="active"' : '') !!}>
                 <a href="{{ URL::to('admin/gesplazas') }}">
                     <i class="fa fa-angle-double-right"></i>
-                    Registrar Mov. Plazas
+                    Movimiento de Plazas
                 </a>
             </li>
 
@@ -402,7 +423,7 @@
 
     <li {!! (Request::is('admin/rptetempo') || Request::is('admin/rptetempo/create') || Request::is('reportes/plazas') || Request::is('reportes/rbajas') || Request::is('admin/rptetempo/*') ? 'class="active"' : '') !!}>
         <a href="#">
-            <i class="livicon" data-name="show" data-size="18" data-c="#418BCA" data-hc="#418BCA"
+            <i class="livicon" data-name="barchart" data-size="18" data-c="#6CC66C" data-hc="#6CC66C"
                data-loop="true"></i>
             <span class="title">Reportes</span>
             <span class="fa arrow"></span>

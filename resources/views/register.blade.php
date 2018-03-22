@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Registro | EsSalud</title>
+    <title>Registro | Ivorlandoc</title>
     <!--global css starts-->
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/bootstrap.min.css') }}">
     <link rel="shortcut icon" href="{{ asset('assets/images/favicon.png') }}" type="image/x-icon">
@@ -22,7 +22,7 @@
     <div class="row">
         <div class="box animation flipInX">
             <img src="{{ asset('assets/images/josh-new.png') }}" alt="logo" class="img-responsive mar">
-            <h3 class="text-primary">Sign Up</h3>
+            <h3 class="text-primary">Regístrate</h3>
             <!-- Notifications -->
             <div id="notific">
             @include('notifications')
@@ -64,20 +64,20 @@
                 <div class="form-group {{ $errors->first('gender', 'has-error') }}">
                     <label class="sr-only">Gender</label>
                     <label class="radio-inline">
-                        <input type="radio" name="gender" id="inlineRadio1" value="male"> Male
+                        <input type="radio" name="gender" id="inlineRadio1" value="male"> Masculino
                     </label>
                     <label class="radio-inline">
-                        <input type="radio" name="gender" id="inlineRadio2" value="female"> Female
+                        <input type="radio" name="gender" id="inlineRadio2" value="female"> Femenino
                     </label>
                     {!! $errors->first('gender', '<span class="help-block">:message</span>') !!}
                 </div>
                 <div class="checkbox">
                     <label>
-                        <input type="checkbox" name="subscribed" >  I accept <a href="#"> Terms and Conditions</a>
+                        <input type="checkbox" name="subscribed" >  Acepto <a href="#">  los términos y condiciones</a>
                     </label>
                 </div>
-                <button type="submit" class="btn btn-block btn-primary">Sign Up</button>
-                Already have an account? Please <a href="{{ route('login') }}"> Log In</a>
+                <button type="submit" class="btn btn-block btn-primary">Regístrate</button>
+                ¿Ya tienes una cuenta? Por favor  <a href="{{ route('login') }}"> Iniciar sesión</a>
             </form>
         </div>
     </div>

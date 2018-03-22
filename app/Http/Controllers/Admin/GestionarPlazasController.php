@@ -23,10 +23,10 @@ class GestionarPlazasController extends Controller {
 
       public function GeTHeadPlazaMov($id){
                 $GetHeadPlazaHow = DB::select("SELECT CONVERT(IdPlaza,CHAR) AS IdPlaza,IF(p.IdPersona IS NULL,'',p.IdPersona) AS IdPersona,c.IdEstructura,c.IdCargo,NroPlaza,
-                            (SELECT Descripcion FROM Estructura WHERE LEFT(IdEstructura,2)=LEFT((SELECT NewCodigo FROM estructura WHERE IdEstructura=c.IdEstructura),2) LIMIT 1) AS desc0,
-                            (SELECT Descripcion FROM Estructura WHERE LEFT(IdEstructura,4)=LEFT((SELECT NewCodigo FROM estructura WHERE IdEstructura=c.IdEstructura),4) LIMIT 1) AS desc1,
-                            (SELECT Descripcion FROM Estructura WHERE LEFT(IdEstructura,7)=LEFT((SELECT NewCodigo FROM estructura WHERE IdEstructura=c.IdEstructura),7) LIMIT 1) AS desc2,
-                            (SELECT Descripcion FROM Estructura WHERE LEFT(IdEstructura,11)=LEFT((SELECT NewCodigo FROM estructura WHERE IdEstructura=c.IdEstructura),11) LIMIT 1) AS dep2,
+                            (SELECT Descripcion FROM estructura WHERE LEFT(IdEstructura,2)=LEFT((SELECT NewCodigo FROM estructura WHERE IdEstructura=c.IdEstructura),2) LIMIT 1) AS desc0,
+                            (SELECT Descripcion FROM estructura WHERE LEFT(IdEstructura,4)=LEFT((SELECT NewCodigo FROM estructura WHERE IdEstructura=c.IdEstructura),4) LIMIT 1) AS desc1,
+                            (SELECT Descripcion FROM estructura WHERE LEFT(IdEstructura,7)=LEFT((SELECT NewCodigo FROM estructura WHERE IdEstructura=c.IdEstructura),7) LIMIT 1) AS desc2,
+                            (SELECT Descripcion FROM estructura WHERE LEFT(IdEstructura,11)=LEFT((SELECT NewCodigo FROM estructura WHERE IdEstructura=c.IdEstructura),11) LIMIT 1) AS dep2,
                             e.Descripcion,IF(CONCAT(ApellidoPat,' ', ApellidoMat,' ',Nombres) IS NULL,'',CONCAT(ApellidoPat,' ', ApellidoMat,' ',Nombres))AS nombres,
                             ca.Descripcion AS cargo,IdNivel
                             FROM cuadronominativo AS c
@@ -89,7 +89,7 @@ class GestionarPlazasController extends Controller {
                 $_IdEstrDestino=$_IdEstrOrigen;
            }
 
-            if( $_IdTipoMov==21) $_IdEstrDestino=$_IdEstrOrigen;
+            if($_IdTipoMov==21 || $_IdTipoMov==23 ) $_IdEstrDestino=$_IdEstrOrigen;
             
                 $Resp = DB::table('historiamovimiento')->insert([
                     'IdPersona'     => $_IdPersona,

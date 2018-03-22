@@ -1,12 +1,15 @@
 $(function(){
 $('#DesingForm').hide();
-
   $.ajaxSetup({
             headers: {'X-CSRF-Token': $('meta[name=_token]').attr('content')}
         });
 
 })
 
+$(document).ready(function(){
+    $('#string_search').keyup(function(){$(this).val($(this).val().toUpperCase());});
+  
+});
 
 $("#IdSavebajaPlaza").click(function (e) {
   e.preventDefault();
@@ -124,8 +127,7 @@ console.log("---1------->"+idx);
 
 function GetTipoBaja(idx){	
 	$.get('../api/admin/bajaplazas/list/'+idx,function(dataTipb){	
-       		var xy=0;   
-       	
+       		var xy=0;          	
        		var html_="<option value=''>Elija el Motivo de baja</option> ";
        		if(dataTipb.length!=0){  		
 			for (var i=0; i < dataTipb.length; i++) 	{
@@ -141,3 +143,13 @@ function GetTipoBaja(idx){
 		
 	});	
 }
+
+ var dato = params['x'];
+                    var variableAevaluar = dato;
+                    switch (variableAevaluar) { 
+                    case 1:
+                    prim ();
+                    break;
+                    }
+                    document.write(dato);
+                    $("#search_plaza"),val(dato)

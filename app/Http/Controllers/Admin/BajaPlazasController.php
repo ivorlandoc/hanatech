@@ -85,7 +85,7 @@ public function ProcesaBajaInsert(Request $Request){
                 }           
                 //str_pad($_IdPlaza,6,'0',STR_PAD_LEFT),
                 IF($_IdTipobaja!="13"){
-                 $aff=DB::table('cuadronominativo')->where('NroPlaza', $_NroPlaza)->where('IdPersona', $_IdPersona)->where('IdPlaza',$_IdPlaza)->update(['Idpersona' =>'', 'IdEstadoPlaza'=>'2','Ip'=>$ipAddress,'IdUsuario'=>$UserSession->email]);                 
+                 $aff=DB::table('cuadronominativo')->where('NroPlaza', $_NroPlaza)->where('IdPersona', $_IdPersona)->where('IdPlaza',$_IdPlaza)->update(['Idpersona' =>'', 'IdEstadoPlaza'=>'2','FechaCese'=>Carbon::parse($_FecMovBaj)->format('Y-m-d'),'Ip'=>$ipAddress,'IdUsuario'=>$UserSession->email]);                 
                }
                 $Resp = DB::table('historiamovimiento')->insert([
                     'IdPersona'     => $_IdPersona,
@@ -141,8 +141,15 @@ public function ProcesaBajaInsert(Request $Request){
         		return $GetHeadPlazaHow;
    		}
 
- 		public function GeTtipoBaja($id){		
-			$GetTipoB = DB::select("SELECT IdTipobaja,Descripcion FROM tipobaja ORDER BY 2");
+ 		public function GeTtipoBaja($id){	
+                $GetCarg     =DB::table('cuadronominativo')->where('NroPlaza','=',$id)->select(DB::raw('LEFT(IdCargo,1) AS IdCargo'))->get('IdCargo');
+                $_IdCarg="";
+                foreach ($GetCarg as $key) $_IdCarg  =$key->IdCargo; 
+                IF($_IdCarg=="E"){
+			             $GetTipoB = DB::select("SELECT IdTipobaja,Descripcion FROM tipobaja WHERE Nivel like left('$_IdCarg',1) ORDER BY 2");
+                  }else{
+                    $GetTipoB = DB::select("SELECT IdTipobaja,Descripcion FROM tipobaja WHERE Nivel not like 'E%' ORDER BY 2");
+                }
 			return $GetTipoB;
 			//return response()->json($GetTipoB);
    		}

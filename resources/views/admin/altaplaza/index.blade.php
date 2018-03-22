@@ -67,6 +67,8 @@ Alta de Plazas
                             <i class="glyphicon glyphicon-chevron-up"></i>
                     </span>
                 </div>
+   
+
 
                 <div class="panel-body">
                         <div class="form-group">                            

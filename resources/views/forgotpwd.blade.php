@@ -4,7 +4,7 @@
     {{--<meta charset="utf-8">--}}
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Olvidó contraseña | EsSalud</title>
+    <title>Olvidó contraseña | Ivorlandoc</title>
     <!--global css starts-->
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/bootstrap.min.css') }}">
     <link href="{{ asset('assets/vendors/bootstrapvalidator/css/bootstrapValidator.min.css') }}" rel="stylesheet"/>
@@ -20,8 +20,8 @@
     <div class="row">
         <div class="box animation flipInX">
             <img src="{{ asset('assets/images/josh-new.png') }}" alt="logo" class="img-responsive mar">
-            <h3 class="text-primary">Forgot Password</h3>
-            <p>Enter your email to reset your password</p>
+            <h3 class="text-primary">Se te olvidó tu contraseña</h3>
+            <p>Ingrese su correo electrónico para restablecer su contraseña</p>
             <div id="notific">
             @include('notifications')
             </div>
@@ -34,11 +34,11 @@
                     <span class="help-block">{{ $errors->first('email', ':message') }}</span>
                 </div>
                 <div class="form-group">
-                    <input class="form-control btn btn-primary btn-block" type="submit" value="Reset Your Password">
+                    <input class="form-control btn btn-primary btn-block" type="submit" value="Restablecer su contraseña">
                 </div>
             </form>
 
-            Back to login page?<a href="{{ route('login') }}"> Click here</a>
+            Volver a la página de inicio de sesión?<a href="{{ route('login') }}"> haga clic aquí</a>
         </div>
     </div>
 </div>
