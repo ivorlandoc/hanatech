@@ -94,7 +94,7 @@ Actualizando Movimientos de Plazas
       
 
 
-        <div class="panel panel-info" id="DesingFormGestPlz" style="display:none;">
+        <div class="panel panel-info" id="DesingFormGestPlz" style="display:block;">
                 <div class="panel-heading">
                     <h3 class="panel-title">
                         <i class="livicon" data-name="search" data-size="16" data-loop="true" data-c="#fff" data-hc="white"></i> LA PLAZA PERTENECE A:  <span id="txttitulonombres"></span></s>
@@ -117,20 +117,19 @@ Actualizando Movimientos de Plazas
                                       <input type="hidden" class="form-control"  id="IdEstructuraG" name="IdEstructuraG" value="">
                                       <input type="hidden" class="form-control"  id="IdCargoG"    name="IdCargoG"      value="">
                                       <input type="hidden" class="form-control"  id="NroPlazaG" name="NroPlazaG"     value="">
-                                   <!-- <div id ="IdshowExample"> Aqui mostra el return</div>-->
-                              
+                                   <!-- <div id ="IdshowExample"> Aqui mostra el return</div>-->                             
             
 
                                 <!-- ============== fin head =============================== -->
-                                <div class="form-group">
+                               <!--<div class="form-group">
                                     <label for="formEmail">Acción [VARIACIÓN DE UBICACIÓN]</label>
                                      <select id="IdTipoMovimiento" class="form-control select2" name="IdTipoMovimiento" required="">
                                         <option value="">Elegir</option>        
                                         
                                     </select>
-                                </div>
+                                </div>-->
                                 <!-- ========== Load dependencia ============ -->
-                        
+                            <!--
                                 <div class="form-group">
                                      <label for="formEmail">A:</label>   
                                     <input type="hidden" name="_ttoken" value="{{ csrf_token()}}">                        
@@ -142,19 +141,16 @@ Actualizando Movimientos de Plazas
                                     </select>                                    
                                 </div>
 
-                                 <div class="form-group">   
-                                 <!-- <label for="formEmail"></label>                    -->                                                  
+                                 <div class="form-group">          
                                     <select id="select_11" class="form-control select2" name="select_4dig" required="">
                                         <option value="">Elegir</option>                                         
                                     </select>
                                     
                                 </div>
 
-                                <div class="form-group">  
-                                     <!-- <label for="formEmail"></label>                    -->
-                                    <select id="select_22" class="form-control select2" name="select_7dig" required=""><!-- select_4dig -->
-                                        <option value="">Elegir</option>        
-                                        
+                                <div class="form-group">
+                                    <select id="select_22" class="form-control select2" name="select_7dig" required="">
+                                        <option value="">Elegir</option> 
                                     </select>
                                     
                                 </div>
@@ -169,8 +165,8 @@ Actualizando Movimientos de Plazas
                                     <select id="select_44" class="form-control select2" name="select_44" required="">
                                         <option value="">Todos</option>                                
                                     </select>                            
-                                </div>
-
+                                </div>-->
+                            
                                 <!-- fin load dependencia ================ -->
 
                                 <div class="form-group">

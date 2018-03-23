@@ -74,6 +74,7 @@
             </li>
         </ul>
     </li>
+    
   <li {!! (Request::is('admin/permisos') || Request::is('admin/permisos/create') || Request::is('admin/permisos/*') ? 'class="active"' : '') !!}>
         <a href="#">
             <i class="livicon" data-name="wrench" data-size="18" data-c="#418BCA" data-hc="#418BCA"

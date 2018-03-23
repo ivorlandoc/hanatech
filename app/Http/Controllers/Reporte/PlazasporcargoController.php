@@ -75,8 +75,8 @@ class PlazasporcargoController extends Controller {
                               SELECT IdNivel,c.IdCargo,ca.Descripcion,
                               '' AS act, 0 AS vac,
                               0 AS inac, 0 AS jud,
-                              IF(IdEstadoPlaza IN('4','5','6'),COUNT(NroPlaza),0) AS otros
-                              FROM cuadronominativo c INNER JOIN cargo AS ca ON ca.IdCargo=c.IdCargo WHERE IdEstadoPlaza IN('4','5','6') AND NroPlaza NOT LIKE '9______9'
+                              IF(IdEstadoPlaza IN('4','5','6','8','10','11','12','13'),COUNT(NroPlaza),0) AS otros
+                              FROM cuadronominativo c INNER JOIN cargo AS ca ON ca.IdCargo=c.IdCargo WHERE IdEstadoPlaza IN('4','5','6','8','10','11','12','13') AND NroPlaza NOT LIKE '9______9'
                               GROUP BY IdNivel,c.IdCargo
 
                               ) AS d GROUP BY IdCargo ORDER BY IdNivel

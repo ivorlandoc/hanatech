@@ -19,17 +19,17 @@ class UpdateMovPlazasController extends Controller {
 
   }
 
-      public function _getalldatosMov(Request $Request){
-          if($Request->ajax()){            
-            $id =  $Request->input("search_plaza_mov");
-                $data = DB::select("SELECT IdHistoria,IdPlaza,IdPersona,
-                        (SELECT dni FROM Persona WHERE IdPersona =h.IdPersona) AS dni,
-                        (SELECT CONCAT(ApellidoPat,' ',ApellidoMat,' ',Nombres) FROM Persona WHERE IdPersona =h.IdPersona) AS Nombres,
-                        IdEstructura,IdCargo,NroPlaza,IF(IdTipoMov<>'','MOV.',IF(IdTipoBaja<>'','BAJA','OTROS')) AS mov,FechaMov,FechaDocRef,Docref,Observacion,FileAdjunto
-                         FROM historiamovimiento h HAVING (Nombres LIKE '$id%' OR NroPlaza LIKE '$id%' OR dni LIKE '$id%')");
-                 return Response::json($data); 
-            }   
-    }
+public function _getalldatosMov(Request $Request){
+  if($Request->ajax()){            
+    $id =  $Request->input("search_plaza_mov");
+        $data = DB::select("SELECT IdHistoria,IdPlaza,IdPersona,
+                (SELECT dni FROM Persona WHERE IdPersona =h.IdPersona) AS dni,
+                (SELECT CONCAT(ApellidoPat,' ',ApellidoMat,' ',Nombres) FROM Persona WHERE IdPersona =h.IdPersona) AS Nombres,
+                IdEstructura,IdCargo,NroPlaza,IF(IdTipoMov<>'','MOV.',IF(IdTipoBaja<>'','BAJA','OTROS')) AS mov,FechaMov,FechaDocRef,Docref,Observacion,FileAdjunto
+                 FROM historiamovimiento h HAVING (Nombres LIKE '$id%' OR NroPlaza LIKE '$id%' OR dni LIKE '$id%')");
+         return Response::json($data); 
+    }   
+}
 
 
 

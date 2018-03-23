@@ -51,6 +51,8 @@ class RptegeneralplazasController extends Controller {
                 }else {
                     $data=DB::table('cuadronominativo as c')
                    ->select('e.IdEstructura as codestru','e.Descripcion as Descripcion','NroPlaza',
+                    DB::raw('(SELECT Descripcion FROM estructura WHERE LEFT(IdEstructura,4)=LEFT((SELECT NewCodigo FROM estructura WHERE IdEstructura=c.IdEstructura),4) limit 1) AS organo'),
+                    DB::raw('(SELECT Descripcion FROM estructura WHERE LEFT(IdEstructura,7)=LEFT((SELECT NewCodigo FROM estructura WHERE IdEstructura=c.IdEstructura),7) limit 1) AS dep'),
                     DB::raw('(SELECT descripcion FROM cargo WHERE IdCargo=c.IdCargo) AS Cargo'),
                     DB::raw('IF(p.dni IS NULL, "",p.dni) as dni'),'ApellidoPat','ApellidoMat',
                     DB::raw('IF(Nombres IS NULL,"",Nombres) AS Nombres'),
@@ -64,6 +66,7 @@ class RptegeneralplazasController extends Controller {
                    //->paginate(20); NroPlaza NOT LIKE '9______9'
                   }
 
+                
            
           
         }
