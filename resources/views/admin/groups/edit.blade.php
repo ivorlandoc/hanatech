@@ -2,7 +2,7 @@
 
 {{-- Web site Title --}}
 @section('title')
-@lang('groups/title.edit')
+Editar Rol
 @parent
 @stop
 
@@ -10,7 +10,7 @@
 @section('content')
 <section class="content-header">
     <h1>
-        @lang('groups/title.edit')
+       <!-- @lang('groups/title.edit')--> Editar Rol
     </h1>
     <ol class="breadcrumb">
         <li>
@@ -19,8 +19,8 @@
                 @lang('general.dashboard')
             </a>
         </li>
-        <li>@lang('groups/title.groups')</li>
-        <li class="active">@lang('groups/title.edit')</li>
+        <li><!--@lang('groups/title.groups')-->Roles</li>
+        <li class="active"><!--@lang('groups/title.edit')--> Editar Rol</li>
     </ol>
 </section>
 
@@ -31,53 +31,15 @@
             <div class="panel panel-primary ">
                 <div class="panel-heading">
                     <h4 class="panel-title"> <i class="livicon" data-name="wrench" data-size="16" data-loop="true" data-c="#fff" data-hc="white"></i>
-                        @lang('groups/title.edit')
+                       <!-- @lang('groups/title.edit')-->Editar Rol
                     </h4>
                 </div>
                 <div class="panel-body">
-                    @if($role)
-                        {!! Form::model($role, ['url' => URL::to('admin/groups/'. $role->id), 'method' => 'put', 'class' => 'form-horizontal']) !!}
-                        -
-                            <!-- CSRF Token -->
-                            {{ csrf_field() }}
-
-                            <div class="form-group {{ $errors->
-                                first('name', 'has-error') }}">
-                                <label for="title" class="col-sm-2 control-label">
-                                    @lang('groups/form.name')
-                                </label>
-                                <div class="col-sm-5">
-                                    <input type="text" id="name" name="name" class="form-control"
-                                           placeholder=@lang('groups/form.name') value="{!! old('name', $role->
-                                    name) !!}">
-                                </div>
-                                <div class="col-sm-4">
-                                    {!! $errors->first('name', '<span class="help-block">:message</span>') !!}
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="slug" class="col-sm-2 control-label">@lang('groups/form.slug')</label>
-                                <div class="col-sm-5">
-                                    <input type="text" class="form-control" value="{!! $role->slug !!}" readonly />
-                                </div>
-                            </div>
-                        <div class="form-group">
-                            <div class="col-sm-offset-2 col-sm-4">
-                                <a class="btn btn-danger" href="{{ route('admin.groups.index') }}">
-                                    @lang('button.cancel')
-                                </a>
-                                <button type="submit" class="btn btn-success">
-                                    @lang('button.save')
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-                    @else
-                        <h1>@lang('groups/message.error.no_role_exists')</h1>
-                            <a class="btn btn-danger" href="{{ route('admin.groups.index') }}">
-                                @lang('button.back')
-                            </a>
-                    @endif
+                       {!! Form::model($role, ['route' => ['admin.groups.update', $role->id],'method' => 'PUT']) !!}
+                       
+                        @include('admin.groups.partials.form')
+                        
+                    {!! Form::close() !!}
                 </div>
             </div>
         </div>

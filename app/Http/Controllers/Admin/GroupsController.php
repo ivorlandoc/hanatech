@@ -1,11 +1,15 @@
 <?php namespace App\Http\Controllers\Admin;
 
+use Illuminate\Http\Request;
+use App\Http\Requests;
 use App\Http\Controllers\JoshController;
 use App\Http\Requests\GroupRequest;
 use Redirect;
 use Sentinel;
 use View;
-
+use DB;
+use Caffeinated\Shinobi\Models\Role;
+use Caffeinated\Shinobi\Models\Permission;
 
 class GroupsController extends JoshController
 {
@@ -18,7 +22,7 @@ class GroupsController extends JoshController
     {
         // Grab all the groups
         $roles = Sentinel::getRoleRepository()->all();
-
+        //$roles = Role::paginate();
         // Show the page
         return view('admin.groups.index', compact('roles'));
     }
@@ -30,28 +34,29 @@ class GroupsController extends JoshController
      */
     public function create()
     {
-        // Show the page
-        return view ('admin.groups.create');
+        $permissions=DB::table('permissions')->select('id','name','slug','description')->get();   
+        return view ('admin.groups.create',compact('permissions'));
     }
 
-    /**
+    /** 
      * Group create form processing.
      *
      * @return Redirect
      */
     public function store(GroupRequest $request)
     {
-        if ($role = Sentinel::getRoleRepository()->createModel()->create([
-            'name' => $request->get('name'),
-            'slug' => str_slug($request->get('name'))
-        ])
-        ) {
+        
+        $role = Role::create($request->all());
+        $role->permissions()->sync($request->get('permissions'));
+       // return redirect()->route('roles.edit', $role->id)->with('info', 'Rol guardado con éxito');
+        return Redirect::route('admin.groups.index')->with('success', trans('groups/message.success.create'));
+      /*  if ($role = Sentinel::getRoleRepository()->createModel()->create(['name' => $request->get('name'),'slug' => str_slug($request->get('name'))])) {
             // Redirect to the new group page
             return Redirect::route('admin.groups.index')->with('success', trans('groups/message.success.create'));
-        }
+        }*/
 
         // Redirect to the group create page
-        return Redirect::route('admin.groups.create')->withInput()->with('error', trans('groups/message.error.create'));
+       // return Redirect::route('admin.groups.create')->withInput()->with('error', trans('groups/message.error.create'));
 
     }
 
@@ -62,19 +67,22 @@ class GroupsController extends JoshController
      * @param  int $id
      * @return View
      */
-    public function edit($group)
-    {
+    public function edit($id) 
+    { //$group
         try {
             // Get the group information
-            $role = Sentinel::findRoleById($group);
+            //$role = Sentinel::findRoleById($group);
+            $role = Role::find($id);
+            $permissions = Permission::get();           
 
         } catch (GroupNotFoundException $e) {
             // Redirect to the groups management page
-            return Redirect::route('admin.groups')->with('error', trans('groups/message.group_not_found', compact('id')));
+            return Redirect::route('admin.admin.groups')->with('error', trans('groups/message.group_not_found', compact('id')));
         }
 
         // Show the page
-        return view('admin.groups.edit', compact('role'));
+        //return view('admin.groups.edit', compact('role'));
+        return view('admin.groups.edit', compact('role', 'permissions')); 
     }
 
     /**
@@ -83,6 +91,7 @@ class GroupsController extends JoshController
      * @param  int $id
      * @return Redirect
      */
+    /*
     public function update($group, GroupRequest $request)
     {
         $group = Sentinel::findRoleById($group);
@@ -99,7 +108,15 @@ class GroupsController extends JoshController
             return Redirect::route('admin.groups.edit', $group)->with('error', trans('groups/message.error.update'));
         }
 
+    }*/
+
+      public function update(Request $request, $id) {
+        $role = Role::find($id);
+        $role->update($request->all());
+        $role->permissions()->sync($request->get('permissions'));
+        return redirect()->route('admin.groups.edit',$role->id)->with('info', 'Rol guardado con éxito');
     }
+
 
     /**
      * Delete confirmation for the given group.

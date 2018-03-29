@@ -32,7 +32,7 @@ function GetAllPlazas(id){
 			for (var i=0; i < dataDet.length; i++) 	{	
 				if(dataDet[i].fcese!=""){ Tinesino= '<p class="btn btn-info start">'+dataDet[i].sino+'</p>';} else{ Tinesino=" ";}				
 				url= "altaplaza?x="+dataDet[i].NroPlaza;			
-				if(dataDet[i].IdPersona=="") htmlNombre="<p class='btn btn-info start'>"+dataDet[i].estado+"</p><a href="+url+ ' class="btn btn-info start">DAR DE ALTA</a>'; else htmlNombre=dataDet[i].ApellidoPat+'  '+dataDet[i].ApellidoMat+' '+dataDet[i].Nombres;
+				if(dataDet[i].IdPersona=="") htmlNombre="<p class='btn btn-info start'>"+dataDet[i].estado+"</p>&nbsp;&nbsp;&nbsp;<a href="+url+ ' class="btn btn-primary start">DAR DE ALTA</a>'; else htmlNombre=dataDet[i].ApellidoPat+'  '+dataDet[i].ApellidoMat+' '+dataDet[i].Nombres;
 
 				tableHtml += '<table><tr><th width="23%"># DE PLAZA:</th><td ><p style="margin: 0px 0px 0px 0px;">'+dataDet[i].NroPlaza+' </p></td></tr> '+
 							 '<tr><th>PERSONA:</th><td><p style="margin: 0px 0px 0px 30px;">'+htmlNombre+'</p></td></tr> '+

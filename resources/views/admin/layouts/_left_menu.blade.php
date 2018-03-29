@@ -38,7 +38,6 @@
   <!--
  <li {!! (Request::is('admin/users') || Request::is('admin/users/create') || Request::is('admin/user_profile') || Request::is('admin/users/*') || Request::is('admin/deleted_users') ? 'class="active"' : '') !!}>       
   -->
-
     @if(Sentinel::getUser()->permissions === 1)
       <li {!! (Request::is('admin/users') || Request::is('admin/users/create') || Request::is('admin/user_profile') || Request::is('admin/users/*') || Request::is('admin/deleted_users') ? 'class="active"' : '') !!}>
         <a href="#">
@@ -74,24 +73,7 @@
             </li>
         </ul>
     </li>
-    
-  <li {!! (Request::is('admin/permisos') || Request::is('admin/permisos/create') || Request::is('admin/permisos/*') ? 'class="active"' : '') !!}>
-        <a href="#">
-            <i class="livicon" data-name="wrench" data-size="18" data-c="#418BCA" data-hc="#418BCA"
-               data-loop="true"></i>
-            <span class="title">Permisos</span>
-            <span class="fa arrow"></span>
-        </a>
-        <ul class="sub-menu">
-            <li {!! (Request::is('admin/permisos') ? 'class="active" id="active"' : '') !!}>
-                <a href="{{ URL::to('admin/permisos') }}">
-                    <i class="fa fa-angle-double-right"></i>
-                    Lista de permisos
-                </a>
-            </li>
-           
-        </ul>
-    </li>
+ 
 
     <li {!! (Request::is('admin/groups') || Request::is('admin/groups/create') || Request::is('admin/groups/*') ? 'class="active"' : '') !!}>
         <a href="#">

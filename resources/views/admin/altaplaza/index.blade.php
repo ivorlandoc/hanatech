@@ -76,7 +76,7 @@ Alta de Plazas
                                  {!! Form::text('search_plaza',null, ['class'=>'form-control','placeholder'=>'# de Plaza','type'=>'search','id'=>'search_plaza']) !!}  
                                         <input type="hidden" name="token" value="{{ csrf_token()}}">                   
                                         <span class="input-group-btn">
-                                            <button class="btn btn-default" type="button" data-select2-open="single-append-text" id="idsearchaltaform" onclick="loaddatosform()">
+                                            <button class="btn btn-default" type="button" onclick="loaddatosform()" data-select2-open="single-append-text" id="idsearchaltaform">
                                                 <span class="glyphicon glyphicon-search"></span>
                                             </button>
                                         </span>

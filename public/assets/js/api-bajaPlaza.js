@@ -94,7 +94,9 @@ function ShowFormBaja(idx){
 			for (var i=0; i < dataPlz.length; i++) 	{		
 				xy++; 
 				plaza 	=	dataPlz[i].NroPlaza+' / '+dataPlz[i].IdNivel+' / '+dataPlz[i].cargo;
-				Dep 	=	dataPlz[i].desc1 +' / '+dataPlz[i].desc2+' / '+dataPlz[i].Descripcion;			
+
+				Dep 	=	dataPlz[i].desc1 +' / '+dataPlz[i].desc2+' / '+dataPlz[i].desc3+' / '+dataPlz[i].Descripcion;	
+
 				html_name_ += dataPlz[i].nombres;
         console.log("============IdPlaza====>"+dataPlz[i].IdPlaza);
 				_IdPersona		=dataPlz[i].IdPersona;
@@ -143,17 +145,3 @@ function GetTipoBaja(idx){
 		
 	});	
 }
-/* ======= recibe las variables enviadas por la url====*/
-var paramstr = window.location.search.substr(1);
-var paramarr = paramstr.split ("&");
-var params = {};
-
-for ( var i = 0; i < paramarr.length; i++) {
-    var tmparr = paramarr[i].split("=");
-    params[tmparr[0]] = tmparr[1];
-}
-if (params['x']) {
-  $("#string_search").val(params['x']);
-  $("#getsubmnit").click();  
-} 
-/* ===================fin================*/

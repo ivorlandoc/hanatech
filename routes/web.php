@@ -123,19 +123,19 @@ Route::group(['prefix' => 'admin', 'namespace'=>'Admin','middleware' => 'admin']
         Route::post('cambio/{id}', array('as' => 'get-datos-saveChange','uses' => 'CambiodenominacController@SaveChangeCargo'));
      });
     Route::resource('cambio', 'CambiodenominacController');    
-    /*=========================Persmisos========================*/  
-      Route::get('permisos', 'PermisosController@index');//->middleware('permission:users.index');
-    /*Route::get('users', 'UserController@index')->name('users.index')->middleware('permission:users.index');
-    Route::put('users/{user}', 'UserController@update')->name('users.update')->middleware('permission:users.edit');
-    Route::get('users/{user}', 'UserController@show')->name('users.show')->middleware('permission:users.show');
-    Route::delete('users/{user}', 'UserController@destroy')->name('users.destroy')->middleware('permission:users.destroy');
-    Route::get('users/{user}/edit', 'UserController@edit')->name('users.edit')->middleware('permission:users.edit');*/
-    //Route::resource('permisos','PermisosController');
+  
     /*=========================Actualizar Periodos de PPTO========================*/  
      Route::get('periodop', 'PeriodopptoController@index');
     /*=========================Actualizar movimiento de plazas========================*/
     Route::get('upmov', 'UpdateMovPlazasController@index'); 
-    Route::post('upmov', array('as' => 'search_mov','uses' => 'UpdateMovPlazasController@_getalldatosMov')); 
+    Route::post('upmov', array('as' =>'search_mov','uses' => 'UpdateMovPlazasController@_getalldatosMov')); 
+    Route::post('upmov/{id}', array('as' =>'update-historia-mov','uses' => 'UpdateMovPlazasController@ProcesaUpdateMov')); 
+    /*============================Show Nominativo======================*/
+    //Route::group(['prefix' => 'plazas'], function () {
+    Route::get('plazas','PlazasController@index'); 
+    Route::post('plazas/{id}',     array('as' =>'get-export-excel','uses' => 'PlazasController@ExportExcel')); 
+    Route::resource('plazas', 'PlazasController');
+   //});       
 
 });
 
@@ -229,11 +229,7 @@ Route::group(['prefix' => 'admin','namespace'=>'Admin', 'middleware' => 'admin',
         
 
         /*===================================================================*/
-        Route::group(['prefix' => 'plazas'], function () {
-                Route::get('admin/plazas','PlazasController@index'); 
-                route::get('admin/plazas','PlazasController@create');
-        });
-        Route::resource('plazas', 'PlazasController');
+   
     /*=================================Baja de plazas=========================================================*/
         Route::group(['prefix' => 'bajaplazas'], function () {
                 Route::get('admin/bajaplazas/{id}', 'BajaPlazasController@index');           

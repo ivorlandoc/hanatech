@@ -2,14 +2,14 @@
 
 {{-- Web site Title --}}
 @section('title')
-@lang('groups/title.management')
+Administrar Roles y Permisos
 @parent
 @stop
 
 {{-- Content --}}
 @section('content')
 <section class="content-header">
-    <h1>@lang('groups/title.management')</h1>
+    <h1><!--@lang('groups/title.management')--> Administrar Roles y Permisos</h1>
     <ol class="breadcrumb">
         <li>
             <a href="{{ route('admin.dashboard') }}">
@@ -17,8 +17,8 @@
                 @lang('general.dashboard')
             </a>
         </li>
-        <li><a href="#"> @lang('groups/title.groups')</a></li>
-        <li class="active">@lang('groups/title.groups_list')</li>
+        <li><a href="#"> <!--@lang('groups/title.groups')--> Roles</a></li>
+        <li class="active"><!--@lang('groups/title.groups_list')--> Lista de Roles</li>
     </ol>
 </section>
 
@@ -29,10 +29,10 @@
             <div class="panel panel-primary ">
                 <div class="panel-heading clearfix">
                     <h4 class="panel-title pull-left"> <i class="livicon" data-name="users" data-size="16" data-loop="true" data-c="#fff" data-hc="white"></i>
-                        @lang('groups')
+                        @lang('Roles y Permisos')
                     </h4>
                     <div class="pull-right">
-                    <a href="{{ route('admin.groups.create') }}" class="btn btn-sm btn-default"><span class="glyphicon glyphicon-plus"></span> @lang('button.create')</a>
+                    <a href="{{ route('admin.groups.create') }}" class="btn btn-sm btn-default"><span class="glyphicon glyphicon-plus"></span> <!--@lang('button.create')--> Crear Nuevo Rol</a>
                     </div>
                 </div>
                 <br />
@@ -59,9 +59,9 @@
                                     <td>{!! $role->users()->count() !!}</td>
                                     <td>{!! $role->created_at->diffForHumans() !!}</td>
                                     <td>
-                                        <a href="{{ route('admin.groups.edit', $role->id) }}">
-                                                <i class="livicon" data-name="edit" data-size="18" data-loop="true" data-c="#428BCA" data-hc="#428BCA" title="edit group"></i>
-                                            </a>
+                                        <a href="{{ route('admin.groups.edit', $role->id) }}" class="btn btn-default">Editar
+                                            <!--<i class="livicon" data-name="edit" data-size="18" data-loop="true" data-c="#428BCA" data-hc="#428BCA" title="edit group"></i>-->
+                                        </a>
                                             <!-- let's not delete 'Admin' group by accident -->
                                             @if ($role->id !== 1)
                                                 @if($role->users()->count())
@@ -71,10 +71,10 @@
                                                            title="@lang('groups/form.users_exists')"></i>
                                                     </a>
                                                 @else
-                                                    <a href="{{ route('admin.groups.confirm-delete', $role->id) }}" data-toggle="modal" data-target="#delete_confirm">
-                                                        <i class="livicon" data-name="remove-alt" data-size="18"
+                                                    <a href="{{ route('admin.groups.confirm-delete', $role->id) }}" class="btn btn-danger" data-toggle="modal" data-target="#delete_confirm" > Delete
+                                                        <!--<i class="livicon" data-name="remove-alt" data-size="18" class="btn btn-danger btn-lg"
                                                            data-loop="true" data-c="#f56954" data-hc="#f56954"
-                                                           title="@lang('groups/form.delete_group')"></i>
+                                                           title="@lang('groups/form.delete_group')"></i>-->
                                                     </a>
                                                 @endif
 

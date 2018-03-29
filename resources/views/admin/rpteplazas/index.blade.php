@@ -123,9 +123,7 @@ Consulta - Plazas
                                                                 <td>{{$Data->IdNivel}}</td>                                                              
                                                                  <td>{{$Data->dni}}</td>
                                                                 <td>{{$Data->nom}} </td>
-                                                                <td>{{$Data->sede}} - {{$Data->dependencia}}</td>                                          
-                                                                
-                                                               
+                                                                <td>{{$Data->sede}} - {{$Data->dependencia}}</td> 
                                                                 
                                                                 <td>
                                                                     <a data-href="#responsive" href="#responsive" onclick=GetDetalleGeneralPlaza("{{$plaz}}","{{$_dni}}") class="btn btn-info btn-sm btn-responsive" role="button" data-toggle="modal" >
@@ -144,7 +142,7 @@ Consulta - Plazas
                                                                 <td>  
                                                                   
                                                                    <div class="ui-group-buttons">                                                                      
-                                                                         <a href="{{ URL::to('admin/bajaplazas') }}?x={{$plaz}}" class="btn btn-danger btn-lg"> </i> Baja</a>
+                                                                         <a href="{{ URL::to('admin/bajaplazas') }}?z={{$plaz}}" class="btn btn-danger btn-lg"> </i> Baja</a>
                                                                     </div>
                                                                 </td>
 

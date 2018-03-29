@@ -67,7 +67,7 @@ Actualizando Movimientos de Plazas
                                     </div>
                                 </div> 
                                 <!-- ==========draw table========== -->
-                                <div class="panel-body">
+                                <div class="panel-body" id="headgetDatosmov">
                                     <div class="table-responsive" >
                                         <table  class="table dataTable no-footer dtr-inline">
                                             <thead>
@@ -94,10 +94,10 @@ Actualizando Movimientos de Plazas
       
 
 
-        <div class="panel panel-info" id="DesingFormGestPlz" style="display:block;">
+        <div class="panel panel-info" id="DesingFrmMovtPlz" style="display:none;">
                 <div class="panel-heading">
                     <h3 class="panel-title">
-                        <i class="livicon" data-name="search" data-size="16" data-loop="true" data-c="#fff" data-hc="white"></i> LA PLAZA PERTENECE A:  <span id="txttitulonombres"></span></s>
+                        <i class="livicon" data-name="search" data-size="16" data-loop="true" data-c="#fff" data-hc="white"></i>:  <span id="txttitulonombres"></span></s>
                     </h3>
                     <span class="pull-right clickable">
                             <i class="glyphicon glyphicon-chevron-up"></i>
@@ -105,21 +105,15 @@ Actualizando Movimientos de Plazas
                 </div>
 
                 <div class="panel-body">
-
-                        <!--<form method="POST" action="/api/admin/gesplazas/insert" name="frmsaveMov" id="frmsaveMov" enctype="multipart/form-data">-->
-                        <form method="POST" action="/gpessalud/public/api/admin/gesplazas/insert" name="frmsaveMov" id="frmsaveMov" enctype="multipart/form-data">
-                             <input type="hidden" name="__token" value="{{ csrf_token()}}"> 
+                         <div id="Idmessage"></div>
+                         {{ Form::open(array( 'route' => ['update-historia-mov','9'], 'method' => 'post', 'id' => 'frmupdatemov','name' => 'frmupdatemov'))}} 
+                             <input type="hidden" name="_token" value="{{ csrf_token()}}"> 
                                 <!-- Datos Estáticos de cabecera-->
-                                     <input type="hidden" name="idUserSession" value="{{ $idUserSession }}"> <!-- idsesion para enviar por ajax al api -->
-
-                                      <input type="hidden" class="form-control" id="IdPlazaG"     name="IdPlazaG"  value="">
-                                      <input type="hidden" class="form-control"  id="IdPersonaG"   name="IdPersonaG"    value="">
-                                      <input type="hidden" class="form-control"  id="IdEstructuraG" name="IdEstructuraG" value="">
-                                      <input type="hidden" class="form-control"  id="IdCargoG"    name="IdCargoG"      value="">
-                                      <input type="hidden" class="form-control"  id="NroPlazaG" name="NroPlazaG"     value="">
-                                   <!-- <div id ="IdshowExample"> Aqui mostra el return</div>-->                             
-            
-
+                                 <input type="hidden" name="idUserSession" value="{{ $idUserSession }}"> <!-- idsesion para enviar por ajax al api -->
+                                 <input type="hidden" name="IdHistoria" id="IdHistoria">
+                                 <input type="hidden" name="IdPlaza" id="IdPlaza">
+                                 <input type="hidden" name="IdPersona" id="IdPersona"> 
+                                 <input type="hidden" name="NroPlaza" id="NroPlaza"> 
                                 <!-- ============== fin head =============================== -->
                                <!--<div class="form-group">
                                     <label for="formEmail">Acción [VARIACIÓN DE UBICACIÓN]</label>
@@ -165,32 +159,17 @@ Actualizando Movimientos de Plazas
                                     <select id="select_44" class="form-control select2" name="select_44" required="">
                                         <option value="">Todos</option>                                
                                     </select>                            
-                                </div>-->
+                                </div>
+                            -->
                             
                                 <!-- fin load dependencia ================ -->
-
                                 <div class="form-group">
-                                        <label>Fecha de Movimiento[Inicio]:</label>
-                                        <!--<div class="input-group">
-                                            <div class="input-group-addon">
-                                                <i class="livicon" data-name="laptop" data-size="16" data-c="#555555"
-                                                   data-hc="#555555" data-loop="true"></i>
-                                            </div>                                         
-                                            <input type="text"  class="form-control" name="FechaMov" id="datetime3" required="">    
-
-                                        </div>-->
+                                        <label>Fecha de Movimiento[Inicio]:</label>                                      
                                         <input type="date"  class="form-control" name="FechaMov" id="datetime3" required=""  pattern="(0[1-9]|1[0-9]|2[0-9]|3[01])/(0[1-9]|1[012])/[0-9]{4}">
                                 </div>
 
                                 <div class="form-group">
-                                        <label>Fecha de Documento[Término]:</label>
-                                        <!--<div class="input-group">
-                                            <div class="input-group-addon">
-                                                <i class="livicon" data-name="laptop" data-size="16" data-c="#555555"
-                                                   data-hc="#555555" data-loop="true"></i>
-                                            </div>
-                                            <input type="text"  class="form-control" name="FechaDocRef" id="datetime1" required=""> 
-                                        </div>-->
+                                        <label>Fecha de Documento[Término]:</label>                                      
                                             <input type="date"  class="form-control" name="FechaDocRef" id="datetime1" required=""  pattern="(0[1-9]|1[0-9]|2[0-9]|3[01])/(0[1-9]|1[012])/[0-9]{4}">
                                 </div>
 
@@ -211,7 +190,7 @@ Actualizando Movimientos de Plazas
                                                     <span class="input-group-addon btn btn-default btn-file">
                                                         <span class="fileinput-new">Selecione Archivo</span>
                                                         <span class="fileinput-exists">Cambiar</span>
-                                                        <input type="file" name="FileAdjuntomov" id="FileAdjuntomov" readonly="" accept="*.pdf" required=""></span>
+                                                        <input type="file" name="FileAdjuntoUpdate" id="FileAdjuntoUpdate" readonly="" accept="*.pdf" required=""></span>
                                             <a href="#" class="input-group-addon btn btn-default fileinput-exists" data-dismiss="fileinput">Eliminar</a>
                                         </div>
 
@@ -221,84 +200,24 @@ Actualizando Movimientos de Plazas
                                  <div class="form-group">
                                     <label for="formPassword">Observación</label>                          
                                         <textarea id="Observacion" name="Observacion" rows="3" class="form-control resize_vertical" required=""></textarea>
+                                </div>                          
+
+                                <div class="btn-group btn-group-lg">
+                                    <button type="submit" class="alert alert-success alert-dismissable margin5" id="saveupdatemov">Guardar Cambios</button>
+                               
+                                    <a href="{{ URL::to('admin/upmov') }}" class="alert alert-info alert-dismissable margin5" >Retorna a buscar[Salir]</a>
+                                
                                 </div>
-
-                                    <div class="btn-group btn-group-lg">       
-                                          <!--  <button type="submit" class="btn btn-info btn_sizes" style="margin-bottom:7px;" id="IdSaveMovimientosDePlazas" >Guardar los cambios</button>
-                                           <a href="{{ URL::to('admin/gesplazas') }}" class="btn btn-success btn_sizes" style="margin-bottom:7px;" >Volver a buscar</a>
-                                            -->
-                                    </div>  
-
-                                    <div class="btn-group btn-group-lg">
-                                        <button type="submit" class="alert alert-success alert-dismissable margin5" id="IdSaveMovimientosDePlazas">Guardar Cambios</button>
-                                   
-                                        <a href="{{ URL::to('admin/gesplazas') }}" class="alert alert-info alert-dismissable margin5" >Retorna a buscar[Salir]</a>
-                                    
-                                    </div>
                      
                         </div>
-                    </form>             
-                <div id="Idmessage"></div>             
+                   {{ Form::close()}}  
             <!--   =================    -->
               
         </div>
     </div>    <!-- row-->
 </section>
-<!--=====Para search persona -->
-        <div class="modal fade expandOpen" id="responsive-searchM" tabindex="-1" role="dialog" aria-hidden="false">
-                <div class="modal-dialog modal-lg">
-                        <div class="modal-content">
-                            <div class="modal-header bg-info">
-                               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                                        <h5 class="modal-title">CONSULTA</h5>
-                            </div>
-                            <div class="modal-body">
-                                <div class="row">
-                                    <div class="table-responsive" >
-                                        <!-- ================= inicio search ===================-->
-                                        <div class="input-group select2-bootstrap-append">                          
-                                             {!! Form::text('search_personam',null, ['class'=>'form-control','placeholder'=>'Apellidos y Nombres | Dni Plaza','type'=>'search','id'=>'search_personam']) !!} 
-                                                    <span class="input-group-btn">
-                                                        <button class="btn btn-default" type="button" data-select2-open="single-append-text">
-                                                            <span class="glyphicon glyphicon-search"></span>
-                                                        </button>
-                                                    </span>
-                                        </div>
-                                        <!-- ================= fin ===================-->
 
-                                           <form method="get" name="frmResultSear" id='frmResultSear' enctype="multipart/form-data" action="#">   
-                                                <div class="col-md-12">
-
-                                                    <!-- ==========draw table========== -->
-                                                    <div class="panel-body">
-                                                        <div class="table-responsive" >
-                                                            <table  class="table dataTable no-footer dtr-inline">
-                                                                <thead>
-                                                                    <tr class="filters">
-                                                                        <th>#</th><th>#PLAZA</th><th>DNI</th><th>APELLIDOS Y NOMBRES</th>                       
-                                                                    </tr>
-                                                                </thead>
-                                                                <tbody id="IdShowResultSearchP">
-                                                                
-
-                                                                </tbody>
-                                                                <div id="IdMsjeErrorResultSearchp"></div>
-                                                            </table>
-                                                        </div>
-                                                    </div>                        
-                                                    <!-- ================ -->                        
-                                                </div>
-                                            </form>
-                                    </div>
-                                </div>
-                            <div class="modal-footer">
-                                <button type="button" data-dismiss="modal" class="btn btn-default" id="CierrameModalResult">Ciérrame!</button>
-                           
-                            </div>
-                        </div>
-                </div>
-            </div>
-        </div>
+       
         <!-- =======================================  -->
 @stop
 

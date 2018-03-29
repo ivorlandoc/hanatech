@@ -131,6 +131,7 @@ public function ProcesaBajaInsert(Request $Request){
         		$GetHeadPlazaHow = DB::select("SELECT CONVERT(IdPlaza, char) as IdPlaza,p.IdPersona,c.IdEstructura,c.IdCargo,NroPlaza,
 							(SELECT Descripcion FROM Estructura WHERE LEFT(IdEstructura,4)=LEFT((SELECT NewCodigo FROM estructura WHERE IdEstructura=c.IdEstructura),4) LIMIT 1) AS desc1,
 							(SELECT Descripcion FROM Estructura WHERE LEFT(IdEstructura,7)=LEFT((SELECT NewCodigo FROM estructura WHERE IdEstructura=c.IdEstructura),7) LIMIT 1) AS desc2,
+              (SELECT Descripcion FROM Estructura WHERE LEFT(IdEstructura,11)=LEFT((SELECT NewCodigo FROM estructura WHERE IdEstructura=c.IdEstructura),11) LIMIT 1) AS desc3,
 							e.Descripcion,CONCAT(ApellidoPat,' ', ApellidoMat,' ',Nombres)AS nombres,
 							ca.Descripcion AS cargo,IdNivel
 							FROM cuadronominativo AS c

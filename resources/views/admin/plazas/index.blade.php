@@ -46,7 +46,8 @@ Consulta de Plazas
                     </span>
                 </div>
                 <div class="panel-body">
-                <form method="get" name="frmOnline" id='form_validation' onsubmit="return Validation()" enctype="multipart/form-data" action="#" class="form-inline">   
+                 {{ Form::open(array( 'route' => ['get-export-excel','1'], 'method' => 'post', 'id' => 'frmexportex','name' => 'frmexportex','class'=>'form-inline'))}}   
+                <!--<form method="get" name="frmOnline" id='form_validation' onsubmit="return Validation()" enctype="multipart/form-data" action="#" class="form-inline">   -->
                             <div class="form-group">
                                     <label>
                                       <input type="checkbox" name="regimenId" id="regimenId" class="polaris"  /> 
@@ -64,35 +65,9 @@ Consulta de Plazas
                                     </select>              
                             </div>
 
-<!--
-                        <div class="form-group">
-                            <select id="select_1" class="form-control select2" name="select_2dig">
-                                <option value="">Elegir</option>  
-                                
-                            </select>
-                            
-                        </div>
-
-                        <div class="form-group">                      
-                            <select id="select_2" class="form-control select2" name="select_4dig" >
-                                <option value="">Elegir</option>        
-                                
-                            </select>
-                            
-                        </div>
-
-                        <div class="form-group">
-                            <select id="select_3" class="form-control select2" name="select_7dig" onchange="GetIdSelectThree()">
-                                <option value="">Todos</option>                                
-                            </select>                            
-                        </div>
-                    
-                         <div class="form-group">                    
-                            <select id="select_4" class="form-control select2" name="select_10dig" onclick="GetIdSelectFour()">
-                                <option value="">Todos</option>                                
-                            </select>                            
-                        </div>
-                    -->
+                            <div class="form-group">
+                              <a href="javascript:void(0)" onclick="ExportExcel()" class="btn btn-sm btn-primary">Exportar a Excel</a>   
+                            </div> 
 
                         <!-- ==========draw table========== -->
                         <div class="panel-body">
@@ -126,7 +101,8 @@ Consulta de Plazas
                             </div>
                         </div>                        
                         <!-- ================ -->                      
-                    </form>
+                    <!--</form>-->
+                {{ Form::close()}}    
                 </div>
 
             </div>
