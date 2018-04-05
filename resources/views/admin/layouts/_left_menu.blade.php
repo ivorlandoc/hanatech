@@ -75,7 +75,7 @@
     </li>
  
 
-    <li {!! (Request::is('admin/groups') || Request::is('admin/groups/create') || Request::is('admin/groups/*') ? 'class="active"' : '') !!}>
+    <li {!! (Request::is('admin/groups') || Request::is('admin/groups/create') || Request::is('admin/permisos') || Request::is('admin/groups/*') ? 'class="active"' : '') !!}>
         <a href="#">
             <i class="livicon" data-name="users" data-size="18" data-c="#418BCA" data-hc="#418BCA"
                data-loop="true"></i>
@@ -95,6 +95,14 @@
                     Nuevo Rol
                 </a>
             </li>
+
+            <li {!! (Request::is('admin/permisos') ? 'class="active" id="active"' : '') !!}>
+                <a href="{{ URL::to('admin/permisos') }}">
+                    <i class="fa fa-angle-double-right"></i>
+                    Lista de Permisos
+                </a>
+            </li>
+
         </ul>
     </li>
 
@@ -182,6 +190,13 @@
                 <a href="{{ URL::to('admin/cambio') }}">
                     <i class="fa fa-angle-double-right"></i>
                     Cambio de Denominación
+                </a>
+            </li>
+
+            <li {!! (Request::is('admin/activap') ? 'class="active"' : '') !!}>
+                <a href="{{ URL::to('admin/activap') }}">
+                    <i class="fa fa-angle-double-right"></i>
+                    Activar Plaza Sin Ptto
                 </a>
             </li>
 

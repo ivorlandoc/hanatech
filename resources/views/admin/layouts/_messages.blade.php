@@ -7,7 +7,7 @@
         <span class="label label-success">2</span>
     </a>
     <ul class="dropdown-menu dropdown-messages pull-right">
-        <li class="dropdown-title">2 Nuevos Mensajes</li>
+        <li class="dropdown-title">2 <!-- Nuevos--> Mensajes de [Demostracion]</li>
         <li class="unread message">
             <a href="javascript:;" class="message"> <i class="pull-right" data-toggle="tooltip"
                                                        data-placement="top" title="Mark as Read"><span
@@ -17,7 +17,7 @@
                      class="img-responsive message-image" alt="icon">
 
                 <div class="message-body">
-                    <strong>Martín</strong>
+                    <strong>Jhor Bush</strong>
                     <br>Podemos  ?
                     <br>
                     <small>Hace 45 minutos</small>
@@ -35,7 +35,7 @@
                      class="img-responsive message-image" alt="icon">
 
                 <div class="message-body">
-                    <strong>Carlos</strong>
+                    <strong>Vladimir Putin</strong>
                     <br>No olvides llamar..
                     <br>
                     <small>Hace 1 hora</small>

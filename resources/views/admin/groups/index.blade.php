@@ -84,6 +84,7 @@ Administrar Roles y Permisos
                                 @endforeach
                             </tbody>
                         </table>
+                        
                         </div>
                     @else
                         @lang('general.noresults')

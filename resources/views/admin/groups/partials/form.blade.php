@@ -33,19 +33,17 @@
                                             </tr>
                                         </thead>
                                         <tbody id="IdShowPlazasAlta">
-                                             @foreach($permissions as $permission=>$value)    
+                                             @foreach($permissions as $permission)    
                                                     <tr> 
                                                         <td>
-                                                          <!--Form::checkbox('permissions[]', $permission->id, null)  -->
-                                                          {!! Form::checkbox('permissions['.$value.']', 'true', (bool) $value, ['class' => 'square']) !!}
+                                                         {!! Form::checkbox('permissions[]', $permission->id, null) !!}  
+                                                   
                                                         </td>
                                                         <td>
-                                                            {{ $value->name }}<em>({{ $value->description }})</em>
+                                                            {{ $permission->name }}<em>({{ $permission->description }})</em>
                                                        </td>
                                                     </tr>                                             
                                             @endforeach 
-
-
                                            
                                                   
                                         </tbody>

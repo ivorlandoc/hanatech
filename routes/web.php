@@ -133,27 +133,35 @@ Route::group(['prefix' => 'admin', 'namespace'=>'Admin','middleware' => 'admin']
     /*============================Show Nominativo======================*/
     //Route::group(['prefix' => 'plazas'], function () {
     Route::get('plazas','PlazasController@index'); 
-    Route::post('plazas/{id}',     array('as' =>'get-export-excel','uses' => 'PlazasController@ExportExcel')); 
+    Route::post('plazas/{id}',array('as' =>'get-export-excel','uses' => 'PlazasController@ExportExcel')); 
     Route::resource('plazas', 'PlazasController');
-   //});       
+   //});    
+     /*============================Activar Plaza Sin Presupuesto======================*/
+
+    Route::get('activap','ActivarplazaController@index'); 
+    Route::post('activap',array('as' =>'get-datos-activa','uses' => 'ActivarplazaController@Getdatosparaactivar')); 
+    Route::post('activap/{id}',array('as' =>'save-datos-activa','uses' => 'ActivarplazaController@ProcesaActivaPlazas')); 
+    Route::resource('activarp', 'ActivarplazaController');
+    /*============================Permisos======================*/    
+    //Route::get('permisos', 'PermisosController@create')->name('admin.permisos.create'); //->middleware('admin.permisos.create');
+    //Route::get('permisos', 'PermisosController@index')->name('admin.permisos.index');
+    Route::put('permisos', 'PermisosController@store')->name('admin.permisos.store');
+    //Route::post('permisos', 'PermisosController@update')->name('admin.permisos.update');
+    //Route::get('permisos/{id}', 'PermisosController@edit')->name('admin.permisos.edit');
+    Route::delete('permisos/{id}', 'PermisosController@destroy')->name('admin.permisos.destroy');
+    Route::resource('permisos','PermisosController');
 
 });
 
  Route::group(['prefix' => 'admin', 'namespace'=>'Admin','middleware' => 'admin'], function () {    
     route::get('mantestruct','ManteEstructurasController@index');      
     Route::post('mantestruct',array('as'=>'save-update-mantestruct','uses'=>'ManteEstructurasController@updateOficinaEstruct')); 
-    route::get('mantestruct/{id}','ManteEstructurasController@create')->name("create");
-    
+    route::get('mantestruct/{id}','ManteEstructurasController@create')->name("create");    
 });       
+
 Route::resource('mantestruct','ManteEstructurasController');
 
-
-  
-
-   
-   
-
-Route::resource('permisos','PermisosController');
+ 
 
 
 Route::group(['prefix' => 'admin','namespace'=>'Admin', 'middleware' => 'admin', 'as' => 'admin.'], function () {
