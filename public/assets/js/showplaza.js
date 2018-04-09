@@ -126,17 +126,17 @@ function ShowPlaza(id){
 	var getF=getFecha();
 	var flat="";
 	flat = $('#checkText').val();
-
+	$('.loading').show();
 	$.get('../api/admin/plazas/list/'+id+flat,function(datap){
 		var tableHtml='';
        	var j=0;  
 
-       	 $('.loading').show();     	
+       	      	
 			for (var i=0; i < datap.length; i++){ j++;	
 				//if(datap[i].IdPersona==""){
 					tableHtml += '<tr><td>'+j+'</td>'+					
 					'<td>'+datap[i].organo+'</td>'+
-					'<td>'+datap[i].dep+'</td>'+
+					'<td>'+datap[i].dep+' | '+datap[i].centro+' | '+datap[i].ofi+'</td>'+
 					'<td>'+datap[i].descripcion+'</td>'+
 					'<td>'+datap[i].NroPlaza+'</td>'+
 					'<td>'+datap[i].dni+'</td>'+

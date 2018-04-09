@@ -3,7 +3,7 @@ $(function(){
 	$('#select_nivel1').on('click',OnSelectElSegundoNMant);
 	$('#select_nivel2').on('click',OnSelectElTercerNMant);
 	$('#select_nivel3').on('click',OnSelectElFourNMant);
-
+	$('#select_nivel4').on('click',OnSelectElFourNMant);
 
 	$("#searchPlazaForRpte").keypress(function(e) {
 		var code = (e.keyCode ? e.keyCode : e.which);
@@ -90,11 +90,69 @@ function OnSelectElFourNMant(){
 	});
 	
 }
-
+/*
 function GetIdSelectFour(){
 	var getSelectId= $('#select_nivel3').val();
 	ShowDetaisMante(getSelectId);
 }
+*/
+
+
+
+function ajaxloadDetEstruct(idx) {   
+     var formData = new FormData($("form[name='frmmantestru']")[0]);
+      formData.append('id',idx);
+     $('.loading').show();
+      var xy=0;
+      var tableHtml="";
+      var check="";
+    $.ajax({  
+            type: "post",
+            headers: {'X-CSRF-TOKEN':$('#token').val()},
+            url:  $('#frmmantestru').attr('action'),
+            dataType: 'json',
+            data: formData,
+            cache: false,
+            contentType: false,
+            processData: false,            
+        success: function (data) { 
+        	console.log("1");
+	        if(data.length!=0){  
+	        	console.log("2");
+		        $.each(data, function( key, value ) { 
+		        	if(value.IdEstructura.length!=12)check="disabled"; else check="";
+		        console.log("3");          		        
+			           	xy++;	 //organo,gerencia,dependencia,oficina,servicio			
+						tableHtml += '<tr><td>'+xy+'</td>  <td>'+value.IdEstructura+'</td>  <td>'+value.organo+'</td> <td>'+value.gerencia+'</td><td>'+value.dependencia+'</td><td>'+value.oficina+'</td>'+
+						'<td>'+												
+							'<div class="form-group">'+	
+								'<div>'+				
+									'<p class="flatpickr input-group" data-wrap="true" data-clickOpens="false">'+
+										'<input class="form-control" type="text" value="'+value.servicio+'"  '+check+' id="'+value.IdEstructura+'" data-input>'+
+											'<span class="input-group-addon add-on" style="cursor: pointer;">'+
+												'<a class="input-btn" onclick=updatetxtoficinas("'+value.IdEstructura+'") data-clear>'+
+													'<i class="livicon" data-name="save" data-size="16" data-c="#555555" data-hc="#555555" data-loop="true">...</i>'+									
+												'</a>'+
+											'</span>'+
+									'</p>'+	
+								'</div>'+				
+							'</div>'+
+						'</td></tr>';
+						$('#IdShowresume').html(tableHtml);
+				});
+	        }else{
+	    		$("#IdMensajeAlert").html('<div class="alert alert-danger" role="alert"></span> No existe registros</div>').fadeIn().delay(4000).fadeOut('slow');
+	  		}			
+        	$('.loading').hide();          
+        },
+        error: function (xhr, status, error) {
+            alert(xhr.responseText);
+        }
+    });
+}
+
+
+
 
 $("#IdSaveManteEstru").click(function (e) {
     e.preventDefault();  	
@@ -125,7 +183,7 @@ $("#IdSaveManteEstru").click(function (e) {
 		        console.log("-2->"+data);		        		        	  
 		           	if(data===true) {		           	
 		                   $("#IdMensajeAlert").html('<div class="alert alert-success" role="alert">La Operación se realizó con éxito</div>').fadeIn().delay(4000).fadeOut('slow');		             				                 
-		                   GetIdSelectFour(_IdEstructura);
+		                   ajaxloadDetEstruct(5);
 		                  
 		                } else {
 		                   $("#IdMensajeAlert").html('<div class="alert alert-danger" role="alert"></span> </strong>La Operación no se realizó</div>').fadeIn().delay(4000).fadeOut('slow');
@@ -136,12 +194,13 @@ $("#IdSaveManteEstru").click(function (e) {
 		} else { $("#IdMensajeAlert").html('<div class="alert alert-danger" role="alert"></span> </strong>'+messages+'</div>').fadeIn().delay(4000).fadeOut('slow'); }
 })
 
+/*
 function ShowDetaisMante(id){
 	$.get('../api/admin/mantestruct/'+id,function(datap){		
 		var tableHtml='';
        		var xy=0;       		
 			for (var i=0; i < datap.length; i++) 	{			
-				xy++;				
+			xy++;				
 			tableHtml += '<tr><td>'+xy+'</td>  <td>'+datap[i].IdEstructura+'</td>  <td>'+datap[i].organo+'</td> <td>'+datap[i].gerencia+'</td><td>'+datap[i].dependencia+'</td>'+
 			'<td>'+
 				'<div class="form-group">'+	
@@ -163,12 +222,12 @@ function ShowDetaisMante(id){
 		$('#IdShowresume').html(tableHtml);			
 		});						
 }
-
+*/
 function updatetxtoficinas(idestru){
 	var formData = new FormData($("form[name='frmupdateEstr']")[0]);
 	 formData.append('idestru',idestru);
 	 formData.append('Descrip',$('#'+idestru).val());
-		var id= $('#select_nivel3').val();
+	 //var id= $('#select_nivel3').val();
       $('.loading').show();
     $.ajax({  
             type: "post",
@@ -181,10 +240,10 @@ function updatetxtoficinas(idestru){
             processData: false,
         success: function (data) {
            if(data===1) {               
-                   //$("#IdShowresume").html('<div class="alert alert-success" role="alert">La Operación se realizó con éxito</div>').fadeIn().delay(4000).fadeOut('slow');                   
-                  ShowDetaisMante(id);
+                   $("#IdMensajeAlert").html('<div class="alert alert-success" role="alert">La Operación se realizó con éxito</div>').fadeIn().delay(4000).fadeOut('slow');                   
+                 	$('#select_nivel4').click()
                 } else {
-                   $("#IdShowresume").html('<div class="alert alert-danger" role="alert"></span> </strong>La Operación no se realizó</div>').fadeIn().delay(4000).fadeOut('slow');
+                   $("#IdMensajeAlert").html('<div class="alert alert-danger" role="alert"></span> </strong>La Operación no se realizó</div>').fadeIn().delay(4000).fadeOut('slow');
             }
            $('.loading').hide(); 
         },

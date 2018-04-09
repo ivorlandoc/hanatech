@@ -14,7 +14,7 @@ use Sentinel;
 class UpdateMovPlazasController extends Controller {    
     public function index(Request $request){ 
       $idUserSession = Sentinel::getUser()->id; 
-      $getDosDig=DB::table('estructura')->select('NewCodigo as IdEstructura','Descripcion')->where(DB::raw('LENGTH(NewCodigo)'), '=', "2")->get();
+      $getDosDig=DB::table('estructura')->select('IdEstructura','Descripcion')->where(DB::raw('LENGTH(IdEstructura)'), '=', "2")->get();
 
       return view('admin.upmov.index',compact('getDosDig', 'idUserSession')); 
 
@@ -45,7 +45,6 @@ public function _getalldatosMov(Request $Request){
 
 
 public function ProcesaUpdateMov(Request $Request){
-
       $UserSession = Sentinel::findById($Request->input("idUserSession"));
         $ipAddress = '';               
         if (isset($_SERVER['HTTP_X_FORWARDED_FOR']) && ('' !== trim($_SERVER['HTTP_X_FORWARDED_FOR']))) {

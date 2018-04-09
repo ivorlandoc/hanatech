@@ -38,7 +38,7 @@ function GetAllPlazas(id){
 							 '<tr><th>PERSONA:</th><td><p style="margin: 0px 0px 0px 30px;">'+htmlNombre+'</p></td></tr> '+
 							 '<tr><th colspan="2">DEPENDENCIA</th></tr>'+
 							 '<tr><td colspan="2"><p style="margin: 0px 0px 0px 0px;">'+dataDet[i].sede+'  <b>|</b>  '+dataDet[i].organo+' </p></td></tr>'+												
-							 '<tr><td colspan="2"><p style="margin: 0px 0px 0px 0px;">'+dataDet[i].dep+'  <b> | </b>  '+dataDet[i].dep2+'<b> | </b>  '+dataDet[i].descripcion+'</p></td></tr>'+							
+							 '<tr><td colspan="2"><p style="margin: 0px 0px 0px 0px;">'+dataDet[i].gerencia+'  <b> | </b>  '+dataDet[i].dep2+'<b> | </b>  '+dataDet[i].descripcion+'</p></td></tr>'+							
 							 '<tr><th>NIVEL:</th><td><p style="margin: 0px 0px 0px 0px;">'+dataDet[i].IdNivel+'  <b>|</b>  '+dataDet[i].Nivel+' </p></td></tr> '+					
 							 '<tr><th>CARGO:</th><td><p style="margin: 0px 0px 0px 0px;">'+dataDet[i].cargo+' </p></td></tr> '+
 							 '<tr><th>FECHA DE CESE:</th><td><p style="margin: 0px 0px 0px 0px;">'+dataDet[i].fcese+' </p></td></tr> '+	
@@ -68,7 +68,7 @@ function GetAllPlazasMov(id){
 				tableHtml += '<tr>	<th>'+xy+'</th>'+
 									'<td>'+persona+'</td>'+
 							 		'<td>'+dataDet[i].tipomov+'</td> '+							 		
-							 		'<td>'+dataDet[i].organo+' | '+dataDet[i].dep+' | '+dataDet[i].dep2+'</td>'+	
+							 		'<td>'+dataDet[i].organo+' | '+dataDet[i].gerencia+' | '+dataDet[i].dep2+' | '+dataDet[i].ofi+'</td>'+	
 							 		'<td>'+dataDet[i].cargo+'</td>'+											
 							 		'<td><a href="../uploads/files/'+dataDet[i].FileAdjunto+'" target="_blank">'+dataDet[i].DocRef+'</a></td>'+							
 							 		'<td>'+dataDet[i].Observacion+'</td>'+					
@@ -109,7 +109,7 @@ function ShowHistoriaMov(id,iddni){
 							 $('#IdHeadDetMov').html(htmlHead);
 						}						
 				tableHtml += '<tr><td>'+xy+'</td>'+
-				'<td>'+dataDa[i].centro+' | <br> '+dataDa[i].dep+' | '+dataDa[i].dep2+' | '+dataDa[i].dependencia+'</td>'+
+				'<td>'+dataDa[i].centro+' | <br> '+dataDa[i].dep+' | '+dataDa[i].dep2+' | '+' | '+dataDa[i].ofi+' | '+ dataDa[i].dependencia+'</td>'+
 				'<td>'+dataDa[i].IdNivel+'</td>'+
 				'<td>'+dataDa[i].cargo+'</td>'+
 				'<td>'+dataDa[i].TipoMov+'</td>'+
@@ -151,8 +151,8 @@ function GetDetalleGeneralPlaza(id,dni){
 				tableHtml += '<tr><th colspan="2" width="1">PERSONA:</th></tr>'+
 							 '<tr ><td colspan="2"><p style="margin: 0px 0px 0px 30px;">'+dataDet[i].dni+' | '+dataDet[i].nom+'</p></td></tr>'+
 							 '<tr><th colspan="2">DEPENDENCIA</th></tr>'+
-							 '<tr><td colspan="2"><p style="margin: 0px 0px 0px 30px;">'+dataDet[i].sede+' | '+dataDet[i].organo+'</p></td></tr>'+					
-							 '<tr><td colspan="2"><p style="margin: 0px 0px 0px 30px;">'+dataDet[i].gerencia+' | '+dataDet[i].dep2+' | '+dataDet[i].dependencia+'</p></td></tr>'+						
+							 '<tr><td colspan="2"><p style="margin: 0px 0px 0px 30px;">'+dataDet[i].organo+' | '+dataDet[i].gerencia+'</p></td></tr>'+					
+							 '<tr><td colspan="2"><p style="margin: 0px 0px 0px 30px;">'+dataDet[i].dep2+' | '+dataDet[i].ofi+' | '+dataDet[i].dependencia+'</p></td></tr>'+						
 							 '<tr><th style="width:1px">TIPO&nbspDE&nbspCARGO:</th><td><p style="margin: 0px 0px 0px 30px;">'+dataDet[i].tipo+' </p></td></tr> '+							
 							 '<tr><th>NIVEL:</th><td><p style="margin: 0px 0px 0px 30px;">'+dataDet[i].IdNivel+' | '+dataDet[i].nivel+' </p></td></tr> '+					
 							 '<tr><th>CARGO:</th><td><p style="margin: 0px 0px 0px 30px;">'+dataDet[i].cargo+' </p></td></tr> '+							 

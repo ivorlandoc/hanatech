@@ -16,17 +16,17 @@ class GestionarPlazasController extends Controller {
     public function index(Request $request){ 
       $idUserSession = Sentinel::getUser()->id;   //almacena id de sesion activa      
      // $getDosDig=DB::table('estructura')->select('IdEstructura','Descripcion')->where('IdEstructura', 'like', "__00000000")->get();
-      $getDosDig=DB::table('estructura')->select('NewCodigo as IdEstructura','Descripcion')->where(DB::raw('LENGTH(NewCodigo)'), '=', "2")->get();
+      $getDosDig=DB::table('estructura')->select('IdEstructura','Descripcion')->where(DB::raw('LENGTH(IdEstructura)'), '=', "4")->get();
       return view('admin.gesplazas.index',compact('getDosDig', 'idUserSession')); 
 
   }
 
       public function GeTHeadPlazaMov($id){
                 $GetHeadPlazaHow = DB::select("SELECT CONVERT(IdPlaza,CHAR) AS IdPlaza,IF(p.IdPersona IS NULL,'',p.IdPersona) AS IdPersona,c.IdEstructura,c.IdCargo,NroPlaza,
-                            (SELECT Descripcion FROM estructura WHERE LEFT(IdEstructura,2)=LEFT((SELECT NewCodigo FROM estructura WHERE IdEstructura=c.IdEstructura),2) LIMIT 1) AS desc0,
-                            (SELECT Descripcion FROM estructura WHERE LEFT(IdEstructura,4)=LEFT((SELECT NewCodigo FROM estructura WHERE IdEstructura=c.IdEstructura),4) LIMIT 1) AS desc1,
-                            (SELECT Descripcion FROM estructura WHERE LEFT(IdEstructura,7)=LEFT((SELECT NewCodigo FROM estructura WHERE IdEstructura=c.IdEstructura),7) LIMIT 1) AS desc2,
-                            (SELECT Descripcion FROM estructura WHERE LEFT(IdEstructura,11)=LEFT((SELECT NewCodigo FROM estructura WHERE IdEstructura=c.IdEstructura),11) LIMIT 1) AS dep2,
+                (SELECT Descripcion FROM estructura WHERE LEFT(IdEstructura,4)=LEFT((SELECT IdEstructura FROM estructura WHERE IdEstructura=c.IdEstructura),4) LIMIT 1) AS desc0,
+                (SELECT Descripcion FROM estructura WHERE LEFT(IdEstructura,6)=LEFT((SELECT IdEstructura FROM estructura WHERE IdEstructura=c.IdEstructura),6) LIMIT 1) AS desc1,
+                (SELECT Descripcion FROM estructura WHERE LEFT(IdEstructura,8)=LEFT((SELECT IdEstructura FROM estructura WHERE IdEstructura=c.IdEstructura),8) LIMIT 1) AS desc2,
+                (SELECT Descripcion FROM estructura WHERE LEFT(IdEstructura,10)=LEFT((SELECT IdEstructura FROM estructura WHERE IdEstructura=c.IdEstructura),10) LIMIT 1) AS dep2,        
                             e.Descripcion,IF(CONCAT(ApellidoPat,' ', ApellidoMat,' ',Nombres) IS NULL,'',CONCAT(ApellidoPat,' ', ApellidoMat,' ',Nombres))AS nombres,
                             ca.Descripcion AS cargo,IdNivel
                             FROM cuadronominativo AS c

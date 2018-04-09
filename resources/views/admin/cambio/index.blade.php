@@ -160,7 +160,7 @@ Cambio de Denominación
                                 <div class="input-group select2-bootstrap-append"> 
                                     <div class="btn-group btn-group-lg">
                                         <button type="button" class="alert alert-success alert-dismissable margin5" id="saveintegrarplaza" onclick="SaveChangeDonominacion()">Guardar los Cambios</button>
-                                        <a href="{{ URL::to('admin/integra') }}" class="alert alert-info alert-dismissable margin5" id="SalirChange" >[Salir]</a>
+                                        <a href="{{ URL::to('admin/cambio') }}" class="alert alert-info alert-dismissable margin5" id="SalirChange" >[Salir]</a>
                                     </div> 
                                 </div>
 

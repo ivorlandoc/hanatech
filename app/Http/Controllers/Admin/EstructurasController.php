@@ -12,21 +12,23 @@ class EstructurasController extends Controller {
     public function index(Request $request){
        //$getPriNivel=\App\Estructura::Search($request->Desc)->orderby('Descripcion','asc')->paginate(10);        
        //$getDosDig=DB::table('estructura')->select('IdEstructura','Descripcion')->where('IdEstructura', 'like', "__00000000")->get();
-       $getDosDig=DB::table('estructura')->select('NewCodigo as IdEstructura','Descripcion')->where(DB::raw('LENGTH(NewCodigo)'), '=', "2")->get();
+       $getDosDig=DB::table('estructura')->select('IdEstructura','Descripcion')->where(DB::raw('LENGTH(IdEstructura)'), '=', "4")->get();
        return view('admin.estructura.index',compact('getDosDig')); 
     }
 
-public function GetSelectSegundoNivel($id){
-        if(strlen($id)=="2"){    
-            $data=DB::table('estructura')->select('NewCodigo as IdEstructura','Descripcion')->where(DB::raw('LENGTH(NewCodigo)'), '=', "4")->where('NewCodigo', 'like', $id.'%')->get();
+public function GetSelectSegundoNivel($id){     
+        if(strlen($id)=="2"){
+            $data=DB::table('estructura')->select('IdEstructura','Descripcion')->where(DB::raw('LENGTH(IdEstructura)'), '=', "4")->where('IdEstructura', 'like', $id.'%')->get();
         } elseif (strlen($id)=="4") { 
-             $data=DB::table('estructura')->select('NewCodigo as IdEstructura','Descripcion')->where(DB::raw('LENGTH(NewCodigo)'), '=', "7")->where('NewCodigo', 'like', $id.'%')->get();
-
-         }elseif (strlen($id)=="7") {           
-            $data=DB::table('estructura')->select('NewCodigo as IdEstructura','Descripcion')->where(DB::raw('LENGTH(NewCodigo)'), '=', "11")->where('NewCodigo', 'like', $id.'%')->groupBy('NewCodigo')->get();           
-         } elseif (strlen($id)=="11") {
-           $data=DB::table('estructura')->select('IdEstructura','Descripcion')->where(DB::raw('LENGTH(NewCodigo)'), '=', "15")->where('NewCodigo', 'like', $id.'%')->groupBy('NewCodigo')->get();
-         } 
+             $data=DB::table('estructura')->select('IdEstructura','Descripcion')->where(DB::raw('LENGTH(IdEstructura)'), '=', "6")->where('IdEstructura', 'like', $id.'%')->get();
+         }elseif (strlen($id)=="6") {           
+            $data=DB::table('estructura')->select('IdEstructura','Descripcion')->where(DB::raw('LENGTH(IdEstructura)'), '=', "8")->where('IdEstructura', 'like', $id.'%')->get();//->groupBy('NewCodigo')->get();
+        } elseif (strlen($id)=="8" ) {
+          $data=DB::table('estructura')->select('IdEstructura','Descripcion')->where(DB::raw('LENGTH(IdEstructura)'), '=', "10")->where('IdEstructura', 'like', $id.'%')->get();
+               
+         } elseif (strlen($id)=="10" ) {     
+          $data=DB::table('estructura')->select('IdEstructura','Descripcion')->where(DB::raw('LENGTH(IdEstructura)'), '=', "12")->where('IdEstructura', 'like', $id.'%')->get();       
+         }  
          return $data;
     }
 
@@ -40,7 +42,6 @@ public function showdata($id){
             INNER JOIN estructura e ON e.IdEstructura=c.IdEstructura
             WHERE c.IdEstructura LIKE "'.$id.'%" GROUP BY e.IdEstructura,IdTipo,NroPlaza
             ) AS d GROUP BY IdEstructura');  
-
       return $dataP;//sview('admin.plazas.index',compact('AllData')); 
     }
 

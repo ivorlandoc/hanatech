@@ -268,6 +268,11 @@ function onChangeAll_4(){
 	GetAllPlazasForAlta(getData);
 }
 
+function onChangeAll_5(){
+	var getData=$('#select_nivel-5').val();
+	GetAllPlazasForAlta(getData);
+}
+
 
 function getEstructuraAll(id){
 	$.get('../api/admin/altaplaza/getestru/'+id,function(data3){
@@ -283,10 +288,12 @@ function getEstructuraAll(id){
 function GetAllPlazasForAlta(idx){	
 	console.log('ID==>'+idx);	
 	$('#IdShowPlazasAlta').html("");
+	$('#msjcount').html("");
 	$.get('../api/admin/altaplaza/getshowest/'+idx,function(dataDa){
 			var tableHtml='';		
        		var xy=0;   
-       		var ErrorHtml='<tr><td colspan="6"><div class="alert alert-danger alert-dismissable margin5"><strong>Error:</strong> no existe registros!</div></td></tr>';
+       		var ErrorHtml='<div class="alert alert-danger alert-dismissable margin5"><strong>Error:</strong> no existe registros!</div>';
+       		
        		console.log('ID==3===>'+idx);
        		var NroPlaza;
        		if(dataDa.length!=0){  		
@@ -295,6 +302,9 @@ function GetAllPlazasForAlta(idx){
 				NroPlaza=dataDa[i].NroPlaza;
 				tableHtml += '<tr><td>'+xy+'</td><td>'+dataDa[i].descripcion+'</td> <td><a href="#" onclick=setPrmFiltroDatos("'+NroPlaza+'")>'+dataDa[i].NroPlaza+'</a></td><td>'+dataDa[i].IdNivel+'</td><td>'+dataDa[i].cargo+'</td><td>'+dataDa[i].ApellidoPat+' '+dataDa[i].ApellidoMat+'  '+dataDa[i].Nombres+'</td></tr>';
 				$('#IdShowPlazasAlta').html(tableHtml);	
+			}
+			if(xy>=500){
+				$('#msjcount').html('<div class="alert alert-danger" role="alert"></span> </strong>La cantidad de registros sobre pasa a 500!</div>').fadeIn().delay(4000).fadeOut('slow');;
 			}
 		}else{
 			$('#IdShowPlazasAlta').html(ErrorHtml);

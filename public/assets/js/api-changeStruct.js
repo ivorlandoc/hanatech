@@ -3,6 +3,7 @@ $('#sel1').on('change',OnLoadSelectSegundoNivel);
 $('#sel2').on('click',OnLoadSelectTercerNivel);
 $('#sel3').on('click',OnLoadSelectCuartoNivel);
 $('#sel4').on('click',OnLoadSelectQuintoNivel);
+$('#sel5').on('click',OnLoadSelectSextoNivel);
 
 /*=========================================================*/
 	$.get('../../api/admin/mantestruct/getlist/1',function(data){
@@ -39,7 +40,7 @@ function ShowDetaSearchChangeStruct(id){
 					xy++;						
 					tableHtml += '<tr>'+
 					'<td>'+xy+'</td>'+
-					'<td>'+datap[i].organo+' | '+datap[i].dep+' | '+datap[i].descrip+'</td>'+
+					'<td>'+datap[i].organo+' | '+datap[i].dep+' | '+datap[i].centro+' | '+datap[i].oficina+'| '+datap[i].descrip+'</td>'+
 					'<td>'+datap[i].IdNivel+' | '+datap[i].cargo+'</td>'+
 					'<td>'+datap[i].nombres+'</td>'+				
 					'<td><a href="#" onclick=pasarpersona("'+datap[i].IdPlaza+'") class="btn btn-info btn-lg">Pasar</a></td>'+
@@ -55,15 +56,15 @@ function ShowDetaSearchChangeStruct(id){
 function pasarpersona(id){
 	$("#groupChanger").show();
 	$("#txtidplaza").val(id);
-	var formData = new FormData($("form[name='frmChangeStructDest']")[0]);    
+	var formData = new FormData($("form[name='frmChangeEstr']")[0]);    
     var messages="";
-	var _sel4			= $('#sel4').val();
 	var _sel5			= $('#sel5').val();
+	var _sel6			= $('#sel6').val();
 	var _DocRef			= $('#txtreferencia').val();
 	var _FDoc			= $('#txtfechadoc').val();
 	var _Crit			= "";
-	if(_sel5=="") _Crit =_sel4; else _Crit=_sel5;
-	if(_sel4==""){ 		messages="Debe seleccionar la debependencia.";}
+	if(_sel6=="") _Crit =_sel5; else _Crit=_sel6;
+	if(_sel5==""){ 		messages="Debe seleccionar la debependencia.";}
 	else if(_DocRef==""){ 	messages="Ingrese el documento de referencia.";}
 	else if(_FDoc==""){ 		messages="Ingrese la fecha del documento.";}
 	else if(_sel5=="" && _sel4!=""){ messages="La persona seleccionada se asignará al 4to Nivel seleccionado"; messages="";}	else {messages="";}
@@ -72,7 +73,7 @@ function pasarpersona(id){
 		    $.ajax({
 		        type: "POST",
 		        headers: {'X-CSRF-TOKEN':$('#_token').val()},
-		        url:  $('#frmChangeStructDest').attr('action'),
+		        url:  $('#frmChangeEstr').attr('action'),
 		        dataType: 'json',
 		        data: formData,
 		        cache: false,
@@ -100,11 +101,10 @@ function OnLoadSelectSegundoNivel(){
 	if(!getNivel_1){
 		$('#sel2').html('<option value="">Elegir</option>');
 		return;
-	}	
-	//console.log("---1--->"+getNivel_1);
+	}
+
 	$.get('../../api/admin/mantestruct/'+getNivel_1,function(data){
 	var html_select2="<option value=''>Elegir</option>";
-	//console.log("---2--->"+getNivel_1+"---data-->>");	
 	for (var i=0; i < data.length; i++)
 		html_select2 += '<option value="'+data[i].IdEstructura.substr(0,4)+'">'+data[i].IdEstructura.substr(0,4)+' | '+data[i].Descripcion+'</option>';
 		$('#sel2').html(html_select2);	
@@ -153,25 +153,33 @@ function OnLoadSelectQuintoNivel(){
 	$.get('../../api/admin/mantestruct/'+getNivel_4,function(data){
 	var html_select5="<option value=''>Elegir</option>";	
 	for (var i=0; i < data.length; i++)
-		html_select5 += '<option value="'+data[i].IdEstructura+'">'+data[i].IdEstructura+' | '+data[i].dep2+'</option>';
+		html_select5 += '<option value="'+data[i].IdEstructura+'">'+data[i].IdEstructura+' | '+data[i].Descripcion+'</option>';
 		$('#sel5').html(html_select5);	
 	});	
 }
-/*
-function setFlagThree(){
-	var _string=	$('#sel3').val();	
-	getResultChangeDatos(_string)
-}
-function setFlagFour(){
-	var _string=	$('#sel4').val();	
-	getResultChangeDatos(_string)
-}*/
-function setFlagFive(){
-	var _string=	$('#sel5').val();	
-	getResultChangeDatos(_string)
+function OnLoadSelectSextoNivel(){
+	var getNivel_5= $('#sel5').val();	
+	if(!getNivel_5){
+		$('#sel6').html('<option value="">Elegir[No existe registros]</option>');
+		return;
+	}	
+	$.get('../../api/admin/mantestruct/'+getNivel_5,function(data){
+	var html_select6="<option value=''>Elegir</option>";	
+	for (var i=0; i < data.length; i++)
+		html_select6 += '<option value="'+data[i].IdEstructura+'">'+data[i].IdEstructura+' | '+data[i].Descripcion+'</option>';
+		$('#sel6').html(html_select6);	
+	});	
 }
 
-function getResultChangeDatos(id){	
+function setFlagFive(){
+	var _string=	$('#sel6').val();	
+	getResultChangeDatos(_string);
+}
+
+
+
+function getResultChangeDatos(id){
+alert(id)	;
 	$.get('../../api/admin/mantestruct/list2/'+id,function(datap){
 		console.log("===>"+datap);
 		var tableHtml='';
@@ -180,11 +188,10 @@ function getResultChangeDatos(id){
        	if(datap.length!=0){  
        		var xy=0;	
        		$('#IdSearchChangeEstruDest').html("");	
-			for (var i=0; i < datap.length; i++){
+			for (var i=0; i < datap.length; i++){ console.log(id);
 				xy++;				
 				tableHtml += '<tr>'+
 					'<td>'+xy+'</td>'+
-					/*'<td>'+datap[i].organo+' | '+datap[i].dep+' | '+datap[i].descrip+'</td>'+*/
 					'<td>'+datap[i].IdNivel+' | '+datap[i].cargo+'</td>'+
 					'<td>'+datap[i].nombres+'</td>'+
 					'</tr>';

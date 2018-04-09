@@ -15,8 +15,10 @@ function GetSelEstructura(id) {
         formData.append('id',$('#select_nivel2').val());
      }else if(id=="4"){
         formData.append('id',$('#select_nivel3').val());
-     }else{
+     }else if(id=="5"){
         formData.append('id',$('#select_nivel4').val());
+     }else {
+       formData.append('id',$('#select_nivel5').val());
      }
 
     $('.loading').show();
@@ -37,6 +39,8 @@ function GetSelEstructura(id) {
                  }else if(id=="4"){
                  getSelect4(data);
                  }else if(id=="5"){
+                 getSelect5(data);
+                 }else if(id=="6"){
                  getAllRowsEstru(data);
                  }
            $('.loading').hide(); 
@@ -73,6 +77,14 @@ function getSelect4(data) {
       });   
 }
 
+function getSelect5(data) { 
+    var html_select5="";  
+      $.each(data, function( key, value ) {      
+       html_select5 += '<option value="'+value.IdEstructura+'">'+value.IdEstructura+' | '+value.Descripcion+'</option>';
+      $('#select_nivel5').html(html_select5); 
+           
+      });   
+}
 function getAllRowsEstru(data) { 
     var xy=0;
     var tableHtml="";  
@@ -97,7 +109,8 @@ function putEstructuraJs(id){
   $('#idcentro').html("<b>"+$('#select_nivel2 option:selected').html()+"</b>"); 
   $('#idsubcentro').html("<b>"+$('#select_nivel3 option:selected').html()+"</b>"); 
   $('#iddepen').html("<b>"+$('#select_nivel4 option:selected').html()+"</b>"); 
-  $('#idoficina').html("<b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"+id+" | "+$('#'+id).val()+"</b>"); 
+  $('#idoficina').html("<b>"+$('#select_nivel5 option:selected').html()+"</b>"); 
+  $('#idservicio').html("<b>"+id+" | "+$('#'+id).val()+"</b>"); 
   $('#txthidenEstru').val(id);
 /*======================================*/
   $('#CierrameModal').click()

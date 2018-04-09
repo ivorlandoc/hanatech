@@ -283,6 +283,7 @@ Alta de Plazas
                             </div>
                             <div class="modal-body">
                                 <div class="row">
+                                     <div id="msjcount"></div>
                                     <div class="table-responsive" >
                                            <form method="get" name="frmResult" id='form_validation' enctype="multipart/form-data" action="#">   
                                                 <div class="col-md-12">
@@ -302,7 +303,7 @@ Alta de Plazas
                                                     </div>
 
                                                      <div class="form-group">                      
-                                                            <select id="select_nivel-2" class="form-control select2" name="select_4dig" onclick="onChangeAll_2()" >
+                                                            <select id="select_nivel-2" class="form-control select2" name="select_4dig" onchange="onChangeAll_2()" >
                                                                 <option value="%">Todos</option>        
                                                                 
                                                             </select>
@@ -315,12 +316,14 @@ Alta de Plazas
                                                             </select>                            
                                                         </div>
                                                     
-                                                         <div class="form-group">
+                                                        <div class="form-group">
                                                             <!--<label for="e1" class="control-label">Todos</label>-->
                                                             <select id="select_nivel-4" class="form-control select2" name="select_10dig" onchange="onChangeAll_4()" >
                                                                 <option value="%">Todos</option>                                
                                                             </select>                            
                                                         </div>
+
+                                                      
 
 
                                                     <!-- ==========draw table========== -->
@@ -338,6 +341,7 @@ Alta de Plazas
                                                                 </tbody>
                                                             </table>
                                                         </div>
+                                                       
                                                     </div>                        
                                                     <!-- ================ -->                        
                                                 </div>

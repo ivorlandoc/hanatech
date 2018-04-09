@@ -90,7 +90,8 @@ function manageRows(data) {
                 tableHtml += '<tr>'+
                  '<td>'+xy+'</td>'+                         
                  '<td>'+value.codestru+'</td>'+                    
-                 '<td>'+value.organo+' | '+value.dep+' | '+value.Descripcion+'</td>'+                        
+                 '<td>'+value.organo+'</td>'+  
+                 '<td>'+value.dep+' | '+value.subg+' | '+value.ofi+' | '+value.Descripcion+'</td>'+                       
                  '<td>'+value.NroPlaza+' </td> '+                          
                  '<td>'+value.Cargo+' </td> '+                 
                  '<td>'+value.dni+'</td> '+                             

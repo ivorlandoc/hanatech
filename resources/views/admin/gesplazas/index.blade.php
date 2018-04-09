@@ -155,8 +155,8 @@ Gestionar Plazas
                                     <input type="hidden" name="_ttoken" value="{{ csrf_token()}}">                        
                                     <select id="select_10" class="form-control select2" name="select_2dig" required="">
                                         <option value="">Elegir</option>                                        
-                                       @foreach ($getDosDig as $getAll) 
-                                            <option value="{{ substr($getAll->IdEstructura,0,2) }}">{{ substr($getAll->IdEstructura,0,2) }} - {{ $getAll->Descripcion }}</option>
+                                       @foreach ($getDosDig as $key) 
+                                            <option value="{{ $key->IdEstructura }}">{{ $key->IdEstructura }} - {{ $key->Descripcion }}</option>
                                         @endforeach  
                                     </select>                                    
                                 </div>

@@ -37,17 +37,18 @@ class AltadeplazaController extends JoshController {
     }
      public function getEstructura($id){       
        //$data=DB::table('estructura')->select('IdEstructura','Descripcion')->where('IdEstructura', 'like', "__00000000")->get();    
-       $data=DB::table('estructura')->select('NewCodigo as IdEstructura','Descripcion')->where(DB::raw('LENGTH(NewCodigo)'), '=', "2")->get();
+       $data=DB::table('estructura')->select('IdEstructura','Descripcion')->where(DB::raw('LENGTH(IdEstructura)'), '=', "2")->get();
 
       return  $data;
     }
 
     public function getPlaza($id){   
         $data = DB::select("SELECT CONVERT(IdPlaza, CHAR(6)) AS IdPlaza,IdPersona,IdEstructura,
-                (SELECT Descripcion FROM estructura WHERE LEFT(IdEstructura,2)=LEFT((SELECT NewCodigo FROM estructura WHERE IdEstructura=c.IdEstructura),2) LIMIT 1) AS sede,
-                (SELECT Descripcion FROM estructura WHERE LEFT(IdEstructura,4)=LEFT((SELECT NewCodigo FROM estructura WHERE IdEstructura=c.IdEstructura),4) LIMIT 1) AS organo,
-                (SELECT Descripcion FROM estructura WHERE LEFT(IdEstructura,7)=LEFT((SELECT NewCodigo FROM estructura WHERE IdEstructura=c.IdEstructura),7) LIMIT 1) AS dep,
-                (SELECT Descripcion FROM estructura WHERE LEFT(IdEstructura,11)=LEFT((SELECT NewCodigo FROM estructura WHERE IdEstructura=c.IdEstructura),11) LIMIT 1) AS dep2,
+                (SELECT Descripcion FROM estructura WHERE LEFT(IdEstructura,2)=LEFT((SELECT IdEstructura FROM estructura WHERE IdEstructura=c.IdEstructura),2) LIMIT 1) AS sede,
+                (SELECT Descripcion FROM estructura WHERE LEFT(IdEstructura,4)=LEFT((SELECT IdEstructura FROM estructura WHERE IdEstructura=c.IdEstructura),4) LIMIT 1) AS organo,
+                (SELECT Descripcion FROM estructura WHERE LEFT(IdEstructura,6)=LEFT((SELECT IdEstructura FROM estructura WHERE IdEstructura=c.IdEstructura),6) LIMIT 1) AS dep,
+                (SELECT Descripcion FROM estructura WHERE LEFT(IdEstructura,8)=LEFT((SELECT IdEstructura FROM estructura WHERE IdEstructura=c.IdEstructura),8) LIMIT 1) AS dep2,
+                (SELECT Descripcion FROM estructura WHERE LEFT(IdEstructura,10)=LEFT((SELECT IdEstructura FROM estructura WHERE IdEstructura=c.IdEstructura),10) LIMIT 1) AS ofi,
                 (SELECT Descripcion FROM estructura WHERE IdEstructura=c.IdEstructura ) AS descrip,
                 c.IdCargo,NroPlaza, IF(ca.IdTipo='1','ADMINISTRATIVO','ASISTENCIAL') AS tipo, IdNivel,ca.Descripcion AS cargo 
                 FROM cuadronominativo AS c INNER JOIN cargo ca ON ca.IdCargo=c.IdCargo WHERE NroPlaza='$id'");
@@ -213,27 +214,27 @@ public function ProcesaInsertAlta(Request $Request){
         }   
 
 public function getEstructuraShowLink($id){
-             $dataP =DB::select('SELECT  c.IdPersona,IdPlaza, c.NroPlaza, c.IdEstructura,e.Descripcion AS descripcion,
-                      car.IdNivel,car.Descripcion AS cargo,IF(p.ApellidoPat IS NULL,"-",p.ApellidoPat)  AS ApellidoPat,
-                      IF(p.ApellidoMat IS NULL,"-",p.ApellidoMat) AS ApellidoMat,IF(p.Nombres IS NULL,"-",p.Nombres) AS Nombres
-                      FROM cuadronominativo  c  LEFT JOIN persona p ON p.IdPersona=c.IdPersona
-                        INNER JOIN cargo car ON car.IdCargo=c.IdCargo   INNER JOIN estructura e ON e.IdEstructura=c.IdEstructura
-                         WHERE  c.IdEstructura LIKE "'.$id.'%" GROUP BY e.IdEstructura,IdTipo,NroPlaza');  
+    $dataP =DB::select('SELECT  c.IdPersona,IdPlaza, c.NroPlaza, c.IdEstructura,e.Descripcion AS descripcion,
+      car.IdNivel,car.Descripcion AS cargo,IF(p.ApellidoPat IS NULL,"-",p.ApellidoPat)  AS ApellidoPat,
+      IF(p.ApellidoMat IS NULL,"-",p.ApellidoMat) AS ApellidoMat,IF(p.Nombres IS NULL,"-",p.Nombres) AS Nombres
+      FROM cuadronominativo  c  LEFT JOIN persona p ON p.IdPersona=c.IdPersona
+        INNER JOIN cargo car ON car.IdCargo=c.IdCargo   INNER JOIN estructura e ON e.IdEstructura=c.IdEstructura
+         WHERE  c.IdEstructura LIKE "'.$id.'%" GROUP BY e.IdEstructura,IdTipo,NroPlaza limit 500');  
 
         return $dataP;//sview('admin.plazas.index',compact('AllData')); 
     }
 
-    public function getResultSearchPer($id){
-    $dataP =DB::select("SELECT Dni,CONCAT(ApellidoPat,' ',ApellidoMat,' ',Nombres) AS Nombres,convert(NroPlaza, char(8)) as NroPlaza FROM persona p LEFT JOIN cuadronominativo c ON c.IdPersona=p.IdPersona WHERE (Dni LIKE '".$id."%' OR CONCAT(ApellidoPat,' ', ApellidoMat,' ',Nombres) LIKE '".$id."%') GROUP BY c.IdPersona limit 10");  
-        return $dataP;
-    }
+public function getResultSearchPer($id){
+$dataP =DB::select("SELECT Dni,CONCAT(ApellidoPat,' ',ApellidoMat,' ',Nombres) AS Nombres,convert(NroPlaza, char(8)) as NroPlaza FROM persona p LEFT JOIN cuadronominativo c ON c.IdPersona=p.IdPersona WHERE (Dni LIKE '".$id."%' OR CONCAT(ApellidoPat,' ', ApellidoMat,' ',Nombres) LIKE '".$id."%') GROUP BY c.IdPersona limit 10");  
+return $dataP;
+}
 
-     public function getResultSearchPerSet($id){
-            $id=str_pad($id,8, "0", STR_PAD_LEFT);
-            $dataP=DB::table('persona')->select('IdPersona','IdTipoDocumento','Dni','ApellidoPat','ApellidoMat','Nombres',
-               'FechaNac','FechaIngreso','IdRegimen','Genero','IdProfesion','Especialidad','IdPais','Direccion', 'Residentado')->where('Dni','=',$id)->get(); 
+public function getResultSearchPerSet($id){
+    $id=str_pad($id,8, "0", STR_PAD_LEFT);
+    $dataP=DB::table('persona')->select('IdPersona','IdTipoDocumento','Dni','ApellidoPat','ApellidoMat','Nombres',
+       'FechaNac','FechaIngreso','IdRegimen','Genero','IdProfesion','Especialidad','IdPais','Direccion', 'Residentado')->where('Dni','=',$id)->get(); 
 
-        return $dataP;
-    }
+return $dataP;
+}
 
 }

@@ -105,6 +105,7 @@ Alta de Plazas
                                     <div class="form-group" id="idsubcentro"></div>
                                     <div class="form-group" id="iddepen"></div>
                                     <div class="form-group" id="idoficina"></div>
+                                    <div class="form-group" id="idservicio"></div>
                                     <input type="hidden" id="txthidenEstru" name="txthidenEstru" readonly="">
                                 </div>
 
@@ -219,6 +220,11 @@ Alta de Plazas
                                                     
                                                          <div class="form-group">                                                         
                                                             <select id="select_nivel4" class="form-control select2" name="select_nivel4" onclick="GetSelEstructura(5)">
+                                                                <option value="%">Todos</option>                                
+                                                            </select>                            
+                                                        </div>
+                                                        <div class="form-group">                                                         
+                                                            <select id="select_nivel5" class="form-control select2" name="select_nivel5" onclick="GetSelEstructura(6)">
                                                                 <option value="%">Todos</option>                                
                                                             </select>                            
                                                         </div>

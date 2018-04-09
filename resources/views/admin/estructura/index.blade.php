@@ -56,7 +56,7 @@ Estructuras
                                 <select id="select_nivel-0" class="form-control select2" name="select_2dig">
                                 <option value="%">Todos</option>                                        
                                    @foreach ($getDosDig as $getAll) 
-                                        <option value="{{ substr($getAll->IdEstructura,0,2) }}">{{ substr($getAll->IdEstructura,0,2) }} - {{ $getAll->Descripcion }}</option>
+                                        <option value="{{ $getAll->IdEstructura }}"> {{ $getAll->Descripcion }}</option>
                                     @endforeach 
                                 </select>
                             </div>
@@ -68,7 +68,7 @@ Estructuras
                         </div>
 
                         <div class="form-group">                      
-                            <select id="select_nivel-2" class="form-control select2" name="select_4dig" >
+                            <select id="select_nivel-2" class="form-control select2" name="select_4dig"  onclick="GetIdSelectLevelThree()">
                                 <option value="%">Todos</option>        
                                 
                             </select>
@@ -76,7 +76,7 @@ Estructuras
                         </div>
 
                         <div class="form-group">
-                            <select id="select_nivel-3" class="form-control select2" name="select_7dig" onclick ="GetIdSelectLevelThree()">
+                            <select id="select_nivel-3" class="form-control select2" name="select_7dig" onclick ="GetIdSelectLevelFour()">
                                 <option value="%">Todos</option>                                
                             </select>                            
                         </div>

@@ -33,9 +33,10 @@ function Rows(data) {
              xy++;   
             rows = rows + '<tr>';
             rows = rows + '<td>'+xy+'</td>';
+            rows = rows + '<td>'+value.sede+'</td>';
             rows = rows + '<td>'+value.organo+'</td>';
             rows = rows + '<td>'+value.dep+'</td>';
-            rows = rows + '<td>'+value.descripcion+'</td>';
+            rows = rows + '<td>'+value.ofi+' | '+value.descripcion+'</td>';
             rows = rows + '<td>'+value.NroPlaza+'</td>';
             rows = rows + '<td>'+value.dni+'</td>';
             rows = rows + '<td>'+value.ApellidoPat+' '+value.ApellidoMat+' '+value.Nombres+'</td>';

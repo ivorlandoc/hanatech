@@ -13,7 +13,6 @@ use input;
 use Carbon\Carbon;
 
 class PlazasporcargoController extends Controller {
-  public function __construct(){}
 
      public function index(Request $request){     			
      			$data=DB::select("SELECT IdRegimen,Sigla FROM  regimen WHERE IdRegimen IN('9','4')");		   

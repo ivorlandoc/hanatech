@@ -33,7 +33,7 @@
                 Activity Log
             </a>
         </li>
-   
+    
 
   <!--
  <li {!! (Request::is('admin/users') || Request::is('admin/users/create') || Request::is('admin/user_profile') || Request::is('admin/users/*') || Request::is('admin/deleted_users') ? 'class="active"' : '') !!}>       
@@ -251,7 +251,7 @@
 
         </ul>
         
-        <li {!! (Request::is('admin/rptetempo') || Request::is('admin/rptetempo/create') || Request::is('reportes/rplazas') || Request::is('reportes/rbajas') || Request::is('reportes/plazacargo')|| Request::is('admin/rptetempo/*') ? 'class="active"' : '') !!}>
+        <li {!! (Request::is('admin/rptetempo') || Request::is('admin/rptetempo/create') || Request::is('reportes/rplazas') || Request::is('reportes/rbajas') || Request::is('reportes/externo')  || Request::is('reportes/plazacargo') || Request::is('admin/rptetempo/*') ? 'class="active"' : '') !!}>
         <a href="#">
             <i class="livicon" data-name="barchart" data-size="18" data-c="#6CC66C" data-hc="#6CC66C"
                data-loop="true"></i>
@@ -273,23 +273,29 @@
                 </a>
             </li>
             
-            <li {!! (Request::is('reportes/plazacargo/') ? 'class="active" id="active"' : '') !!}>
+            <li {!! (Request::is('reportes/plazacargo') ? 'class="active" id="active"' : '') !!}>
                 <a href="{{ URL::to('reportes/plazacargo') }}">
                     <i class="fa fa-angle-double-right"></i>
                     Plazas Por Cargo
                 </a>
             </li>
-             <li {!! (Request::is('reportes/reject/') ? 'class="active" id="active"' : '') !!}>
+             <li {!! (Request::is('reportes/reject') ? 'class="active" id="active"' : '') !!}>
                 <a href="{{ URL::to('reportes/reject') }}">
                     <i class="fa fa-angle-double-right"></i>
                     ...
                 </a>
             </li>
 
-             <li {!! (Request::is('reportes/rbajas/') ? 'class="active" id="active"' : '') !!}>
+             <li {!! (Request::is('reportes/rbajas') ? 'class="active" id="active"' : '') !!}>
                 <a href="{{ URL::to('reportes/rbajas') }}">
                     <i class="fa fa-angle-double-right"></i>
                     Altas y Bajas
+                </a>
+            </li>
+            <li {!! (Request::is('reportes/externo') ? 'class="active" id="active"' : '') !!}>
+                <a href="{{ URL::to('reportes/externo') }}">
+                    <i class="fa fa-angle-double-right"></i>
+                    Consulta de Plaza
                 </a>
             </li>
            
@@ -330,12 +336,12 @@
             <span class="fa arrow"></span>
         </a>
         <ul class="sub-menu">
-              <li {!! (Request::is('admin/reserva') ? 'class="active"' : '') !!}>
+             <!-- <li {!! (Request::is('admin/reserva') ? 'class="active"' : '') !!}>
                 <a href="{{ URL::to('admin/reserva') }}">
                     <i class="fa fa-angle-double-right"></i>
                     Reserva de Plaza
                 </a>
-            </li>
+            </li>-->
 
              <li {!! (Request::is('admin/estructura') ? 'class="active"' : '') !!}>
                 <a href="{{ URL::to('admin/estructura') }}">
@@ -433,7 +439,7 @@
 
 
 
-    <li {!! (Request::is('admin/rptetempo') || Request::is('admin/rptetempo/create') || Request::is('reportes/plazas') || Request::is('reportes/rbajas') || Request::is('admin/rptetempo/*') ? 'class="active"' : '') !!}>
+    <li {!! (Request::is('admin/rptetempo') || Request::is('admin/rptetempo/create') || Request::is('reportes/rplazas') || Request::is('reportes/externo') || Request::is('reportes/rbajas') || Request::is('admin/rptetempo/*') ? 'class="active"' : '') !!}>
         <a href="#">
             <i class="livicon" data-name="barchart" data-size="18" data-c="#6CC66C" data-hc="#6CC66C"
                data-loop="true"></i>
@@ -448,8 +454,8 @@
                 </a>
             </li>
 
-            <li {!! (Request::is('reportes/plazas') ? 'class="active" id="active"' : '') !!}>
-                <a href="{{ URL::to('reportes/plazas') }}">
+            <li {!! (Request::is('reportes/rplazas') ? 'class="active" id="active"' : '') !!}>
+                <a href="{{ URL::to('reportes/rplazas') }}">
                     <i class="fa fa-angle-double-right"></i>
                     Reporte Gral de Plazas
                 </a>
@@ -459,6 +465,12 @@
                 <a href="{{ URL::to('reportes/rbajas') }}">
                     <i class="fa fa-angle-double-right"></i>
                     Altas y Bajas
+                </a>
+            </li>
+             <li {!! (Request::is('reportes/externo') ? 'class="active" id="active"' : '') !!}>
+                <a href="{{ URL::to('reportes/externo') }}">
+                    <i class="fa fa-angle-double-right"></i>
+                    Consulta de Plaza
                 </a>
             </li>
            

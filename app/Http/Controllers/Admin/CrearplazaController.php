@@ -22,24 +22,28 @@ class CrearplazaController extends Controller {
         $idUserSession = Sentinel::getUser()->id;   //almacena id de sesion activa  
         $allNivel=DB::table('nivel')->select('IdNivel','Descripcion')->orderBy('IdNivel')->Get();
         $allCargo=DB::table('cargo')->select('IdCargo','Descripcion')->where('Flag','O')->orderBy('IdCargo')->Get();
-        $data=DB::table('estructura')->select('NewCodigo as IdEstructura','Descripcion')->where(DB::raw('LENGTH(NewCodigo)'), '=', "2")->get();
+        $data=DB::table('estructura')->select('IdEstructura','Descripcion')->where(DB::raw('LENGTH(IdEstructura)'), '=', "2")->get();
         $conta=DB::table('contadorplaza')->select('r728','rcas')->get();
         return view('admin.creaplaza.index', compact('idUserSession','allNivel','allCargo','data','conta'));
     }
 public function getStructuras(Request $request,$id){
         $id= $request->input("id");      
         if(strlen($id)=="2"){   
-            $data=DB::table('estructura')->select('NewCodigo as IdEstructura','Descripcion')->where(DB::raw('LENGTH(NewCodigo)'), '=', "4")->where('NewCodigo', 'like', $id.'%')->get();
+             $data=DB::table('estructura')->select('IdEstructura','Descripcion')->where(DB::raw('LENGTH(IdEstructura)'), '=', "4")->where('IdEstructura', 'like', $id.'%')->get();
         } elseif (strlen($id)=="4") { 
-             $data=DB::table('estructura')->select('NewCodigo as IdEstructura','Descripcion')->where(DB::raw('LENGTH(NewCodigo)'), '=', "7")->where('NewCodigo', 'like', $id.'%')->get();
-         }elseif (strlen($id)=="7") {
-             $data=DB::table('estructura')->select('NewCodigo as IdEstructura','Descripcion')->where(DB::raw('LENGTH(NewCodigo)'), '=', "11")->where('NewCodigo', 'like', $id.'%')->get();           
-         }elseif (strlen($id)=="11") {
-            $data=DB::table('estructura')->select('IdEstructura','Descripcion')->where(DB::raw('LENGTH(NewCodigo)'), '=', "15")->where('NewCodigo', 'like', $id.'%')->get();           
-         }         
+             $data=DB::table('estructura')->select('IdEstructura','Descripcion')->where(DB::raw('LENGTH(IdEstructura)'), '=', "6")->where('IdEstructura', 'like', $id.'%')->get();
+         }elseif (strlen($id)=="6") {           
+            $data=DB::table('estructura')->select('IdEstructura','Descripcion')->where(DB::raw('LENGTH(IdEstructura)'), '=', "8")->where('IdEstructura', 'like', $id.'%')->get();
+        } elseif (strlen($id)=="8" ) {
+          $data=DB::table('estructura')->select('IdEstructura','Descripcion')->where(DB::raw('LENGTH(IdEstructura)'), '=', "10")->where('IdEstructura', 'like', $id.'%')->get();
+               
+         } elseif (strlen($id)=="10" ) {     
+          $data=DB::table('estructura')->select('IdEstructura','Descripcion')->where(DB::raw('LENGTH(IdEstructura)'), '=', "12")->where('IdEstructura', 'like', $id.'%')->get();       
+         }        
         return Response::json($data);   
     }
  
+
 /*
    public function showDatosdep(Request $request,$id){   
         $data = DB::select("SELECT IdEstructura,NewCodigo,LEFT(NewCodigo,2) AS org,LEFT(NewCodigo,4) AS geren, LEFT(NewCodigo,7) AS dep,

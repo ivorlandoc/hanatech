@@ -1,67 +1,83 @@
 <?php namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
-use App\Http\Requests;
-use\App\Http\Controllers\JoshController;
-use App\Http\Requests\UserRequest;
+use App\Cargo;
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\Facade;
 use Illuminate\Database\Eloquent\Model;
-use Auth;
 use DB;
+
+use App\Http\Controllers\JoshController;
+use App\Http\Requests\UserRequest;
+use App\User;
+use Cartalyst\Sentinel\Laravel\Facades\Activation;
+use File;
+use Hash;
+use Illuminate\Support\Facades\Mail;
+use Redirect;
+use Sentinel;
+use URL;
+use View;
+use Yajra\DataTables\DataTables;
+use Validator;
+Use App\Mail\Restore;
+use stdClass;
 use Input;
 use Response;
-USE json;
 use Carbon\Carbon;
-use Sentinel;
-use User;
-
+use Persona;
+use Illuminate\Database\Eloquent;
 
 
 class ManteEstructurasController extends Controller { 
 
     public function index(Request $request){
-        $getDosDig=DB::table('estructura')->select('NewCodigo as IdEstructura','Descripcion')->where(DB::raw('LENGTH(NewCodigo)'), '=', "2")->get();   
+          
+        $getDosDig=DB::table('estructura')->select('IdEstructura','Descripcion')->where(DB::raw('LENGTH(IdEstructura)'), '=', "2")->get();   
        return view('admin.mantestruct.index',compact('getDosDig')); 
     }
 function getResultSelect($id){
-  $data=DB::table('estructura')->select('NewCodigo as IdEstructura','Descripcion')->where(DB::raw('LENGTH(NewCodigo)'), '=', "2")->get();
+  $data=DB::table('estructura')->select('IdEstructura','Descripcion')->where(DB::raw('LENGTH(IdEstructura)'), '=', "2")->get();
   return $data;       
 }
 
 public function GetSelect($id){
           if(strlen($id)=="2"){
-            $data=DB::table('estructura')->select('NewCodigo as IdEstructura','Descripcion')->where(DB::raw('LENGTH(NewCodigo)'), '=', "4")->where('NewCodigo', 'like', $id.'%')->get();
+            $data=DB::table('estructura')->select('IdEstructura','Descripcion')->where(DB::raw('LENGTH(IdEstructura)'), '=', "4")->where('IdEstructura', 'like', $id.'%')->get();
         } elseif (strlen($id)=="4") { 
-             $data=DB::table('estructura')->select('NewCodigo as IdEstructura','Descripcion')->where(DB::raw('LENGTH(NewCodigo)'), '=', "7")->where('NewCodigo', 'like', $id.'%')->get();
-         }elseif (strlen($id)=="7") {           
-            $data=DB::table('estructura')->select('NewCodigo as IdEstructura','Descripcion')->where(DB::raw('LENGTH(NewCodigo)'), '=', "11")->where('NewCodigo', 'like', $id.'%')->groupBy('NewCodigo')->get();
-        }  /*elseif (strlen($id)=="11") {
-           $data=DB::table('estructura')->select('NewCodigo as IdEstructura','Descripcion')->where(DB::raw('LENGTH(NewCodigo)'), '=', "15")->where('NewCodigo', 'like', $id.'%')->groupBy('NewCodigo')->get();
-         }*/elseif (strlen($id)=="11") {
-             $data=DB::select("SELECT IdEstructura,
-              (SELECT Descripcion FROM estructura WHERE LEFT(NewCodigo,4)=LEFT('$id',4) LIMIT 1) AS organo,
-              (SELECT Descripcion FROM estructura WHERE LEFT(NewCodigo,7)=LEFT('$id',7) LIMIT 1) AS gerencia,
-              (SELECT Descripcion FROM estructura WHERE LEFT(NewCodigo,11)=LEFT('$id',11) LIMIT 1) AS dependencia,             
-               descripcion as dep2
-              FROM estructura WHERE NewCodigo LIKE '$id%' AND LENGTH(NewCodigo)>11  group by NewCodigo ORDER BY descripcion ASC");             
-         }  
+             $data=DB::table('estructura')->select('IdEstructura','Descripcion')->where(DB::raw('LENGTH(IdEstructura)'), '=', "6")->where('IdEstructura', 'like', $id.'%')->get();
+         }elseif (strlen($id)=="6") {           
+            $data=DB::table('estructura')->select('IdEstructura','Descripcion')->where(DB::raw('LENGTH(IdEstructura)'), '=', "8")->where('IdEstructura', 'like', $id.'%')->get();//->groupBy('NewCodigo')->get();
+        } elseif (strlen($id)=="8" ) {
+          $data=DB::table('estructura')->select('IdEstructura','Descripcion')->where(DB::raw('LENGTH(IdEstructura)'), '=', "10")->where('IdEstructura', 'like', $id.'%')->get();
+               
+         } elseif (strlen($id)=="10" ) {     
+          $data=DB::table('estructura')->select('IdEstructura','Descripcion')->where(DB::raw('LENGTH(IdEstructura)'), '=', "12")->where('IdEstructura', 'like', $id.'%')->get();       
+         }   
          return $data;
     }
 
+public function showdetalleestructura(Request $request,$id){
+    $_string="";
+  if($request->ajax()){ 
+        $idx                      = $request->input("id");
+        if($idx==2) {$_string     = $request->input("select_4dig"); }        
+        if($idx==3) {$_string     = $request->input("select_6dig"); }
+        if($idx==4) {$_string     = $request->input("select_8dig"); }
+        if($idx==5) {$_string     = $request->input("select_10dig"); }
+        $data=DB::select("SELECT IdEstructura,
+        (SELECT Descripcion FROM estructura WHERE LENGTH(IdEstructura)=4 AND LEFT(IdEstructura,4)=LEFT('$_string',4) LIMIT 1) AS organo,
+        (SELECT Descripcion FROM estructura WHERE LENGTH(IdEstructura)=6 AND LEFT(IdEstructura,6)=LEFT('$_string',6) LIMIT 1) AS gerencia,
+        (SELECT Descripcion FROM estructura WHERE LENGTH(IdEstructura)=8 AND LEFT(IdEstructura,8)=LEFT('$_string%',8) LIMIT 1) AS dependencia,
+        (SELECT Descripcion FROM estructura WHERE LENGTH(IdEstructura)=10 AND LEFT(IdEstructura,10)=LEFT('$_string%',10) LIMIT 1) AS oficina,
+        descripcion AS servicio
+        FROM estructura WHERE IdEstructura like '$_string%' ");  
+  }               
+      return Response::json($data);
 
-    public function showDetails($id){
-       $data=DB::select("SELECT Dni, IF(CONCAT(ApellidoPat,' ', ApellidoMat,' ',Nombres) IS NULL,' VACANTE', CONCAT(ApellidoPat,' ', ApellidoMat,' ',Nombres))AS nombres,CONVERT(IdPlaza,CHAR(6)) AS IdPlaza, IdEstructura,IdNivel,cu.IdCargo,car.Descripcion as cargo, cu.IdPersona,
-                          (SELECT Descripcion FROM estructura WHERE LEFT(IdEstructura,4)=LEFT((SELECT NewCodigo FROM estructura WHERE IdEstructura=cu.IdEstructura),4) limit 1) AS organo,
-                          (SELECT Descripcion FROM estructura WHERE LEFT(IdEstructura,7)=LEFT((SELECT NewCodigo FROM estructura WHERE IdEstructura=cu.IdEstructura),7) limit 1) AS dep,
-                          (SELECT Descripcion FROM estructura WHERE LEFT(IdEstructura,11)=LEFT((SELECT NewCodigo FROM estructura WHERE IdEstructura=cu.IdEstructura),11) limit 1) AS dep2,
-                          (SELECT Descripcion FROM estructura WHERE IdEstructura=cu.IdEstructura limit 1) AS descrip
-                          FROM persona AS p right JOIN  cuadronominativo AS cu ON p.IdPersona=cu.IdPersona
-                          INNER JOIN cargo AS car ON car.IdCargo=cu.IdCargo
-                           WHERE IdEsTructura LIKE '$id%' AND IdEstadoPlaza='1' ");
-        return $data;
-    }
+}
 
+
+   
 function updateOficinaEstruct(Request $request){            
                 $ipAddress = '';               
                 if (isset($_SERVER['HTTP_X_FORWARDED_FOR']) && ('' !== trim($_SERVER['HTTP_X_FORWARDED_FOR']))) {
@@ -80,6 +96,16 @@ function updateOficinaEstruct(Request $request){
             return Response::json($aff);
 }
 
+public function showDetails( $id){
+$data=DB::select("SELECT Dni, IF(CONCAT(ApellidoPat,' ', ApellidoMat,' ',Nombres) IS NULL,' VACANTE', CONCAT(ApellidoPat,' ', ApellidoMat,' ',Nombres))AS nombres,
+            CONVERT(IdPlaza,CHAR(6)) AS IdPlaza, IdEstructura,IdNivel,cu.IdCargo,car.Descripcion AS cargo, cu.IdPersona,
+            (SELECT Descripcion FROM estructura WHERE IdEstructura=cu.IdEstructura LIMIT 1) AS descrip
+            FROM persona AS p RIGHT JOIN  cuadronominativo AS cu ON p.IdPersona=cu.IdPersona
+            INNER JOIN cargo AS car ON car.IdCargo=cu.IdCargo
+             WHERE IdEsTructura LIKE '$id%' AND IdEstadoPlaza='1' ");
+return $data;
+}
+
 function addNewEstructura(Request $Request){
         $_user="Admin";
         $Resp;
@@ -95,7 +121,8 @@ function addNewEstructura(Request $Request){
                   'IdEstructura' =>$_NewCodigo,
                   'Descripcion'  =>$_txtcuartoNivel,
                   'IdUsuario'    =>$_user
-                ]);         
+                ]); 
+                        
             }
             if($Resp)                  
                     return Response::json($Resp); 
@@ -105,38 +132,53 @@ function addNewEstructura(Request $Request){
 
 
 public function create(){ 
-  return view('admin.mantestruct.create');
+    $idUserSession = Sentinel::getUser()->id;   //almacena id de sesion activa  
+  return view('admin.mantestruct.create',compact('idUserSession'));
 }
 
-  function getresult_change($id){
+  function getresult_change(Request $Request,$id){
+     if($Request->ajax()){   
           $data=DB::select("SELECT Dni, CONCAT(ApellidoPat,' ', ApellidoMat,' ',Nombres) AS nombres,CONVERT(IdPlaza,CHAR(6)) AS IdPlaza, IdEstructura,IdNivel,cu.IdCargo,car.Descripcion as cargo, cu.IdPersona,
-                          (SELECT Descripcion FROM estructura WHERE LEFT(IdEstructura,4)=LEFT(cu.IdEstructura,4) limit 1) AS organo,
-                          (SELECT Descripcion FROM estructura WHERE LEFT(IdEstructura,7)=LEFT(cu.IdEstructura,7) limit 1) AS dep,
-                          (SELECT Descripcion FROM estructura WHERE IdEstructura=cu.IdEstructura limit 1) AS descrip
-                          FROM persona AS p LEFT JOIN  cuadronominativo AS cu ON p.IdPersona=cu.IdPersona
-                          INNER JOIN cargo AS car ON car.IdCargo=cu.IdCargo
-                           WHERE (Dni LIKE '$id%' OR CONCAT(ApellidoPat,' ', ApellidoMat,' ',Nombres) LIKE '$id%') AND IdEstadoPlaza='1' limit 20");
-        return $data;
+                      (SELECT Descripcion FROM estructura WHERE LEFT(IdEstructura,4)=LEFT(cu.IdEstructura,4) LIMIT 1) AS organo,
+                      (SELECT Descripcion FROM estructura WHERE LEFT(IdEstructura,6)=LEFT(cu.IdEstructura,6) LIMIT 1) AS dep,
+                      (SELECT Descripcion FROM estructura WHERE LEFT(IdEstructura,8)=LEFT(cu.IdEstructura,8) LIMIT 1) AS centro,
+                      (SELECT Descripcion FROM estructura WHERE LEFT(IdEstructura,10)=LEFT(cu.IdEstructura,10) LIMIT 1) AS oficina,
+                      (SELECT Descripcion FROM estructura WHERE IdEstructura=cu.IdEstructura limit 1) AS descrip
+                      FROM persona AS p LEFT JOIN  cuadronominativo AS cu ON p.IdPersona=cu.IdPersona
+                      INNER JOIN cargo AS car ON car.IdCargo=cu.IdCargo
+                       WHERE (Dni LIKE '$id%' OR CONCAT(ApellidoPat,' ', ApellidoMat,' ',Nombres) LIKE '$id%') AND IdEstadoPlaza='1' limit 20");
+        }                            
+         return Response::json($data); 
       }
 
       /*==============================*/
-       function _cambiarDeEstructurapersona(Request $Request){
-        $_user="Admin";
+  public function _cambiarDeEstructurapersona(Request $Request){
+          $UserSession = Sentinel::findById($Request->input("idUserSession"));
+             $ipAddress = '';               
+                if (isset($_SERVER['HTTP_X_FORWARDED_FOR']) && ('' !== trim($_SERVER['HTTP_X_FORWARDED_FOR']))) {
+                    $ipAddress = trim($_SERVER['HTTP_X_FORWARDED_FOR']);
+                } else {
+                    if (isset($_SERVER['REMOTE_ADDR']) && ('' !== trim($_SERVER['REMOTE_ADDR']))) {
+                        $ipAddress = trim($_SERVER['REMOTE_ADDR']);
+                    }
+                } 
+
         $Resp="";
        if($Request->ajax()){          
                      
-                $_txt4toNivel       = $Request->input("sel4");
                 $_txt5toNivel       = $Request->input("sel5");
+                $_txt6toNivel       = $Request->input("sel6");
                 $_txtIdPlaza        = $Request->input("txtidplaza");
                 $_txtDocRef        = $Request->input("txtreferencia");   
                 $_txtFecDoc        = $Request->input("txtfechadoc");         
                 $_FileAdjChamge     = $Request->hasFile('FileAdjuntoChange');
                /*===========================================================================*/
                $_NewCodigo = "";
-               if($_txt5toNivel=="") $_NewCodigo=$_txt4toNivel; else $_NewCodigo=$_txt5toNivel;
+               if($_txt6toNivel=="") $_NewCodigo=$_txt5toNivel; else $_NewCodigo=$_txt6toNivel;
                 $Rpta=DB::table('cuadronominativo')->where('IdPlaza',$_txtIdPlaza)->update([
                   'IdEstructura' =>$_NewCodigo,                  
-                  'IdUsuario'    =>$_user,
+                  'IdUsuario'     =>$UserSession->email,
+                  'Ip'            =>$ipAddress,
                   'updated_at'   =>date('Y-m-d H:i:s'),
                   'created_at'   =>date('Y-m-d H:i:s') 
                 ]);  
@@ -169,7 +211,8 @@ public function create(){
                         'DocRef'        => $_txtDocRef,
                         'FileAdjunto'   => $name,
                         'Observacion'   => "",
-                        'IdUsuario'     => $_user,
+                        'IdUsuario'     =>$UserSession->email,
+                        'Ip'            =>$ipAddress,
                         'created_at'    => date('Y-m-d H:i:s'),
                         'updated_at'    => date('Y-m-d H:i:s')
                     ]);
@@ -180,6 +223,9 @@ public function create(){
                     return Response::json($Resp); 
                     else                  
                   return Response::json($Resp);
+
+
+
       }
       /*=============================*/
        

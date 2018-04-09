@@ -30,10 +30,11 @@ class ReservaController extends Controller {
             if($request->ajax()) { 
                 $plz         = $request->input("reserva_plaza"); 
                 $data = DB::select("SELECT IdPersona AS persona,CONVERT(IdPlaza,CHAR(7)) as IdPlaza,
-                          (SELECT descripcion FROM estructura WHERE LEFT(IdEstructura,2)=LEFT((SELECT NewCodigo FROM estructura WHERE IdEstructura=cu.IdEstructura),2) LIMIT 1) AS sede,
-                          (SELECT descripcion FROM estructura WHERE LEFT(IdEstructura,4)=LEFT((SELECT NewCodigo FROM estructura WHERE IdEstructura=cu.IdEstructura),4) LIMIT 1) AS organo,
-                          (SELECT descripcion FROM estructura WHERE LEFT(IdEstructura,7)=LEFT((SELECT NewCodigo FROM estructura WHERE IdEstructura=cu.IdEstructura),7) LIMIT 1) AS gerencia,
-                          (SELECT descripcion FROM estructura WHERE LEFT(IdEstructura,11)=LEFT((SELECT NewCodigo FROM estructura WHERE IdEstructura=cu.IdEstructura),11) LIMIT 1) AS dep,
+                          (SELECT descripcion FROM estructura WHERE LEFT(IdEstructura,2)=LEFT((SELECT IdEstructura FROM estructura WHERE IdEstructura=cu.IdEstructura),2) LIMIT 1) AS sede,
+                          (SELECT descripcion FROM estructura WHERE LEFT(IdEstructura,4)=LEFT((SELECT IdEstructura FROM estructura WHERE IdEstructura=cu.IdEstructura),4) LIMIT 1) AS organo,
+                          (SELECT descripcion FROM estructura WHERE LEFT(IdEstructura,6)=LEFT((SELECT IdEstructura FROM estructura WHERE IdEstructura=cu.IdEstructura),6) LIMIT 1) AS gerencia,
+                          (SELECT descripcion FROM estructura WHERE LEFT(IdEstructura,8)=LEFT((SELECT IdEstructura FROM estructura WHERE IdEstructura=cu.IdEstructura),8) LIMIT 1) AS dep,
+                          (SELECT descripcion FROM estructura WHERE LEFT(IdEstructura,10)=LEFT((SELECT IdEstructura FROM estructura WHERE IdEstructura=cu.IdEstructura),10) LIMIT 1) AS servicio,
                           (SELECT descripcion FROM estructura WHERE IdEstructura=cu.IdEstructura LIMIT 1) AS dependencia,
                           (SELECT  Descripcion FROM estadoplaza WHERE IdEstadoPlaza=cu.IdEstadoPlaza)AS estado,
                           IdNivel, c.Descripcion AS cargo,NroPlaza,c.IdCargo,IdEstructura

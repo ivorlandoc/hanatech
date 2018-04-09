@@ -67,7 +67,7 @@ function OnSelectOneGest(){
 		var html_select2="";
 		console.log(data);	
 		for (var i=0; i < data.length; i++)
-			html_select2 += '<option value="'+data[i].IdEstructura.substr(0,4)+'">'+data[i].IdEstructura.substr(0,4)+' | '+data[i].Descripcion+'</option>';
+			html_select2 += '<option value="'+data[i].IdEstructura+'">'+data[i].IdEstructura+' | '+data[i].Descripcion+'</option>';
 			$('#select_11').html(html_select2);
 		});
 		$('#select_22').html('<option value="">Elegir</option>');
@@ -85,7 +85,7 @@ function OnSelectTwoGest(){
 		var html_select3="";
 		//if(data3.length=="1") {html_select3 += '<option value="">Elegir</option>'; $('#select_nivel-4').html(html_select3);}
 		for (var i=0; i < data3.length; i++)
-			html_select3 += '<option value="'+data3[i].IdEstructura.substr(0,7)+'">'+data3[i].IdEstructura.substr(0,7)+' | '+data3[i].Descripcion+'</option>';
+			html_select3 += '<option value="'+data3[i].IdEstructura+'">'+data3[i].IdEstructura+' | '+data3[i].Descripcion+'</option>';
 			$('#select_22').html(html_select3);	
 		});
 		$('#select_33').html('<option value="">Elegir</option>');

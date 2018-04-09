@@ -129,9 +129,11 @@ public function ProcesaBajaInsert(Request $Request){
   	
     	public function GeTHeadPlaza($id){		
         		$GetHeadPlazaHow = DB::select("SELECT CONVERT(IdPlaza, char) as IdPlaza,p.IdPersona,c.IdEstructura,c.IdCargo,NroPlaza,
-							(SELECT Descripcion FROM Estructura WHERE LEFT(IdEstructura,4)=LEFT((SELECT NewCodigo FROM estructura WHERE IdEstructura=c.IdEstructura),4) LIMIT 1) AS desc1,
-							(SELECT Descripcion FROM Estructura WHERE LEFT(IdEstructura,7)=LEFT((SELECT NewCodigo FROM estructura WHERE IdEstructura=c.IdEstructura),7) LIMIT 1) AS desc2,
-              (SELECT Descripcion FROM Estructura WHERE LEFT(IdEstructura,11)=LEFT((SELECT NewCodigo FROM estructura WHERE IdEstructura=c.IdEstructura),11) LIMIT 1) AS desc3,
+              (SELECT Descripcion FROM estructura WHERE LEFT(IdEstructura,4)=LEFT((SELECT IdEstructura FROM estructura WHERE IdEstructura=c.IdEstructura),4) LIMIT 1) AS desc1,
+              (SELECT Descripcion FROM estructura WHERE LEFT(IdEstructura,6)=LEFT((SELECT IdEstructura FROM estructura WHERE IdEstructura=c.IdEstructura),6) LIMIT 1) AS desc2,
+              (SELECT Descripcion FROM estructura WHERE LEFT(IdEstructura,8)=LEFT((SELECT IdEstructura FROM estructura WHERE IdEstructura=c.IdEstructura),8) LIMIT 1) AS desc3,
+              (SELECT Descripcion FROM estructura WHERE LEFT(IdEstructura,10)=LEFT((SELECT IdEstructura FROM estructura WHERE IdEstructura=c.IdEstructura),10) LIMIT 1) AS ofi, 
+
 							e.Descripcion,CONCAT(ApellidoPat,' ', ApellidoMat,' ',Nombres)AS nombres,
 							ca.Descripcion AS cargo,IdNivel
 							FROM cuadronominativo AS c

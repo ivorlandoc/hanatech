@@ -49,8 +49,12 @@ Mantenedor
                     </span>
                 </div>
                 <div class="panel-body">
-                    <div class="col-md-12">
-                        <form name="frmupdateStruct" id="frmupdateStruct" action="{{ route('admin.filespdf.index','01') }}"> 
+                     <div id="IdMensajeAlert"></div>
+                    <div class="col-md-12">  
+                      
+                 {{ Form::open(array('route' => ['getload-det-estruct','1'], 'method' => 'post', 'id' => 'frmmantestru','name' => 'frmmantestru'))}}
+                       
+                      
                             <input type="hidden" name="token" value="{{ csrf_token()}}">
                             <div class="form-group">          
                                 <div class="input-group select2-bootstrap-append">     
@@ -71,22 +75,68 @@ Mantenedor
                                        
                                 </div>                            
                             </div>
-                            <div class="form-group">                      
-                                <select id="select_nivel1" class="form-control select2" name="select_4dig">
-                                    <option value="%">Todos</option>
-                                </select>
-                            </div>
+                            <div class="form-group">  
+                                    <div class="input-group select2-bootstrap-append">                      
+                                        <select id="select_nivel1" class="form-control select2" name="select_4dig" onchange ="ajaxloadDetEstruct(2)">
+                                            <option value="%">Todos</option>
+                                        </select>
 
-                            <div class="form-group">                      
-                                <select id="select_nivel2" class="form-control select2" name="select_7dig">
-                                    <option value="%">Todos</option>
-                                </select>
+                                             <span class="input-group-btn"><!-- onclick=viewEstructuraEnPdf() -->
+                                                    <a href="{{ route('admin.filespdf.index','01') }}" data-toggle="modal">
+                                                        <button class="btn btn-default" type="button" data-select2-open="single-append-text">
+                                                            &nbsp<span class="glyphicon glyphicon-add"></span>&nbsp<b>+</b>
+                                                        </button>
+                                                    </a>
+                                            </span>
+                                    </div>
                             </div>
 
                             <div class="form-group">
-                                <select id="select_nivel3" class="form-control select2" name="select_11dig" onclick="GetIdSelectFour()">
-                                    <option value="%">Todos</option>                                
-                                </select>                            
+                                <div class="input-group select2-bootstrap-append"> 
+                                    <select id="select_nivel2" class="form-control select2" name="select_6dig" onchange="ajaxloadDetEstruct(3)">
+                                        <option value="%">Todos</option>
+                                    </select>
+
+                                     <span class="input-group-btn"><!-- onclick=viewEstructuraEnPdf() -->
+                                            <a href="{{ route('admin.filespdf.index','01') }}" data-toggle="modal">
+                                                <button class="btn btn-default" type="button" data-select2-open="single-append-text">
+                                                    &nbsp<span class="glyphicon glyphicon-add"></span>&nbsp<b>+</b>
+                                                </button>
+                                            </a>
+                                    </span>
+                                </div>
+
+                            </div>
+
+                            <div class="form-group">
+                                 <div class="input-group select2-bootstrap-append"> 
+                                        <select id="select_nivel3" class="form-control select2" name="select_8dig" onclick="ajaxloadDetEstruct(4)">
+                                            <option value="%">Todos</option>                                
+                                        </select>  
+                                        <span class="input-group-btn"><!-- onclick=viewEstructuraEnPdf() -->
+                                            <a href="{{ route('admin.filespdf.index','01') }}" data-toggle="modal">
+                                                <button class="btn btn-default" type="button" data-select2-open="single-append-text">
+                                                    &nbsp<span class="glyphicon glyphicon-add"></span>&nbsp<b>+</b>
+                                                </button>
+                                            </a>
+                                        </span>
+                                </div>
+                            </div> 
+
+                            <div class="form-group">
+                                <div class="input-group select2-bootstrap-append">
+                                        <select id="select_nivel4" class="form-control select2" name="select_10dig" onclick="ajaxloadDetEstruct(5)">
+                                            <option value="%">Todos</option>                                
+                                        </select>    
+                                        <span class="input-group-btn"><!-- onclick=viewEstructuraEnPdf() -->
+                                            <a href="{{ route('admin.filespdf.index','01') }}" data-toggle="modal">
+                                                <button class="btn btn-default" type="button" data-select2-open="single-append-text">
+                                                    &nbsp<span class="glyphicon glyphicon-add"></span>&nbsp<b>+</b>
+                                                </button>
+                                            </a>
+                                        </span>
+                                </div>
+
                             </div>                       
                             
                          {{ Form::close()}}    
@@ -107,7 +157,7 @@ Mantenedor
                                 <button type="button" class="alert alert-info alert-dismissable margin5" id="IdSalir"><a href="{{ URL::to('admin/mantestruct')}}" class="alert-info">[ Salir ]</a></button>
                         </div>-->
 
-                        <div id="IdMensajeAlert"></div>
+                       
                              <!-- ==========draw table========== -->
                             {{ Form::open(array('route' => 'save-update-mantestruct', 'method' => 'post', 'id' => 'frmupdateEstr','name' => 'frmupdateEstr'))}} 
                             <input type="hidden" name="token" value="{{ csrf_token()}}">
@@ -116,7 +166,7 @@ Mantenedor
                                         <table  class="table dataTable no-footer dtr-inline">
                                             <thead>
                                                 <tr class="filters">
-                                                    <th>#</th><th>CODIGO</th><th>ÓRGANO</th><th>GERENCIA</th> <th>DEPENDENCIA</th><th>OFICINA</th>                       
+                                                    <th>#</th><th>CODIGO</th><th>ÓRGANO</th><th>GERENCIA</th> <th>DEPENDENCIA</th><th>OFICINA</th> <th>SERVICIO</th>                      
                                                 </tr>
                                             </thead>
                                             <tbody id="IdShowresume">                                            

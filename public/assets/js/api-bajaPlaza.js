@@ -95,7 +95,7 @@ function ShowFormBaja(idx){
 				xy++; 
 				plaza 	=	dataPlz[i].NroPlaza+' / '+dataPlz[i].IdNivel+' / '+dataPlz[i].cargo;
 
-				Dep 	=	dataPlz[i].desc1 +' / '+dataPlz[i].desc2+' / '+dataPlz[i].desc3+' / '+dataPlz[i].Descripcion;	
+				Dep 	=	dataPlz[i].desc1 +' | '+dataPlz[i].desc2+' | '+dataPlz[i].desc3+' | '+dataPlz[i].ofi+' | '+dataPlz[i].Descripcion; 
 
 				html_name_ += dataPlz[i].nombres;
         console.log("============IdPlaza====>"+dataPlz[i].IdPlaza);

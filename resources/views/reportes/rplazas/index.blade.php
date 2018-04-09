@@ -102,6 +102,7 @@ Reporte  - Plazas
                                             <tr class="filters">
                                                 <th>#</th>
                                                 <th>CODIGO</th>                                             
+                                                <th>ÓRGANO</th>
                                                 <th>DEPENDENCIA</th>
                                                 <th>#PLAZA</th>
                                                 <th>CARGO</th>

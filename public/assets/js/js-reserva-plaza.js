@@ -44,7 +44,7 @@ function getAllRows(data) {
   if(data.length!=0){    
     $('#ShowDataHead').show();
       $.each(data, function( key, value ) {      
-      $('#IdDivDependencia').html(value.sede+' <b>|</b> '+ value.organo+' | ' +value.gerencia+' | '+value.dep +' | '+value.dependencia);
+      $('#IdDivDependencia').html(value.organo+' | ' +value.gerencia+' | '+value.dep +' | '+value.servicio+' | '+value.dependencia);
       $('#IdDivNivel').html(value.IdNivel);
       $('#IdDivCargo').html(value.cargo); 
       $('#idestadop').html("<b> PLAZA | "+value.estado+"</b> | <span style='font-family: Helvetica;font-size: 11px;font-style: italic;font-variant: normal;font-weight: 400;line-height: 12.1px;'>[Puede Cambiar de Estado Aquí]</span>");  

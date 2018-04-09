@@ -66,6 +66,7 @@ Consulta de Plazas
                                             <th>CENTRO</th>
                                             <th>DEPENDENCIA</th>
                                             <th>AREA</th>
+                                            <th>OF/SERV</th>
                                             <th>PLAZA</th>
                                             <th>#DNI</th>
                                             <th>NOMBRES</th>

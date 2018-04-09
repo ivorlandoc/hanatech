@@ -102,8 +102,11 @@ Población
                                     </span>
                         </div>
                         <div class="panel-body">
-                           <form name="frmChangeStructDest" id="frmChangeStructDest" action="/gpessalud/public/api/admin/mantestruct/update">                                
-
+                             <div id="IdMensajeAlert"></div>
+                           {{ Form::open(array('route' =>['save-change-estr-per','0','1'], 'method' => 'post', 'id' => 'frmChangeEstr','name' => 'frmChangeEstr'))}} 
+                      
+                           <input type="hidden" name="idUserSession" value="{{ $idUserSession }}">                            
+                                     <input type="hidden" name="token" value="{{ csrf_token()}}">
                                     <div class="form-group">                                
                                         <select id="sel1" name="sel1" class="form-control">
                                             <option value="">Elegir</option>
@@ -130,11 +133,18 @@ Población
                                     </div>
 
                                     <div class="form-group">                                       
-                                        <select id="sel5" name="sel5" class="form-control" onchange="setFlagFive()">
+                                        <select id="sel5" name="sel5" class="form-control">
+                                            <option value="">Elegir</option>
+                                        </select>                                     
+                                    </div>
+
+                                     <div class="form-group">                                       
+                                        <select id="sel6" name="sel6" class="form-control" onclick="setFlagFive()">
                                             <option value="">Elegir</option>
                                         </select>
                                         <input type="hidden" name="txtidplaza" id="txtidplaza">
                                     </div>
+
 
                                     <div id="groupChanger" style="display:none;">
                                         <div class="form-group"> 
@@ -161,8 +171,8 @@ Población
                                         </div>
                                     </div>
 
-                            </form>
-                            <div id="IdMensajeAlert"></div>
+                              {{ Form::close()}} 
+                           
                             <div class="table-responsive" >
                                 <table  class="table dataTable no-footer dtr-inline">
                                     <thead>
