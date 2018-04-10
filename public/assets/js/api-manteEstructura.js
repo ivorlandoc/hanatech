@@ -1,9 +1,8 @@
 $(function(){
 	$('#select_nivel0').on('change',OnSelectElPrimerNMant);
-	$('#select_nivel1').on('click',OnSelectElSegundoNMant);
-	$('#select_nivel2').on('click',OnSelectElTercerNMant);
+	$('#select_nivel1').on('change',OnSelectElSegundoNMant);
+	$('#select_nivel2').on('change',OnSelectElTercerNMant);
 	$('#select_nivel3').on('click',OnSelectElFourNMant);
-	$('#select_nivel4').on('click',OnSelectElFourNMant);
 
 	$("#searchPlazaForRpte").keypress(function(e) {
 		var code = (e.keyCode ? e.keyCode : e.which);
@@ -45,18 +44,20 @@ function OnSelectElPrimerNMant(){
 }
 
 function OnSelectElSegundoNMant(){
-	var getNivel_2= $('#select_nivel1').val();	
+	var getNivel_2= $('#select_nivel1').val();		
 	if(!getNivel_2){
 		$('#select_nivel2').html('<option value="">Select</option>');
 		return;
 	}
-	$.get('../api/admin/mantestruct/'+getNivel_2,function(data3){
+	$.get('../api/admin/mantestruct/'+getNivel_2,function(data2){
 	var html_select3="";
-	if(data3.length=="1")	 {html_select3 += '<option value="">Elegir</option>'; $('#select_nivel2').html(html_select3);}
-	for (var i=0; i < data3.length; i++)
-		html_select3 += '<option value="'+data3[i].IdEstructura.substr(0,7)+'">'+data3[i].IdEstructura.substr(0,7)+' | '+data3[i].Descripcion+'</option>';
+	if(data2.length=="1")	 {html_select3 += '<option value="">Elegir</option>'; $('#select_nivel2').html(html_select3);}
+	for (var i=0; i < data2.length; i++)
+		html_select3 += '<option value="'+data2[i].IdEstructura+'">'+data2[i].IdEstructura+' | '+data2[i].Descripcion+'</option>';
 		$('#select_nivel2').html(html_select3);	
+	
 	});
+
 	$('#select_nivel3').html('<option value="">Elegir</option>');
 	$('#select_nivel4').html('<option value="">Elegir</option>');
 }
@@ -67,10 +68,10 @@ function OnSelectElTercerNMant(){
 		$('#select_nivel3').html('<option value="">Select</option>');
 		return;
 	}
-	$.get('../api/admin/mantestruct/'+getNivel_3,function(data4){
+	$.get('../api/admin/mantestruct/'+getNivel_3,function(data3){
 	var html_select4="";	
-	for (var i=0; i < data4.length; i++)
-		html_select4 += '<option value="'+data4[i].IdEstructura+'">'+data4[i].IdEstructura+' | '+data4[i].Descripcion+'</option>';
+	for (var i=0; i < data3.length; i++)
+		html_select4 += '<option value="'+data3[i].IdEstructura+'">'+data3[i].IdEstructura+' | '+data3[i].Descripcion+'</option>';
 		$('#select_nivel3').html(html_select4);	
 	});
 	$('#select_nivel4').html('<option value="">Elegir</option>');
@@ -82,14 +83,16 @@ function OnSelectElFourNMant(){
 		$('#select_nivel4').html('<option value="">Select</option>');
 		return;
 	}
-	$.get('../api/admin/mantestruct/'+getNivel_4,function(data4){
+
+	$.get('../api/admin/mantestruct/'+getNivel_4,function(data){
 	var html_select5="";	
-	for (var i=0; i < data4.length; i++)
-		html_select5 += '<option value="'+data4[i].IdEstructura+'">'+data4[i].IdEstructura+' | '+data4[i].Descripcion+'</option>';
+	for (var i=0; i < data.length; i++)
+		html_select5 += '<option value="'+data[i].IdEstructura+'">'+data[i].IdEstructura+' | '+data[i].Descripcion+'</option>';
 		$('#select_nivel4').html(html_select5);	
 	});
 	
 }
+
 /*
 function GetIdSelectFour(){
 	var getSelectId= $('#select_nivel3').val();
@@ -116,12 +119,12 @@ function ajaxloadDetEstruct(idx) {
             contentType: false,
             processData: false,            
         success: function (data) { 
-        	console.log("1");
+        	//console.log("1");
 	        if(data.length!=0){  
-	        	console.log("2");
+	        	//console.log("2");
 		        $.each(data, function( key, value ) { 
 		        	if(value.IdEstructura.length!=12)check="disabled"; else check="";
-		        console.log("3");          		        
+		       // console.log("3");          		        
 			           	xy++;	 //organo,gerencia,dependencia,oficina,servicio			
 						tableHtml += '<tr><td>'+xy+'</td>  <td>'+value.IdEstructura+'</td>  <td>'+value.organo+'</td> <td>'+value.gerencia+'</td><td>'+value.dependencia+'</td><td>'+value.oficina+'</td>'+
 						'<td>'+												
@@ -252,3 +255,17 @@ function updatetxtoficinas(idestru){
         }
     });
 }
+
+/*===========================================*/
+function showdepen(){$("#divdepen1").show();}
+function showdepen2(){	$("#divdepen2").show();}
+function showdepen3(){	$("#divdepen3").show();}
+function showdepen4(){$("#divdepen4").show();}
+function showdepen5(){$("#divdepen5").show();}
+/*=======================================*/
+
+function hidendepen(){$("#divdepen1").hide();}
+function hidendepen2(){$("#divdepen2").hide();}
+function hidendepen3(){$("#divdepen3").hide();}
+function hidendepen4(){$("#divdepen4").hide();}
+function hidendepen5(){$("#divdepen5").hide();}

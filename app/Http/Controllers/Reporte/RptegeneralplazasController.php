@@ -48,20 +48,21 @@ class RptegeneralplazasController extends Controller {
                     DB::raw('(SELECT Descripcion FROM estructura WHERE LEFT(IdEstructura,8)=LEFT((SELECT IdEstructura FROM estructura WHERE IdEstructura=c.IdEstructura),8) limit 1) AS subg'),
                     DB::raw('(SELECT Descripcion FROM estructura WHERE LEFT(IdEstructura,10)=LEFT((SELECT IdEstructura FROM estructura WHERE IdEstructura=c.IdEstructura),10) limit 1) AS ofi'),
                     DB::raw('(SELECT descripcion FROM cargo WHERE IdCargo=c.IdCargo) AS Cargo'),
-                    DB::raw('IF(p.dni IS NULL, "",p.dni) as dni'),'ApellidoPat','ApellidoMat',
+                    DB::raw('IF(p.dni IS NULL, "",p.dni) as dni'),
+                    DB::raw('IF(p.ApellidoPat IS NULL, "",p.ApellidoPat) as ApellidoPat'),
+                    DB::raw('IF(p.ApellidoMat IS NULL, "",p.ApellidoMat) as ApellidoMat'),
                     DB::raw('IF(Nombres IS NULL,"",Nombres) AS Nombres'),
                     DB::raw('(SELECT Descripcion FROM estadoplaza WHERE IdEstadoPlaza=c.IdEstadoPlaza) as EstadoPlaza'),
+                    DB::raw('if((SELECT DocRef FROM historiamovimiento WHERE IdEstadoPlaza =c.IdEstadoPlaza and NroPlaza=c.NroPlaza limit 1) is null,"",(SELECT DocRef FROM historiamovimiento WHERE IdEstadoPlaza =c.IdEstadoPlaza and NroPlaza=c.NroPlaza limit 1)) AS DocRef'),
                     DB::raw('IF((SELECT sigla FROM regimen WHERE IdRegimen=p.IdRegimen) IS NULL,"",(SELECT sigla FROM regimen WHERE IdRegimen=p.IdRegimen)) AS Regimen'),'c.IdPersona')
+                               
                    ->join('estructura as e','e.IdEstructura','=','c.IdEstructura')
                    ->leftJoin('persona as p','p.IdPersona','=','c.IdPersona')
                    ->where('c.IdEstadoPlaza','=',$_esta)
-                   ->where('NroPlaza','not like','9______9')
+                   ->where('NroPlaza','not like','9______9%')
                    ->orderby('Nombres','asc')->get();
                    //->paginate(20); NroPlaza NOT LIKE '9______9'
-                  }
-
-                
-           
+                  } 
           
         }
     		return response()->json($data);

@@ -89,7 +89,7 @@ class GestionarPlazasController extends Controller {
                 $_IdEstrDestino=$_IdEstrOrigen;
            }
 
-            if($_IdTipoMov==21 || $_IdTipoMov==23 ) $_IdEstrDestino=$_IdEstrOrigen;
+            if($_IdTipoMov==21 || $_IdTipoMov==23 || $_IdTipoMov==10 ) $_IdEstrDestino=$_IdEstrOrigen;
             
                 $Resp = DB::table('historiamovimiento')->insert([
                     'IdPersona'     => $_IdPersona,

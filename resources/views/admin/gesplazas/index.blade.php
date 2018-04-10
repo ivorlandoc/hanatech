@@ -156,7 +156,7 @@ Gestionar Plazas
                                     <select id="select_10" class="form-control select2" name="select_2dig" required="">
                                         <option value="">Elegir</option>                                        
                                        @foreach ($getDosDig as $key) 
-                                            <option value="{{ $key->IdEstructura }}">{{ $key->IdEstructura }} - {{ $key->Descripcion }}</option>
+                                            <option value="{{ $key->IdEstructura }}">{{$key->IdEstructura}} | {{$key->Descripcion }}</option>
                                         @endforeach  
                                     </select>                                    
                                 </div>

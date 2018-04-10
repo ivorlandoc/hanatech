@@ -103,13 +103,14 @@ Reporte  - Plazas
                                                 <th>#</th>
                                                 <th>CODIGO</th>                                             
                                                 <th>ÓRGANO</th>
-                                                <th>DEPENDENCIA</th>
+                                                <th>DEPENDENCIA</th>                                                
                                                 <th>#PLAZA</th>
                                                 <th>CARGO</th>
                                                 <th>#DNI</th>
                                                 <th>NOMBRES</th>
                                                 <th>ESTADO</th>
                                                 <th>RÉGIMEN</th>
+                                                <th>OBSERV.</th>
                                             </tr>
                                         </thead>
                                         <tbody id="IdShowRptePlazas">                                          

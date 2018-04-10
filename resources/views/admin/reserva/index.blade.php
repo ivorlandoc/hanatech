@@ -13,6 +13,7 @@ Reserva de Plazas
 <link href="{{ asset('assets/css/pages/tables.css') }}" rel="stylesheet" type="text/css" />
 <!-- =================================================== -->
  <link rel="stylesheet" href="{{ asset('assets/css/pages/buttons.css') }}" />
+     <link href="{{ asset('assets/vendors/jasny-bootstrap/css/jasny-bootstrap.css') }}" rel="stylesheet" type="text/css" />
 
  <link href="{{ asset('assets/vendors/modal/css/component.css') }}" rel="stylesheet"/>
  <link href="{{ asset('assets/css/pages/advmodals.css') }}" rel="stylesheet"/>
@@ -141,6 +142,21 @@ Reserva de Plazas
 
                                 <div class="form-group">                                                                      
                                    <input type="text" class="form-control" id="DocRefRser" name="DocRefRser" value="" required="" placeholder="Doc .de Referencia">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="formPassword">Adjuntar Documento.</label>
+                                    <div class="fileinput fileinput-new input-group" data-provides="fileinput">
+                                            <div class="form-control" data-trigger="fileinput">
+                                                <i class="glyphicon glyphicon-file fileinput-exists"></i>
+                                                <span class="fileinput-filename"></span>
+                                            </div>
+                                                    <span class="input-group-addon btn btn-default btn-file">
+                                                        <span class="fileinput-new">Selecione Archivo</span>
+                                                        <span class="fileinput-exists">Cambiar</span>
+                                                        <input type="file" name="FileAdjuntoReserva" id="FileAdjuntoReserva" readonly="" accept="*.pdf"></span>
+                                            <a href="#" class="input-group-addon btn btn-default fileinput-exists" data-dismiss="fileinput">Eliminar</a>
+                                        </div>
                                 </div>
 
                                  <div class="form-group" id ="idbotones">

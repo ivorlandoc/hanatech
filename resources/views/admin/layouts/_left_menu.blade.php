@@ -33,7 +33,7 @@
                 Activity Log
             </a>
         </li>
-    
+     
 
   <!--
  <li {!! (Request::is('admin/users') || Request::is('admin/users/create') || Request::is('admin/user_profile') || Request::is('admin/users/*') || Request::is('admin/deleted_users') ? 'class="active"' : '') !!}>       
@@ -478,18 +478,19 @@
     </li>
 
     @elseif(Sentinel::getUser()->permissions === 2)
-    <li {!! (Request::is('admin/rptetempo') || Request::is('admin/rptetempo/create') || Request::is('admin/rptetempo/*') ? 'class="active"' : '') !!}>
+    <li {!! (Request::is('reportes/externo') || Request::is('admin/rptetempo/create') || Request::is('admin/rptetempo/*') ? 'class="active"' : '') !!}>
         <a href="#">
             <i class="livicon" data-name="show" data-size="18" data-c="#418BCA" data-hc="#418BCA"
                data-loop="true"></i>
             <span class="title">Reportes</span>
             <span class="fa arrow"></span>
         </a>
-        <ul class="sub-menu">
-            <li {!! (Request::is('admin/rptetempo') ? 'class="active" id="active"' : '') !!}>
-                <a href="{{ URL::to('admin/rptetempo') }}">
+        
+        <ul class="sub-menu">           
+           <li {!! (Request::is('reportes/externo') ? 'class="active" id="active"' : '') !!}>
+                <a href="{{ URL::to('reportes/externo') }}">
                     <i class="fa fa-angle-double-right"></i>
-                    Consulta(T)
+                    Consulta de Plaza
                 </a>
             </li>
            

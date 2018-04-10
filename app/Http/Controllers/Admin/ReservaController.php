@@ -15,6 +15,11 @@ USE json;
 use Carbon\Carbon;
 use Sentinel;
 use User;
+use File;
+use Hash;
+use Redirect;
+
+
 
 
 class ReservaController extends Controller {
@@ -66,8 +71,10 @@ public function Procesareservaplaza(Request $request,$id){
 
                 $_DocRefere        = $request->input("DocRefRser");
                 $_obserreser       = $request->input("obserRser");
+
+                $_fileadjunto      = $request->hasFile("FileAdjuntoReserva");
            
-                           
+                              
                 if($_NroPlaza!=""){
                         $aff=DB::table('cuadronominativo')->where('NroPlaza', $_NroPlaza)->where('IdCargo', $_IdCargo)
                         ->update([                                           
@@ -79,10 +86,25 @@ public function Procesareservaplaza(Request $request,$id){
                                     ]);
                     }
 
-                             $GetTipoR         =DB::table('estadoplaza')->where('IdEstadoPlaza','=',$_tiporeserva)->select('Descripcion')->get('Descripcion');   
-                                $DesTipo="";
+                            $GetTipoR         =DB::table('estadoplaza')->where('IdEstadoPlaza','=',$_tiporeserva)->select('Descripcion')->get('Descripcion');   
+                            $DesTipo="";
                             foreach ($GetTipoR as $key) $DesTipo  =$key->Descripcion; 
                                   
+                        /*===========================================*/
+                        $res=array($_IdPlaza);
+                        //$fileName=$_IdPersona.$_IdPlaza.$_NroPlaza;// nombre del archivo .pdf
+                        $fileName=$_IdPlaza.$_NroPlaza;// nombre del archivo .pdf
+                        $name="";
+                        if($_fileadjunto) 
+                            {
+                                $file = $request->file('FileAdjuntoReserva'); 
+                                $path = public_path('uploads/files/');
+                                array_push($res, $path);
+                                $name = $fileName.'.'.$file->getClientOriginalExtension();
+                                $file->move($path, $name);
+                            } 
+                        /*===========================================*/
+
                         $Resp = DB::table('historiamovimiento')->insert([
                             'IdPersona'     => '',
                             'IdPlaza'       => $_IdPlaza,
@@ -95,7 +117,7 @@ public function Procesareservaplaza(Request $request,$id){
                             'FechaDocRef'   => Carbon::parse($_fechareserv)->format('Y-m-d H:i:s'),
                             'FechaMov'      => date('Y-m-d H:i:s'),
                             'DocRef'        => $_DocRefere,
-                            'FileAdjunto'   => "",
+                            'FileAdjunto'   => $name,
                             'Observacion'   => $DesTipo.' | '.$_obserreser,
                             'IdUsuario'     => $UserSession->email,
                             'Ip'            => $ipAddress,

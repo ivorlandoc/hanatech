@@ -66,26 +66,10 @@ function ajaxloadplazas() {
 function manageRows(data) {   
     var xy=0;  
     var tableHtml="";
-    /*
-       for (var i=0; i < data.length; i++)     {            
-                xy++;   
-                tableHtml = tableHtml + '<tr>';
-                tableHtml = tableHtml + '<td>'+xy+'</td>';
-                tableHtml = tableHtml + '<td>'+data[i].codestru+'</td>';
-                tableHtml = tableHtml + '<td>'+data[i].Descripcion+'</td>';
-                tableHtml = tableHtml + '<td>'+data[i].NroPlaza+'</td>';
-                tableHtml = tableHtml + '<td>'+data[i].dni+'</td>';
-                tableHtml = tableHtml + '<td>'+data[i].nombres+'</td>';
-                tableHtml = tableHtml + '<td>'+data[i].EstadoPlaza+'</td>';
-                tableHtml = tableHtml + '<td>'+data[i].Regimen+'</td>';
-                tableHtml = tableHtml + '</tr>';   
-                                           
-        }
-        $('#IdShowRptePlazas').html(tableHtml);   
-    */    
+    var obser="";
     $.each(data, function( key, value ) {
      xy++;   
-      //console.log(key + ':' + value.Descripcion);
+    //  if(value.DocRef=="null") obser=''; else  obser=value.DocRef;
    
                 tableHtml += '<tr>'+
                  '<td>'+xy+'</td>'+                         
@@ -98,6 +82,7 @@ function manageRows(data) {
                  '<td>'+value.ApellidoPat+' '+value.ApellidoMat+' '+value.Nombres+'</td> '+    
                  '<td>'+value.EstadoPlaza+'</td> '+                        
                  '<td>'+value.Regimen+'</td>'+
+                 '<td>'+value.DocRef+'</td>'+ 
                  '</tr>';
     });   
     $('#IdShowRptePlazas').html(tableHtml);

@@ -56,7 +56,7 @@ Estructuras
                                 <select id="select_nivel-0" class="form-control select2" name="select_2dig">
                                 <option value="%">Todos</option>                                        
                                    @foreach ($getDosDig as $getAll) 
-                                        <option value="{{ $getAll->IdEstructura }}"> {{ $getAll->Descripcion }}</option>
+                                        <option value="{{ $getAll->IdEstructura }}">{{ $getAll->IdEstructura }} | {{ $getAll->Descripcion }}</option>
                                     @endforeach 
                                 </select>
                             </div>

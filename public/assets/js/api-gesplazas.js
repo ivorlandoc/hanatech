@@ -35,7 +35,7 @@ $("#search_plaza").keypress(function(e) {
 function showhideEstru(){
 var xy=$('#IdTipoMovimiento').val();
 
-if(xy=="21" || xy=="23"){	
+if(xy=="21" || xy=="23" || xy=="10"){	
 	$('#select_10').attr('disabled',true);
 	$('#select_11').attr('disabled',true);
 	$('#select_22').attr('disabled',true);

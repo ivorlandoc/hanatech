@@ -2,7 +2,7 @@
 
 {{-- Page title --}}
 @section('title')
-Mantenedor
+Banco de Estructuras
 @parent
 @stop
 
@@ -13,14 +13,17 @@ Mantenedor
 <!-- <link href="{{ asset('assets/css/pages/tables.css') }}" rel="stylesheet" type="text/css" />-->
 <link href="{{ asset('assets/vendors/modal/css/component.css') }}" rel="stylesheet"/>
 <!--<link href="{{ asset('assets/css/pages/advmodals.css') }}" rel="stylesheet"/>-->
-<link href="{{ asset('assets/css/loading.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('assets/css/pages/timeline.css') }}" rel="stylesheet" />
+    <link href="{{ asset('assets/css/pages/timeline2.css') }}" rel="stylesheet" />
 
+<link href="{{ asset('assets/css/loading.css') }}" rel="stylesheet" type="text/css" />
+<style type="text/css"> input {text-transform:uppercase;></style>
 @stop
 
 {{-- Page content --}}
 @section('content')
 <section class="content-header">
-    <h1>Estructuras Funcionales</h1>
+    <h1>Banco de Estructuras Funcionales</h1>
     <ol class="breadcrumb">
         <li>
             <a href="{{ route('admin.dashboard') }}">
@@ -28,7 +31,7 @@ Mantenedor
                 Dashboard
             </a>
         </li>
-        <li><a href="#"> Mantenimiento de Estructuraa</a></li>
+        <li><a href="#"> Banco de Estructuraa</a></li>
         <li class="active">Estructuras</li>
     </ol>
 </section>
@@ -42,7 +45,7 @@ Mantenedor
            <div class="panel panel-info">
                 <div class="panel-heading">
                     <h3 class="panel-title">
-                        <i class="livicon" data-name="search" data-size="16" data-loop="true" data-c="#fff" data-hc="white"></i> Mantenimiento de Estructuras
+                        <i class="livicon" data-name="search" data-size="16" data-loop="true" data-c="#fff" data-hc="white"></i> Banco de Estructuras
                     </h3>
                     <span class="pull-right clickable">
                             <i class="glyphicon glyphicon-chevron-up"></i>
@@ -64,16 +67,61 @@ Mantenedor
                                             <option value="{{ substr($getAll->IdEstructura,0,2) }}">{{ substr($getAll->IdEstructura,0,2) }} | {{ $getAll->Descripcion }}</option>
                                         @endforeach 
                                     </select>
-                                        
-                                             <span class="input-group-btn"><!-- onclick=viewEstructuraEnPdf() -->
+                                        <!--
+                                             <span class="input-group-btn">
                                                     <a href="{{ route('admin.filespdf.index','01') }}" data-toggle="modal">
                                                         <button class="btn btn-default" type="submit" data-select2-open="single-append-text">
                                                             &nbsp<span class="glyphicon glyphicon-print"></span>&nbsp
                                                         </button>
                                                     </a>
                                             </span>
-                                       
-                                </div>                            
+                                       -->
+                                       <span class="input-group-btn"><!-- onclick=viewEstructuraEnPdf() -->
+                                                <a href="javascript:void(0)" data-toggle="modal" onclick="showdepen()">
+                                                    <button class="btn btn-default" type="button" data-select2-open="single-append-text" >
+                                                        &nbsp<span class="glyphicon glyphicon-add"></span>&nbsp<b>+</b>
+                                                    </button>
+                                                </a>
+                                        </span>
+                                </div> 
+                                <!-- =========== -->
+                                <div class="row" id="divdepen1" style="display:none;">
+                                    <ul class="timeline">
+                                        <li>
+                                            <div class="timeline-badge">
+                                                <i class="livicon" data-name="hammer" data-c="#fff" data-hc="#fff" data-size="18" data-loop="true"></i>
+                                            </div>
+                                            <div class="timeline-panel" style="display:inline-block;">
+                                                <div class="timeline-heading">
+                                                    <h4 class="timeline-title">Ingrese la denominación que se le asignará a la nueva Red y/o Gerencia</h4>
+                                                    <p>
+                                                        <small class="text-muted">
+                                                            <i class="livicon" data-name="bell" data-c="#F89A14" data-hc="#F89A14" data-size="18" data-loop="true"></i>
+                                                            Mantenimiento de estructuras
+                                                        </small>
+                                                    </p>
+                                                </div>
+                                                <div class="timeline-body">
+                                                    <p> 
+                                                       <div class="input-group select2-bootstrap-append">                                                                                                   
+                                                            <input type="text" class="form-control" id="iddepen2" name="iddepen2" placeholder="Ingrese la Descripción">
+                                                            <span class="input-group-btn">
+
+                                                                <a data-href="#responsive-changeEs" href="#responsive-changeEs" >
+                                                                        <button class="btn btn-info" type="button" data-select2-open="single-append-text">Listo</button>
+                                                                        <button class="btn btn-warning" type="button" onclick="hidendepen()" data-select2-open="single-append-text">Cancelar</button>
+                                                                </a>
+
+                                                            </span>
+                                                      </div>                                                          
+                                                    </p>
+                                                   
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                 </div>
+                                 <!-- =========== -->                                
                             </div>
                             <div class="form-group">  
                                     <div class="input-group select2-bootstrap-append">                      
@@ -82,13 +130,53 @@ Mantenedor
                                         </select>
 
                                              <span class="input-group-btn"><!-- onclick=viewEstructuraEnPdf() -->
-                                                    <a href="{{ route('admin.filespdf.index','01') }}" data-toggle="modal">
-                                                        <button class="btn btn-default" type="button" data-select2-open="single-append-text">
+                                                    <a href="javascript:void(0)" data-toggle="modal" onclick="showdepen2()">
+                                                        <button class="btn btn-default" type="button" data-select2-open="single-append-text" >
                                                             &nbsp<span class="glyphicon glyphicon-add"></span>&nbsp<b>+</b>
                                                         </button>
                                                     </a>
                                             </span>
                                     </div>
+                                     <!-- =========== -->
+                                <div class="row" id="divdepen2" style="display:none;">
+                                    <ul class="timeline">
+                                        <li>
+                                            <div class="timeline-badge">
+                                                <i class="livicon" data-name="hammer" data-c="#fff" data-hc="#fff" data-size="18" data-loop="true"></i>
+                                            </div>
+                                            <div class="timeline-panel" style="display:inline-block;">
+                                                <div class="timeline-heading">
+                                                    <h4 class="timeline-title">Ingrese la denominación que se le asignará a la nueva Red y/o Gerencia</h4>
+                                                    <p>
+                                                        <small class="text-muted">
+                                                            <i class="livicon" data-name="bell" data-c="#F89A14" data-hc="#F89A14" data-size="18" data-loop="true"></i>
+                                                            Mantenimiento de estructuras
+                                                        </small>
+                                                    </p>
+                                                </div>
+                                                <div class="timeline-body">
+                                                    <p> 
+                                                       <div class="input-group select2-bootstrap-append">                                                                                                   
+                                                            <input type="text" class="form-control" id="iddepen2" name="iddepen2" placeholder="Ingrese la Descripción">
+                                                            <span class="input-group-btn">
+
+                                                                <a data-href="#responsive-changeEs" href="#responsive-changeEs" >
+                                                                        <button class="btn btn-info" type="button" data-select2-open="single-append-text">Listo</button>
+                                                                        <button class="btn btn-warning" type="button" onclick="hidendepen2()" data-select2-open="single-append-text">Cancelar</button>
+                                                                </a>
+
+                                                            </span>
+                                                      </div>                                                          
+                                                    </p>
+                                                   
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                 </div>
+                                 <!-- =========== -->      
+
+
                             </div>
 
                             <div class="form-group">
@@ -98,13 +186,51 @@ Mantenedor
                                     </select>
 
                                      <span class="input-group-btn"><!-- onclick=viewEstructuraEnPdf() -->
-                                            <a href="{{ route('admin.filespdf.index','01') }}" data-toggle="modal">
+                                            <a href="javascript:void(0)" data-toggle="modal" onclick="showdepen3()">
                                                 <button class="btn btn-default" type="button" data-select2-open="single-append-text">
                                                     &nbsp<span class="glyphicon glyphicon-add"></span>&nbsp<b>+</b>
                                                 </button>
                                             </a>
                                     </span>
                                 </div>
+                                 <!-- =========== -->
+                                <div class="row" id="divdepen3" style="display:none;">
+                                    <ul class="timeline">
+                                        <li>
+                                            <div class="timeline-badge">
+                                                <i class="livicon" data-name="hammer" data-c="#fff" data-hc="#fff" data-size="18" data-loop="true"></i>
+                                            </div>
+                                            <div class="timeline-panel" style="display:inline-block;">
+                                                <div class="timeline-heading">
+                                                    <h4 class="timeline-title">Ingrese la denominación que se le asignará a la nueva Red y/o Gerencia</h4>
+                                                    <p>
+                                                        <small class="text-muted">
+                                                            <i class="livicon" data-name="bell" data-c="#F89A14" data-hc="#F89A14" data-size="18" data-loop="true"></i>
+                                                            Mantenimiento de estructuras
+                                                        </small>
+                                                    </p>
+                                                </div>
+                                                <div class="timeline-body">
+                                                    <p> 
+                                                       <div class="input-group select2-bootstrap-append">                                                                                                   
+                                                            <input type="text" class="form-control" id="iddepen2" name="iddepen2" placeholder="Ingrese la Descripción">
+                                                            <span class="input-group-btn">
+
+                                                                <a data-href="#responsive-changeEs" href="#responsive-changeEs" >
+                                                                        <button class="btn btn-info" type="button" data-select2-open="single-append-text">Listo</button>
+                                                                        <button class="btn btn-warning" type="button" onclick="hidendepen3()" data-select2-open="single-append-text">Cancelar</button>
+                                                                </a>
+
+                                                            </span>
+                                                      </div>                                                          
+                                                    </p>
+                                                   
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                 </div>
+                                 <!-- =========== -->      
 
                             </div>
 
@@ -114,48 +240,110 @@ Mantenedor
                                             <option value="%">Todos</option>                                
                                         </select>  
                                         <span class="input-group-btn"><!-- onclick=viewEstructuraEnPdf() -->
-                                            <a href="{{ route('admin.filespdf.index','01') }}" data-toggle="modal">
+                                            <a href="javascript:void(0)" data-toggle="modal" onclick="showdepen4()">
                                                 <button class="btn btn-default" type="button" data-select2-open="single-append-text">
                                                     &nbsp<span class="glyphicon glyphicon-add"></span>&nbsp<b>+</b>
                                                 </button>
                                             </a>
                                         </span>
                                 </div>
+                                <!-- =========== -->
+                                <div class="row" id="divdepen4" style="display:none;">
+                                    <ul class="timeline">
+                                        <li>
+                                            <div class="timeline-badge">
+                                                <i class="livicon" data-name="hammer" data-c="#fff" data-hc="#fff" data-size="18" data-loop="true"></i>
+                                            </div>
+                                            <div class="timeline-panel" style="display:inline-block;">
+                                                <div class="timeline-heading">
+                                                    <h4 class="timeline-title">Ingrese la denominación que se le asignará a la nueva Red y/o Gerencia</h4>
+                                                    <p>
+                                                        <small class="text-muted">
+                                                            <i class="livicon" data-name="bell" data-c="#F89A14" data-hc="#F89A14" data-size="18" data-loop="true"></i>
+                                                            Mantenimiento de estructuras
+                                                        </small>
+                                                    </p>
+                                                </div>
+                                                <div class="timeline-body">
+                                                    <p> 
+                                                       <div class="input-group select2-bootstrap-append">                                                                                                   
+                                                            <input type="text" class="form-control" id="iddepen2" name="iddepen2" placeholder="Ingrese la Descripción">
+                                                            <span class="input-group-btn">
+
+                                                                <a data-href="#responsive-changeEs" href="#responsive-changeEs" >
+                                                                        <button class="btn btn-info" type="button" data-select2-open="single-append-text">Listo</button>
+                                                                        <button class="btn btn-warning" type="button" onclick="hidendepen4()" data-select2-open="single-append-text">Cancelar</button>
+                                                                </a>
+
+                                                            </span>
+                                                      </div>                                                          
+                                                    </p>
+                                                   
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                 </div>
+                                 <!-- =========== -->      
                             </div> 
 
                             <div class="form-group">
                                 <div class="input-group select2-bootstrap-append">
                                         <select id="select_nivel4" class="form-control select2" name="select_10dig" onclick="ajaxloadDetEstruct(5)">
                                             <option value="%">Todos</option>                                
-                                        </select>    
+                                        </select>   
+
                                         <span class="input-group-btn"><!-- onclick=viewEstructuraEnPdf() -->
-                                            <a href="{{ route('admin.filespdf.index','01') }}" data-toggle="modal">
+                                            <a href="javascript:void(0)" data-toggle="modal" onclick="showdepen5()">
                                                 <button class="btn btn-default" type="button" data-select2-open="single-append-text">
                                                     &nbsp<span class="glyphicon glyphicon-add"></span>&nbsp<b>+</b>
                                                 </button>
                                             </a>
                                         </span>
                                 </div>
+                                <!-- =========== -->
+                                <div class="row" id="divdepen5" style="display:none;">
+                                    <ul class="timeline">
+                                        <li>
+                                            <div class="timeline-badge">
+                                                <i class="livicon" data-name="hammer" data-c="#fff" data-hc="#fff" data-size="18" data-loop="true"></i>
+                                            </div>
+                                            <div class="timeline-panel" style="display:inline-block;">
+                                                <div class="timeline-heading">
+                                                    <h4 class="timeline-title">Ingrese la denominación que se le asignará a la nueva Red y/o Gerencia</h4>
+                                                    <p>
+                                                        <small class="text-muted">
+                                                            <i class="livicon" data-name="bell" data-c="#F89A14" data-hc="#F89A14" data-size="18" data-loop="true"></i>
+                                                            Mantenimiento de estructuras
+                                                        </small>
+                                                    </p>
+                                                </div>
+                                                <div class="timeline-body">
+                                                    <p> 
+                                                       <div class="input-group select2-bootstrap-append">                                                                                                   
+                                                            <input type="text" class="form-control" id="iddepen2" name="iddepen2" placeholder="Ingrese la Descripción">
+                                                            <span class="input-group-btn">
+
+                                                                <a data-href="#responsive-changeEs" href="#responsive-changeEs" >
+                                                                        <button class="btn btn-info" type="button" data-select2-open="single-append-text">Listo</button>
+                                                                        <button class="btn btn-warning" type="button" onclick="hidendepen5()" data-select2-open="single-append-text">Cancelar</button>
+                                                                </a>
+
+                                                            </span>
+                                                      </div>                                                          
+                                                    </p>
+                                                   
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                 </div>
+                                 <!-- =========== -->   
 
                             </div>                       
                             
                          {{ Form::close()}}    
-                       <!-- </form>-->
-                       <!-- <div class="form-group">                         
-                            <select id="select_nivel4" class="form-control select2" name="select_10dig" onclick="GetIdSelectFour()">
-                                <option value="%">Todos</option>                                
-                            </select>                            
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="e1" class="control-label">Todos</label>
-                           <input type="text" class="form-control" id="txtcuartoNivel" name="txtcuartoNivel" required="" value="" maxlength="60" placeholder="Descripcion del 4to Nivel">
-                        </div>
-                    
-                        <div class="btn-group btn-group-lg">
-                                <button type="submit" class="alert alert-success alert-dismissable margin5" id="IdSaveManteEstru">Guardar Cambios</button>
-                                <button type="button" class="alert alert-info alert-dismissable margin5" id="IdSalir"><a href="{{ URL::to('admin/mantestruct')}}" class="alert-info">[ Salir ]</a></button>
-                        </div>-->
+                      
 
                        
                              <!-- ==========draw table========== -->
