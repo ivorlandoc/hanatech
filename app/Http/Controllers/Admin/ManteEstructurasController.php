@@ -24,17 +24,17 @@ use stdClass;
 use Input;
 use Response;
 use Carbon\Carbon;
-use Persona;
 use Illuminate\Database\Eloquent;
-
 
 class ManteEstructurasController extends Controller { 
 
     public function index(Request $request){
-          
+        $idUserSession = Sentinel::getUser()->id;   //almacena id de sesion activa  
+               
         $getDosDig=DB::table('estructura')->select('IdEstructura','Descripcion')->where(DB::raw('LENGTH(IdEstructura)'), '=', "2")->get();   
-       return view('admin.mantestruct.index',compact('getDosDig')); 
+       return view('admin.mantestruct.index',compact('getDosDig','idUserSession')); 
     }
+    
 function getResultSelect($id){
   $data=DB::table('estructura')->select('IdEstructura','Descripcion')->where(DB::raw('LENGTH(IdEstructura)'), '=', "2")->get();
   return $data;       
@@ -60,7 +60,7 @@ public function showdetalleestructura(Request $request,$id){
     $_string="";
   if($request->ajax()){ 
         $idx                      = $request->input("id");
-        if($idx==2) {$_string     = $request->input("select_4dig"); }        
+        //if($idx==2) {$_string     = $request->input("select_4dig"); }        
         if($idx==3) {$_string     = $request->input("select_6dig"); }
         if($idx==4) {$_string     = $request->input("select_8dig"); }
         if($idx==5) {$_string     = $request->input("select_10dig"); }
@@ -78,7 +78,10 @@ public function showdetalleestructura(Request $request,$id){
 
 
    
-function updateOficinaEstruct(Request $request){            
+function updateOficinaEstruct(Request $Request){  
+          $aff ="";
+            $UserSession = Sentinel::findById($Request->input("idUserSession"));   
+
                 $ipAddress = '';               
                 if (isset($_SERVER['HTTP_X_FORWARDED_FOR']) && ('' !== trim($_SERVER['HTTP_X_FORWARDED_FOR']))) {
                     $ipAddress = trim($_SERVER['HTTP_X_FORWARDED_FOR']);
@@ -86,14 +89,75 @@ function updateOficinaEstruct(Request $request){
                     if (isset($_SERVER['REMOTE_ADDR']) && ('' !== trim($_SERVER['REMOTE_ADDR']))) {
                         $ipAddress = trim($_SERVER['REMOTE_ADDR']);
                     }
-                }                
-          if($request->ajax()){   
-              $_idestru         = $request->input("idestru");         
-              $_DescripOfic     = $request->input("Descrip");   
+                }
 
-              $aff=DB::table('estructura')->where('IdEstructura', $_idestru)->update(['Descripcion' =>$_DescripOfic,'IdUsuario'     =>$ipAddress,'updated_at'    =>date('Y-m-d H:i:s'),'created_at'    =>date('Y-m-d H:i:s')]);
-            }               
-            return Response::json($aff);
+          if($Request->ajax()){            
+              $_flat            = $Request->input("iddepenhiden"); 
+              $_idestru         = $Request->input("idestru");         
+              $_DescripOfic     = $Request->input("Descrip");   
+
+              if($_flat==0){
+                $aff=DB::table('estructura')->where('IdEstructura', $_idestru)->update(['Descripcion' =>$_DescripOfic,'IdUsuario'     =>$ipAddress,'updated_at'    =>date('Y-m-d H:i:s'),'created_at'    =>date('Y-m-d H:i:s')]);
+              }
+              if($_flat==1){ // add estructura de 4 digitos
+                $_idest         = $Request->input("select_2dig")."%"; 
+                $Nombre        = $Request->input("txtiddepen2");          
+                     
+                $GetCod     =DB::table('estructura')->where(DB::raw('LENGTH(IdEstructura)'), '=', "4")->where('IdEstructura','like',$_idest)->select(DB::raw('LPAD(MAX(IdEstructura)+1,4,"0") as idmax'))->get('idmax');
+                $maxCod="";
+                foreach ($GetCod as $key) $maxCod  =$key->idmax; 
+              }
+              if($_flat==2){ // add estructura de 4 digitos
+                $_idest         = $Request->input("select_4dig"); 
+                $Nombre        = $Request->input("txtiddepen3");          
+                     
+                $GetCod     =DB::table('estructura')->where(DB::raw('LENGTH(IdEstructura)'), '=', "6")->where('IdEstructura','like',"$_idest".'%')->select(DB::raw('IF(LPAD(MAX(IdEstructura)+1,6,"0") IS NULL,CONCAT("'.$_idest.'","01"),LPAD(MAX(IdEstructura)+1,6,"0")) AS idmax'))->get('idmax');
+                $maxCod="";
+                foreach ($GetCod as $key) $maxCod  =$key->idmax; 
+              }
+
+              if($_flat==3){ // add estructura de 4 digitos
+                $_idest         = $Request->input("select_6dig"); 
+                $Nombre        = $Request->input("txtiddepen4");          
+                     
+                $GetCod     =DB::table('estructura')->where(DB::raw('LENGTH(IdEstructura)'), '=', "8")->where('IdEstructura','like',"$_idest".'%')->select(DB::raw('IF(LPAD(MAX(IdEstructura)+1,8,"0") IS NULL,CONCAT("'.$_idest.'","01"),LPAD(MAX(IdEstructura)+1,8,"0")) AS idmax'))->get('idmax');
+                $maxCod="";
+                foreach ($GetCod as $key) $maxCod  =$key->idmax; 
+              }
+
+              if($_flat==4){ // add estructura de 4 digitos
+                $_idest         = $Request->input("select_8dig"); 
+                $Nombre        = $Request->input("txtiddepen5");          
+                     
+                $GetCod     =DB::table('estructura')->where(DB::raw('LENGTH(IdEstructura)'), '=', "10")->where('IdEstructura','like',"$_idest".'%')->select(DB::raw('IF(LPAD(MAX(IdEstructura)+1,10,"0") IS NULL,CONCAT("'.$_idest.'","01"),LPAD(MAX(IdEstructura)+1,10,"0")) AS idmax'))->get('idmax');
+                $maxCod="";
+                foreach ($GetCod as $key) $maxCod  =$key->idmax; 
+              }
+              if($_flat==5){ // add estructura de 4 digitos
+                $_idest         = $Request->input("select_10dig"); 
+                $Nombre        = $Request->input("txtiddepen6");          
+                     
+                $GetCod     =DB::table('estructura')->where(DB::raw('LENGTH(IdEstructura)'), '=', "12")->where('IdEstructura','like',"$_idest".'%')->select(DB::raw('IF(LPAD(MAX(IdEstructura)+1,12,"0") IS NULL,CONCAT("'.$_idest.'","01"),LPAD(MAX(IdEstructura)+1,12,"0")) AS idmax'))->get('idmax');
+                $maxCod="";
+                foreach ($GetCod as $key) $maxCod  =$key->idmax; 
+              }
+
+              if($_flat==1 || $_flat==2 || $_flat==3 || $_flat==4 || $_flat==5 ){
+                $aff = DB::table('estructura')->insert([
+                                    'IdEstructura'  => $maxCod,
+                                    'Descripcion'   => $Nombre,  
+                                    'Flag'          => "w",                                                        
+                                    'IdUsuario'     => $UserSession->email,
+                                    'Ip'            => $ipAddress,
+                                    'created_at'    => date('Y-m-d H:i:s'),
+                                    'updated_at'    => date('Y-m-d H:i:s')
+                                ]);
+              }
+             
+              
+            } 
+            return Response::json($aff);              
+            
 }
 
 public function showDetails( $id){
@@ -105,7 +169,7 @@ $data=DB::select("SELECT Dni, IF(CONCAT(ApellidoPat,' ', ApellidoMat,' ',Nombres
              WHERE IdEsTructura LIKE '$id%' AND IdEstadoPlaza='1' ");
 return $data;
 }
-
+/*
 function addNewEstructura(Request $Request){
         $_user="Admin";
         $Resp;
@@ -129,7 +193,7 @@ function addNewEstructura(Request $Request){
                     else                  
                   return Response::json($Resp);
       }
-
+*/
 
 public function create(){ 
     $idUserSession = Sentinel::getUser()->id;   //almacena id de sesion activa  

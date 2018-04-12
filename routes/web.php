@@ -158,8 +158,8 @@ Route::group(['prefix' => 'admin', 'namespace'=>'Admin','middleware' => 'admin']
 
  Route::group(['prefix' => 'admin', 'namespace'=>'Admin','middleware' => 'admin'], function () {    
     route::get('mantestruct','ManteEstructurasController@index');      
-    Route::post('mantestruct',array('as'=>'save-update-mantestruct','uses'=>'ManteEstructurasController@updateOficinaEstruct')); 
-    Route::post('mantestruct/{id}',array('as'=>'getload-det-estruct','uses'=>'ManteEstructurasController@showdetalleestructura')); 
+    Route::post('mantestruct',array('as'=>'addupdate-mantestruct','uses'=>'ManteEstructurasController@updateOficinaEstruct')); 
+    Route::post('mantestruct/{id}',array('as'=>'showdet-mantestruct','uses'=>'ManteEstructurasController@showdetalleestructura')); 
 
     Route::post('mantestruct/{id}/{ix}',array('as'=>'save-change-estr-per','uses'=>'ManteEstructurasController@_cambiarDeEstructurapersona')); 
     //Route::post('mantestruct/{id}/{ix}/{z}',array('as'=>'save-change-estr-per','uses'=>'ManteEstructurasController@getresult_change')); 

@@ -157,7 +157,7 @@ Reserva de Plazas
                                                         <input type="file" name="FileAdjuntoReserva" id="FileAdjuntoReserva" readonly="" accept="*.pdf"></span>
                                             <a href="#" class="input-group-addon btn btn-default fileinput-exists" data-dismiss="fileinput">Eliminar</a>
                                         </div>
-                                </div>
+                                </div> 
 
                                  <div class="form-group" id ="idbotones">
                                     <textarea id="obserRser" name="obserRser" rows="3" class="form-control resize_vertical " placeholder="Observación"></textarea>                           

@@ -109,8 +109,8 @@ public function ProcesaInsertAlta(Request $Request){
                 $CheckDni="";
                 foreach ($GetDni as $key) $CheckDni  =$key->Dni; 
                 //----------------Get Idpersona-------------
-                 $GetPersona     =DB::table('persona')->where('Dni','=',$_Nrodni)->select('IdPersona')->get('IdPersona');
-                 $_IdPersona="";
+                $GetPersona     =DB::table('persona')->where('Dni','=',$_Nrodni)->select('IdPersona')->get('IdPersona');
+                $_IdPersona="";
                 foreach ($GetPersona as $keys) $_IdPersona  =$keys->IdPersona; 
                 /*=======================================================================================*/
 

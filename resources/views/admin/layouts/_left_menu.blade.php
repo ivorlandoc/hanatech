@@ -34,7 +34,6 @@
             </a>
         </li>
      
-
   <!--
  <li {!! (Request::is('admin/users') || Request::is('admin/users/create') || Request::is('admin/user_profile') || Request::is('admin/users/*') || Request::is('admin/deleted_users') ? 'class="active"' : '') !!}>       
   -->
@@ -485,16 +484,19 @@
             <span class="title">Reportes</span>
             <span class="fa arrow"></span>
         </a>
-        
-        <ul class="sub-menu">           
+  
+
+             
+       <ul class="sub-menu">           
            <li {!! (Request::is('reportes/externo') ? 'class="active" id="active"' : '') !!}>
-                <a href="{{ URL::to('reportes/externo') }}">
-                    <i class="fa fa-angle-double-right"></i>
-                    Consulta de Plaza
-                </a>
-            </li>
-           
-        </ul>
+                    <a href="{{ URL::to('reportes/externo') }}">
+                        <i class="fa fa-angle-double-right"></i>
+                        Consulta de Plaza
+                    </a>
+                </li>
+               
+            </ul>
+    
     </li>
     @else
 

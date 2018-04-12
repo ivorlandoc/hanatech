@@ -53,18 +53,17 @@ Banco de Estructuras
                 </div>
                 <div class="panel-body">
                      <div id="IdMensajeAlert"></div>
-                    <div class="col-md-12">  
-                      
-                 {{ Form::open(array('route' => ['getload-det-estruct','1'], 'method' => 'post', 'id' => 'frmmantestru','name' => 'frmmantestru'))}}
+                    <div class="col-md-12"> 
+                        {{ Form::open(array('route' => ['addupdate-mantestruct'], 'method' => 'post', 'id' => 'frmupdateEstr','name' => 'frmupdateEstr'))}}
                        
-                      
+                             <input type="hidden" name="idUserSession" value="{{ $idUserSession }}"> <!-- idsesion para enviar por ajax al api -->
                             <input type="hidden" name="token" value="{{ csrf_token()}}">
                             <div class="form-group">          
                                 <div class="input-group select2-bootstrap-append">     
                                     <select id="select_nivel0" class="form-control select2" name="select_2dig">
-                                        <option value="%">Todos</option>                                        
+                                        <option value="">Todos</option>                                        
                                        @foreach ($getDosDig as $getAll) 
-                                            <option value="{{ substr($getAll->IdEstructura,0,2) }}">{{ substr($getAll->IdEstructura,0,2) }} | {{ $getAll->Descripcion }}</option>
+                                            <option value="{{ $getAll->IdEstructura }}">{{ $getAll->IdEstructura }} | {{ $getAll->Descripcion }}</option>
                                         @endforeach 
                                     </select>
                                         <!--
@@ -86,6 +85,7 @@ Banco de Estructuras
                                 </div> 
                                 <!-- =========== -->
                                 <div class="row" id="divdepen1" style="display:none;">
+                                   
                                     <ul class="timeline">
                                         <li>
                                             <div class="timeline-badge">
@@ -93,22 +93,23 @@ Banco de Estructuras
                                             </div>
                                             <div class="timeline-panel" style="display:inline-block;">
                                                 <div class="timeline-heading">
-                                                    <h4 class="timeline-title">Ingrese la denominación que se le asignará a la nueva Red y/o Gerencia</h4>
+                                                    <h4 class="timeline-title" id="msjetitle1"> </h4>
                                                     <p>
                                                         <small class="text-muted">
                                                             <i class="livicon" data-name="bell" data-c="#F89A14" data-hc="#F89A14" data-size="18" data-loop="true"></i>
-                                                            Mantenimiento de estructuras
+                                                            Dentro de éste nivel se creará la estructura.
                                                         </small>
                                                     </p>
                                                 </div>
                                                 <div class="timeline-body">
                                                     <p> 
-                                                       <div class="input-group select2-bootstrap-append">                                                                                                   
-                                                            <input type="text" class="form-control" id="iddepen2" name="iddepen2" placeholder="Ingrese la Descripción">
+                                                       <div class="input-group select2-bootstrap-append">     
+                                                                                                                                                 
+                                                            <input type="text" class="form-control" id="iddepen2" name="txtiddepen2" placeholder="Ingrese la Descripción">
                                                             <span class="input-group-btn">
 
                                                                 <a data-href="#responsive-changeEs" href="#responsive-changeEs" >
-                                                                        <button class="btn btn-info" type="button" data-select2-open="single-append-text">Listo</button>
+                                                                        <button class="btn btn-info" type="button"  onclick="updatetxtoficinas('',1)" data-select2-open="single-append-text">Listo</button>
                                                                         <button class="btn btn-warning" type="button" onclick="hidendepen()" data-select2-open="single-append-text">Cancelar</button>
                                                                 </a>
 
@@ -120,13 +121,14 @@ Banco de Estructuras
                                             </div>
                                         </li>
                                     </ul>
+                                     
                                  </div>
                                  <!-- =========== -->                                
                             </div>
                             <div class="form-group">  
                                     <div class="input-group select2-bootstrap-append">                      
-                                        <select id="select_nivel1" class="form-control select2" name="select_4dig" onchange ="ajaxloadDetEstruct(2)">
-                                            <option value="%">Todos</option>
+                                        <select id="select_nivel1" class="form-control select2" name="select_4dig" >
+                                            <option value="">Todos</option>
                                         </select>
 
                                              <span class="input-group-btn"><!-- onclick=viewEstructuraEnPdf() -->
@@ -146,22 +148,22 @@ Banco de Estructuras
                                             </div>
                                             <div class="timeline-panel" style="display:inline-block;">
                                                 <div class="timeline-heading">
-                                                    <h4 class="timeline-title">Ingrese la denominación que se le asignará a la nueva Red y/o Gerencia</h4>
+                                                    <h4 class="timeline-title" id="msjetitle2"></h4>
                                                     <p>
                                                         <small class="text-muted">
                                                             <i class="livicon" data-name="bell" data-c="#F89A14" data-hc="#F89A14" data-size="18" data-loop="true"></i>
-                                                            Mantenimiento de estructuras
+                                                            Dentro de éste nivel se creará la estructura.
                                                         </small>
                                                     </p>
                                                 </div>
                                                 <div class="timeline-body">
                                                     <p> 
                                                        <div class="input-group select2-bootstrap-append">                                                                                                   
-                                                            <input type="text" class="form-control" id="iddepen2" name="iddepen2" placeholder="Ingrese la Descripción">
+                                                            <input type="text" class="form-control" id="iddepen3" name="txtiddepen3" placeholder="Ingrese la Descripción">
                                                             <span class="input-group-btn">
 
                                                                 <a data-href="#responsive-changeEs" href="#responsive-changeEs" >
-                                                                        <button class="btn btn-info" type="button" data-select2-open="single-append-text">Listo</button>
+                                                                        <button class="btn btn-info" type="button" onclick="updatetxtoficinas('',2)" data-select2-open="single-append-text">Listo</button>
                                                                         <button class="btn btn-warning" type="button" onclick="hidendepen2()" data-select2-open="single-append-text">Cancelar</button>
                                                                 </a>
 
@@ -182,7 +184,7 @@ Banco de Estructuras
                             <div class="form-group">
                                 <div class="input-group select2-bootstrap-append"> 
                                     <select id="select_nivel2" class="form-control select2" name="select_6dig" onchange="ajaxloadDetEstruct(3)">
-                                        <option value="%">Todos</option>
+                                        <option value="">Todos</option>
                                     </select>
 
                                      <span class="input-group-btn"><!-- onclick=viewEstructuraEnPdf() -->
@@ -202,22 +204,22 @@ Banco de Estructuras
                                             </div>
                                             <div class="timeline-panel" style="display:inline-block;">
                                                 <div class="timeline-heading">
-                                                    <h4 class="timeline-title">Ingrese la denominación que se le asignará a la nueva Red y/o Gerencia</h4>
+                                                    <h4 class="timeline-title" id="msjetitle3"></h4>
                                                     <p>
                                                         <small class="text-muted">
                                                             <i class="livicon" data-name="bell" data-c="#F89A14" data-hc="#F89A14" data-size="18" data-loop="true"></i>
-                                                            Mantenimiento de estructuras
+                                                            Dentro de éste nivel se creará la estructura.
                                                         </small>
                                                     </p>
                                                 </div>
                                                 <div class="timeline-body">
                                                     <p> 
                                                        <div class="input-group select2-bootstrap-append">                                                                                                   
-                                                            <input type="text" class="form-control" id="iddepen2" name="iddepen2" placeholder="Ingrese la Descripción">
+                                                            <input type="text" class="form-control" id="iddepen4" name="txtiddepen4" placeholder="Ingrese la Descripción">
                                                             <span class="input-group-btn">
 
                                                                 <a data-href="#responsive-changeEs" href="#responsive-changeEs" >
-                                                                        <button class="btn btn-info" type="button" data-select2-open="single-append-text">Listo</button>
+                                                                        <button class="btn btn-info" type="button" onclick="updatetxtoficinas('',3)" data-select2-open="single-append-text">Listo</button>
                                                                         <button class="btn btn-warning" type="button" onclick="hidendepen3()" data-select2-open="single-append-text">Cancelar</button>
                                                                 </a>
 
@@ -256,22 +258,22 @@ Banco de Estructuras
                                             </div>
                                             <div class="timeline-panel" style="display:inline-block;">
                                                 <div class="timeline-heading">
-                                                    <h4 class="timeline-title">Ingrese la denominación que se le asignará a la nueva Red y/o Gerencia</h4>
+                                                    <h4 class="timeline-title" id="msjetitle4"></h4>
                                                     <p>
                                                         <small class="text-muted">
                                                             <i class="livicon" data-name="bell" data-c="#F89A14" data-hc="#F89A14" data-size="18" data-loop="true"></i>
-                                                            Mantenimiento de estructuras
+                                                            Dentro de éste nivel se creará la estructura.
                                                         </small>
                                                     </p>
                                                 </div>
                                                 <div class="timeline-body">
                                                     <p> 
                                                        <div class="input-group select2-bootstrap-append">                                                                                                   
-                                                            <input type="text" class="form-control" id="iddepen2" name="iddepen2" placeholder="Ingrese la Descripción">
+                                                            <input type="text" class="form-control" id="iddepen5" name="txtiddepen5" placeholder="Ingrese la Descripción">
                                                             <span class="input-group-btn">
 
                                                                 <a data-href="#responsive-changeEs" href="#responsive-changeEs" >
-                                                                        <button class="btn btn-info" type="button" data-select2-open="single-append-text">Listo</button>
+                                                                        <button class="btn btn-info" type="button" onclick="updatetxtoficinas('',4)" data-select2-open="single-append-text">Listo</button>
                                                                         <button class="btn btn-warning" type="button" onclick="hidendepen4()" data-select2-open="single-append-text">Cancelar</button>
                                                                 </a>
 
@@ -310,22 +312,22 @@ Banco de Estructuras
                                             </div>
                                             <div class="timeline-panel" style="display:inline-block;">
                                                 <div class="timeline-heading">
-                                                    <h4 class="timeline-title">Ingrese la denominación que se le asignará a la nueva Red y/o Gerencia</h4>
+                                                    <h4 class="timeline-title" id="msjetitle5"></h4>
                                                     <p>
                                                         <small class="text-muted">
                                                             <i class="livicon" data-name="bell" data-c="#F89A14" data-hc="#F89A14" data-size="18" data-loop="true"></i>
-                                                            Mantenimiento de estructuras
+                                                             Dentro de éste nivel se creará la estructura.
                                                         </small>
                                                     </p>
                                                 </div>
                                                 <div class="timeline-body">
                                                     <p> 
                                                        <div class="input-group select2-bootstrap-append">                                                                                                   
-                                                            <input type="text" class="form-control" id="iddepen2" name="iddepen2" placeholder="Ingrese la Descripción">
+                                                            <input type="text" class="form-control" id="iddepen6" name="txtiddepen6" placeholder="Ingrese la Descripción">
                                                             <span class="input-group-btn">
 
                                                                 <a data-href="#responsive-changeEs" href="#responsive-changeEs" >
-                                                                        <button class="btn btn-info" type="button" data-select2-open="single-append-text">Listo</button>
+                                                                        <button class="btn btn-info" type="button" onclick="updatetxtoficinas('',5)" data-select2-open="single-append-text">Listo</button>
                                                                         <button class="btn btn-warning" type="button" onclick="hidendepen5()" data-select2-open="single-append-text">Cancelar</button>
                                                                 </a>
 
@@ -341,14 +343,14 @@ Banco de Estructuras
                                  <!-- =========== -->   
 
                             </div>                       
-                            
-                         {{ Form::close()}}    
+                            {{ Form::close()}} 
+                       
                       
 
                        
                              <!-- ==========draw table========== -->
-                            {{ Form::open(array('route' => 'save-update-mantestruct', 'method' => 'post', 'id' => 'frmupdateEstr','name' => 'frmupdateEstr'))}} 
-                            <input type="hidden" name="token" value="{{ csrf_token()}}">
+                            {{ Form::open(array('route' => ['showdet-mantestruct','x'], 'method' => 'post', 'id' => 'frmshowdet','name' => 'frmshowdet'))}}
+                           <input type="hidden" name="token" value="{{ csrf_token()}}">
                                 <div class="panel-body">
                                     <div class="table-responsive" >
                                         <table  class="table dataTable no-footer dtr-inline">
@@ -365,8 +367,7 @@ Banco de Estructuras
                                         </table>
                                     </div>
                                 </div> 
-                            {{ Form::close()}}                       
-                            <!-- ================ -->                      
+                             {{ Form::close()}}                      
                 </div>
             </div>
             <!--   =================    -->

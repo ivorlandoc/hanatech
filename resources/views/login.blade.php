@@ -69,8 +69,7 @@
                 </form>
             </div>
         <div class="bg-light animation flipInX">
-            <a href="{{ route('forgot-password') }}" id="forgot_pwd_title">¿Se te olvidó tu contraseña?
-</a>
+            <a href="{{ route('forgot-password') }}" id="forgot_pwd_title">¿Se te olvidó tu contraseña?</a>
         </div>
         </div>
     </div>

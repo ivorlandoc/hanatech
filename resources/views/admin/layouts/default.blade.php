@@ -141,6 +141,7 @@
             <div class="page-sidebar  sidebar-nav">
                 <div class="nav_icons">
                     <ul class="sidebar_threeicons">
+                        @if(Sentinel::getUser()->permissions === 1 || Sentinel::getUser()->permissions === 4)
                         <li>
                             <a href="{{ URL::to('admin/plazas') }}">
                                 <i class="livicon" data-name="table" title="Plazas" data-loop="true"
@@ -165,6 +166,34 @@
                                    data-color="#6CC66C" data-hc="#6CC66C" data-s="25"></i>
                             </a>
                         </li>
+                         @endif 
+                         @if(Sentinel::getUser()->permissions === 2)
+                        <li>
+                            <a href="{{ URL::to('reportes/externo') }}">
+                                <i class="livicon" data-name="table" title="Consulta de Plazas" data-loop="true"
+                                   data-color="#418BCA" data-hc="#418BCA" data-s="25"></i>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ URL::to('reportes/externo') }}">
+                                <i class="livicon" data-name="list-ul" title="Consulta de Plazas" data-loop="true"
+                                   data-color="#e9573f" data-hc="#e9573f" data-s="25"></i>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ URL::to('reportes/externo') }}">
+                                <i class="livicon" data-name="image" title="Consulta de Plazas" data-loop="true"
+                                   data-color="#F89A14" data-hc="#F89A14" data-s="25"></i>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ URL::to('reportes/externo') }}">
+                                <i class="livicon" data-name="user" title="Consulta de Plazas" data-loop="true"
+                                   data-color="#6CC66C" data-hc="#6CC66C" data-s="25"></i>
+                            </a>
+                        </li>
+                         @endif 
+
                     </ul>
                 </div>
                 <div class="clearfix"></div>

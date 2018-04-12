@@ -8,7 +8,7 @@ $(function(){
 		var code = (e.keyCode ? e.keyCode : e.which);
         if(code == 13) {
         // var strin=$("#searchPlazaForRpte").val();
-          updatetxtoficinas();
+          updatetxtoficinas('','');
           return false;
         }
       });
@@ -103,25 +103,26 @@ function GetIdSelectFour(){
 
 
 function ajaxloadDetEstruct(idx) {   
-     var formData = new FormData($("form[name='frmmantestru']")[0]);
+     var formData = new FormData($("form[name='frmupdateEstr']")[0]);
       formData.append('id',idx);
      $('.loading').show();
       var xy=0;
       var tableHtml="";
       var check="";
+      alert(idx);
     $.ajax({  
             type: "post",
             headers: {'X-CSRF-TOKEN':$('#token').val()},
-            url:  $('#frmmantestru').attr('action'),
+            url:  $('#frmupdateEstr').attr('action'),
             dataType: 'json',
             data: formData,
             cache: false,
             contentType: false,
             processData: false,            
         success: function (data) { 
-        	//console.log("1");
+        	 alert("1-->"+data);
 	        if(data.length!=0){  
-	        	//console.log("2");
+	        	alert("2-->"+data);
 		        $.each(data, function( key, value ) { 
 		        	if(value.IdEstructura.length!=12)check="disabled"; else check="";
 		       // console.log("3");          		        
@@ -133,7 +134,7 @@ function ajaxloadDetEstruct(idx) {
 									'<p class="flatpickr input-group" data-wrap="true" data-clickOpens="false">'+
 										'<input class="form-control" type="text" value="'+value.servicio+'"  '+check+' id="'+value.IdEstructura+'" data-input>'+
 											'<span class="input-group-addon add-on" style="cursor: pointer;">'+
-												'<a class="input-btn" onclick=updatetxtoficinas("'+value.IdEstructura+'") data-clear>'+
+												'<a class="input-btn" onclick=updatetxtoficinas("'+value.IdEstructura+'",0) data-clear>'+
 													'<i class="livicon" data-name="save" data-size="16" data-c="#555555" data-hc="#555555" data-loop="true">...</i>'+									
 												'</a>'+
 											'</span>'+
@@ -144,7 +145,7 @@ function ajaxloadDetEstruct(idx) {
 						$('#IdShowresume').html(tableHtml);
 				});
 	        }else{
-	    		$("#IdMensajeAlert").html('<div class="alert alert-danger" role="alert"></span> No existe registros</div>').fadeIn().delay(4000).fadeOut('slow');
+	    		$("#IdMensajeAlert").html('<div class="alert alert-danger" role="alert"></span> No existe registros</div>').fadeIn().delay(2000).fadeOut('slow');
 	  		}			
         	$('.loading').hide();          
         },
@@ -226,12 +227,13 @@ function ShowDetaisMante(id){
 		});						
 }
 */
-function updatetxtoficinas(idestru){
+function updatetxtoficinas(idestru,idx){
 	var formData = new FormData($("form[name='frmupdateEstr']")[0]);
 	 formData.append('idestru',idestru);
-	 formData.append('Descrip',$('#'+idestru).val());
-	 //var id= $('#select_nivel3').val();
-      $('.loading').show();
+	 formData.append('Descrip',$('#'+idestru).val());	
+	 formData.append('iddepenhiden',idx);
+    $('.loading').show();
+
     $.ajax({  
             type: "post",
             headers: {'X-CSRF-TOKEN':$('#token').val()},
@@ -241,12 +243,13 @@ function updatetxtoficinas(idestru){
             cache: false,
             contentType: false,
             processData: false,
-        success: function (data) {
-           if(data===1) {               
+        success: function (data) {  
+       
+           if(data===1 || data===true) {               
                    $("#IdMensajeAlert").html('<div class="alert alert-success" role="alert">La Operación se realizó con éxito</div>').fadeIn().delay(4000).fadeOut('slow');                   
-                 	$('#select_nivel4').click()
+                 	//$('#select_nivel4').click()
                 } else {
-                   $("#IdMensajeAlert").html('<div class="alert alert-danger" role="alert"></span> </strong>La Operación no se realizó</div>').fadeIn().delay(4000).fadeOut('slow');
+                   $("#IdMensajeAlert").html('<div class="alert alert-danger" role="alert">La Operación no se realizó</div>').fadeIn().delay(4000).fadeOut('slow');
             }
            $('.loading').hide(); 
         },
@@ -257,14 +260,70 @@ function updatetxtoficinas(idestru){
 }
 
 /*===========================================*/
-function showdepen(){$("#divdepen1").show();}
-function showdepen2(){	$("#divdepen2").show();}
-function showdepen3(){	$("#divdepen3").show();}
-function showdepen4(){$("#divdepen4").show();}
-function showdepen5(){$("#divdepen5").show();}
+function showdepen(){
+	if($("#select_nivel0").val()!=""){
+		$("#divdepen1").show();
+		$('#msjetitle1').html($('#select_nivel0 option:selected').html());
+		
+		
+	}else{
+		 $("#IdMensajeAlert").html('<div class="alert alert-danger" role="alert">Seleccione la dependencia[Órgano] </strong></div>').fadeIn().delay(2000).fadeOut('slow');
+		 $("#select_nivel0").focus();
+		 $("#select_nivel0").click();
+		
+	}
+}
+
+function showdepen2(){	
+	if($("#select_nivel1").val()!=""){
+		$("#divdepen2").show();
+		$('#msjetitle2').html($('#select_nivel1 option:selected').html());
+		
+		
+	}else{
+		 $("#IdMensajeAlert").html('<div class="alert alert-danger" role="alert">Seleccione la dependencia[Órgano] </strong></div>').fadeIn().delay(2000).fadeOut('slow');
+		 $("#select_nivel1").focus();
+		 $("#select_nivel1").click();
+		
+	}	
+}
+function showdepen3(){	
+	if($("#select_nivel2").val()!=""){
+		$("#divdepen3").show();
+		$('#msjetitle3').html($('#select_nivel2 option:selected').html());	
+	}else{
+		 $("#IdMensajeAlert").html('<div class="alert alert-danger" role="alert">Seleccione la dependencia[Órgano] </strong></div>').fadeIn().delay(2000).fadeOut('slow');
+		 $("#select_nivel2").focus();
+		 $("#select_nivel2").click();
+	}	
+}
+
+
+function showdepen4(){	
+	if($("#select_nivel3").val()!=""){
+		$("#divdepen4").show();
+		$('#msjetitle4').html($('#select_nivel3 option:selected').html());	
+	}else{
+		 $("#IdMensajeAlert").html('<div class="alert alert-danger" role="alert">Seleccione la dependencia[Órgano] </strong></div>').fadeIn().delay(2000).fadeOut('slow');
+		 $("#select_nivel3").focus();
+		 $("#select_nivel3").click();
+	}	
+}
+
+
+function showdepen5(){
+	if($("#select_nivel4").val()!=""){
+		$("#divdepen5").show();
+		$('#msjetitle5').html($('#select_nivel4 option:selected').html());	
+	}else{
+		 $("#IdMensajeAlert").html('<div class="alert alert-danger" role="alert">Seleccione la dependencia[Órgano] </strong></div>').fadeIn().delay(2000).fadeOut('slow');
+		 $("#select_nivel4").focus();
+		 $("#select_nivel4").click();
+	}	
+}
 /*=======================================*/
 
-function hidendepen(){$("#divdepen1").hide();}
+function hidendepen() {$("#divdepen1").hide();}
 function hidendepen2(){$("#divdepen2").hide();}
 function hidendepen3(){$("#divdepen3").hide();}
 function hidendepen4(){$("#divdepen4").hide();}

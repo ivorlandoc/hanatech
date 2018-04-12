@@ -31,12 +31,14 @@
                     <div id="wrapper">
                         <div id="login" class="animate form">
                             <form action="{{ route('signin') }}" autocomplete="on" method="post" role="form" id="login_form">
-                                <!--<h3 class="black_bg">
-                                   <img src="{{ asset('assets/img/logo.png') }}" alt="josh logo">
-                                    <br>Log In</h3>
-                                    -->
+                                <h3 ><!-- class="black_bg"-->
+                                  <!-- <img src="{{ asset('assets/img/logo3.png') }}" alt="josh logo">-->
+                                   <!-- <br>Log In</h3>-->
+                                    
                                     <!-- CSRF Token -->
-                                    <h3>Inicio de sesión</h3>
+                                    <!-- <h3>Inicio de sesión</h3>-->
+                                     <h3>SIGE-RH</h3>
+
                                     <input type="hidden" name="_token" value="{{ csrf_token() }}" />
                                 <div class="form-group {{ $errors->first('email', 'has-error') }}">
                                     <label style="margin-bottom:0px;" for="email" class="uname control-label"> <i class="livicon" data-name="mail" data-size="16" data-loop="true" data-c="#3c8dbc" data-hc="#3c8dbc"></i>
@@ -65,16 +67,16 @@
                                     </label>
                                 </div>
                                 <p class="login button">
-                                    <input type="submit" value="Listo" class="btn btn-info" />
+                                    <input type="submit" value="Entrar" class="btn btn-primary" /> <!-- class="btn btn-info" -->
                                 </p>
-                                <p class="change_link">
+                               <!-- <p class="change_link">
                                     <a href="#toforgot">
                                         <button type="button" class="btn btn-responsive botton-alignment btn-warning btn-sm">Se te olvidó tu contraseña</button>
                                     </a>
                                     <a href="#toregister">
                                         <button type="button" id="signup" class="btn btn-responsive botton-alignment btn-success btn-sm" style="float:right;">Regístrate</button>
                                     </a>
-                                </p>
+                                </p>-->
                             </form>
                         </div>
                         <div id="register" class="animate form">
