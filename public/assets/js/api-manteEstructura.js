@@ -60,6 +60,7 @@ function OnSelectElSegundoNMant(){
 
 	$('#select_nivel3').html('<option value="">Elegir</option>');
 	$('#select_nivel4').html('<option value="">Elegir</option>');
+	ajaxloadDetEstruct(3);
 }
 
 function OnSelectElTercerNMant(){
@@ -75,6 +76,7 @@ function OnSelectElTercerNMant(){
 		$('#select_nivel3').html(html_select4);	
 	});
 	$('#select_nivel4').html('<option value="">Elegir</option>');
+	ajaxloadDetEstruct(4);
 }
 
 function OnSelectElFourNMant(){
@@ -90,72 +92,47 @@ function OnSelectElFourNMant(){
 		html_select5 += '<option value="'+data[i].IdEstructura+'">'+data[i].IdEstructura+' | '+data[i].Descripcion+'</option>';
 		$('#select_nivel4').html(html_select5);	
 	});
-	
-}
-
-/*
-function GetIdSelectFour(){
-	var getSelectId= $('#select_nivel3').val();
-	ShowDetaisMante(getSelectId);
-}
-*/
-
-
-
-function ajaxloadDetEstruct(idx) {   
-     var formData = new FormData($("form[name='frmupdateEstr']")[0]);
-      formData.append('id',idx);
-     $('.loading').show();
-      var xy=0;
-      var tableHtml="";
-      var check="";
-      alert(idx);
-    $.ajax({  
-            type: "post",
-            headers: {'X-CSRF-TOKEN':$('#token').val()},
-            url:  $('#frmupdateEstr').attr('action'),
-            dataType: 'json',
-            data: formData,
-            cache: false,
-            contentType: false,
-            processData: false,            
-        success: function (data) { 
-        	 alert("1-->"+data);
-	        if(data.length!=0){  
-	        	alert("2-->"+data);
-		        $.each(data, function( key, value ) { 
-		        	if(value.IdEstructura.length!=12)check="disabled"; else check="";
-		       // console.log("3");          		        
-			           	xy++;	 //organo,gerencia,dependencia,oficina,servicio			
-						tableHtml += '<tr><td>'+xy+'</td>  <td>'+value.IdEstructura+'</td>  <td>'+value.organo+'</td> <td>'+value.gerencia+'</td><td>'+value.dependencia+'</td><td>'+value.oficina+'</td>'+
-						'<td>'+												
-							'<div class="form-group">'+	
-								'<div>'+				
-									'<p class="flatpickr input-group" data-wrap="true" data-clickOpens="false">'+
-										'<input class="form-control" type="text" value="'+value.servicio+'"  '+check+' id="'+value.IdEstructura+'" data-input>'+
-											'<span class="input-group-addon add-on" style="cursor: pointer;">'+
-												'<a class="input-btn" onclick=updatetxtoficinas("'+value.IdEstructura+'",0) data-clear>'+
-													'<i class="livicon" data-name="save" data-size="16" data-c="#555555" data-hc="#555555" data-loop="true">...</i>'+									
-												'</a>'+
-											'</span>'+
-									'</p>'+	
-								'</div>'+				
-							'</div>'+
-						'</td></tr>';
-						$('#IdShowresume').html(tableHtml);
-				});
-	        }else{
-	    		$("#IdMensajeAlert").html('<div class="alert alert-danger" role="alert"></span> No existe registros</div>').fadeIn().delay(2000).fadeOut('slow');
-	  		}			
-        	$('.loading').hide();          
-        },
-        error: function (xhr, status, error) {
-            alert(xhr.responseText);
-        }
-    });
+	ajaxloadDetEstruct(5);	
 }
 
 
+function ajaxloadDetEstruct(idx){
+	var _string="";
+	if(idx===3) _string =$("#select_nivel2").val();
+	if(idx===4) _string =$("#select_nivel3").val();
+	if(idx===5) _string =$("#select_nivel4").val();
+
+	$.get('../api/admin/mantestruct/list3/'+_string,function(data){
+		var tableHtml="";	
+		if(data.length!=0){  
+			//console.log("<----->"+data);
+			for (var i=0; i < data.length; i++){
+				console.log("<----->"+i+"--"+data[i].IdEstructura);
+				if(data[i].IdEstructura.length!=12) check="disabled"; else check="";   
+					tableHtml += '<tr><td>'+i+'</td>  <td>'+data[i].IdEstructura+'</td>  <td>'+data[i].organo+'</td> <td>'+data[i].gerencia+'</td><td>'+data[i].dependencia+'</td><td>'+data[i].oficina+'</td>'+
+					'<td>'+												
+						'<div class="form-group">'+	
+							'<div>'+				
+								'<p class="flatpickr input-group" data-wrap="true" data-clickOpens="false">'+
+									'<input class="form-control" type="text" value="'+data[i].servicio+'"  '+check+' id="'+data[i].IdEstructura+'" data-input>'+
+										'<span class="input-group-addon add-on" style="cursor: pointer;">'+
+											'<a class="input-btn" onclick=updatetxtoficinas("'+data[i].IdEstructura+'",0) data-clear>'+
+												'<i class="livicon" data-name="save" data-size="16" data-c="#555555" data-hc="#555555" data-loop="true">...</i>'+									
+											'</a>'+
+										'</span>'+
+								'</p>'+	
+							'</div>'+				
+						'</div>'+
+					'</td></tr>';
+					$('#IdShowresume').html(tableHtml);
+				}
+		}else{
+		    $("#IdMensajeAlert").html('<div class="alert alert-danger" role="alert"></span> No existe registros</div>').fadeIn().delay(2000).fadeOut('slow');
+		}
+	});
+	 
+	//ajaxloadDetEstruct(5);	
+}
 
 
 $("#IdSaveManteEstru").click(function (e) {
@@ -243,8 +220,7 @@ function updatetxtoficinas(idestru,idx){
             cache: false,
             contentType: false,
             processData: false,
-        success: function (data) {  
-       
+        success: function (data) {
            if(data===1 || data===true) {               
                    $("#IdMensajeAlert").html('<div class="alert alert-success" role="alert">La Operación se realizó con éxito</div>').fadeIn().delay(4000).fadeOut('slow');                   
                  	//$('#select_nivel4').click()
@@ -264,7 +240,12 @@ function showdepen(){
 	if($("#select_nivel0").val()!=""){
 		$("#divdepen1").show();
 		$('#msjetitle1').html($('#select_nivel0 option:selected').html());
-		
+
+		$("#divdepen2").hide();
+		$("#divdepen3").hide();
+		$("#divdepen4").hide();
+		$("#divdepen5").hide();
+	
 		
 	}else{
 		 $("#IdMensajeAlert").html('<div class="alert alert-danger" role="alert">Seleccione la dependencia[Órgano] </strong></div>').fadeIn().delay(2000).fadeOut('slow');
@@ -278,7 +259,11 @@ function showdepen2(){
 	if($("#select_nivel1").val()!=""){
 		$("#divdepen2").show();
 		$('#msjetitle2').html($('#select_nivel1 option:selected').html());
-		
+		$("#divdepen1").hide();
+
+		$("#divdepen3").hide();
+		$("#divdepen4").hide();
+		$("#divdepen5").hide();	
 		
 	}else{
 		 $("#IdMensajeAlert").html('<div class="alert alert-danger" role="alert">Seleccione la dependencia[Órgano] </strong></div>').fadeIn().delay(2000).fadeOut('slow');
@@ -291,6 +276,11 @@ function showdepen3(){
 	if($("#select_nivel2").val()!=""){
 		$("#divdepen3").show();
 		$('#msjetitle3').html($('#select_nivel2 option:selected').html());	
+		$("#divdepen1").hide();
+		$("#divdepen2").hide();
+
+		$("#divdepen4").hide();
+		$("#divdepen5").hide();	
 	}else{
 		 $("#IdMensajeAlert").html('<div class="alert alert-danger" role="alert">Seleccione la dependencia[Órgano] </strong></div>').fadeIn().delay(2000).fadeOut('slow');
 		 $("#select_nivel2").focus();
@@ -303,6 +293,12 @@ function showdepen4(){
 	if($("#select_nivel3").val()!=""){
 		$("#divdepen4").show();
 		$('#msjetitle4').html($('#select_nivel3 option:selected').html());	
+		$("#divdepen1").hide();
+		$("#divdepen2").hide();
+		$("#divdepen3").hide();
+
+		$("#divdepen5").hide();
+	
 	}else{
 		 $("#IdMensajeAlert").html('<div class="alert alert-danger" role="alert">Seleccione la dependencia[Órgano] </strong></div>').fadeIn().delay(2000).fadeOut('slow');
 		 $("#select_nivel3").focus();
@@ -315,6 +311,11 @@ function showdepen5(){
 	if($("#select_nivel4").val()!=""){
 		$("#divdepen5").show();
 		$('#msjetitle5').html($('#select_nivel4 option:selected').html());	
+		$("#divdepen1").hide();
+		$("#divdepen2").hide();
+		$("#divdepen3").hide();
+		$("#divdepen4").hide();
+		
 	}else{
 		 $("#IdMensajeAlert").html('<div class="alert alert-danger" role="alert">Seleccione la dependencia[Órgano] </strong></div>').fadeIn().delay(2000).fadeOut('slow');
 		 $("#select_nivel4").focus();

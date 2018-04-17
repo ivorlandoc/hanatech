@@ -35,7 +35,7 @@ function GetAllPlazas(id){
 				if(dataDet[i].IdPersona=="") htmlNombre="<p class='btn btn-info start'>"+dataDet[i].estado+"</p>&nbsp;&nbsp;&nbsp;<a href="+url+ ' class="btn btn-primary start">DAR DE ALTA</a>'; else htmlNombre=dataDet[i].ApellidoPat+'  '+dataDet[i].ApellidoMat+' '+dataDet[i].Nombres;
 
 				tableHtml += '<table><tr><th width="23%"># DE PLAZA:</th><td ><p style="margin: 0px 0px 0px 0px;">'+dataDet[i].NroPlaza+' </p></td></tr> '+
-							 '<tr><th>PERSONA:</th><td><p style="margin: 0px 0px 0px 30px;">'+htmlNombre+'</p></td></tr> '+
+							 '<tr><th>TITULAR:</th><td><p style="margin: 0px 0px 0px 30px;">'+htmlNombre+'</p></td></tr> '+
 							 '<tr><th colspan="2">DEPENDENCIA</th></tr>'+
 							 '<tr><td colspan="2"><p style="margin: 0px 0px 0px 0px;">'+dataDet[i].sede+'  <b>|</b>  '+dataDet[i].organo+' </p></td></tr>'+												
 							 '<tr><td colspan="2"><p style="margin: 0px 0px 0px 0px;">'+dataDet[i].gerencia+'  <b> | </b>  '+dataDet[i].dep2+'<b> | </b>  '+dataDet[i].descripcion+'</p></td></tr>'+							
@@ -57,6 +57,7 @@ function GetAllPlazasMov(id){
 	$.get('../api/admin/rpteplazas/detplaza/'+id,function(dataDet){
 		var tableHtml='';
        	var persona="";
+       	var url="";
        	var xy=0;
        	if(dataDet.length!=0){  
        		$('.loading').show();
@@ -65,12 +66,14 @@ function GetAllPlazasMov(id){
        		$('#IdGetShowEstadoPlazaDet').html("");
 			for (var i=0; i < dataDet.length; i++) 	{ xy++;
 				if(dataDet[i].Persona=="") persona="---"; else persona=dataDet[i].Persona;
+				if(dataDet[i].FileAdjunto=="") url=dataDet[i].DocRef; else url='<a href="../uploads/files/'+dataDet[i].FileAdjunto+'" target="_blank">'+dataDet[i].DocRef+'</a>';
+
 				tableHtml += '<tr>	<th>'+xy+'</th>'+
 									'<td>'+persona+'</td>'+
 							 		'<td>'+dataDet[i].tipomov+'</td> '+							 		
 							 		'<td>'+dataDet[i].organo+' | '+dataDet[i].gerencia+' | '+dataDet[i].dep2+' | '+dataDet[i].ofi+'</td>'+	
 							 		'<td>'+dataDet[i].cargo+'</td>'+											
-							 		'<td><a href="../uploads/files/'+dataDet[i].FileAdjunto+'" target="_blank">'+dataDet[i].DocRef+'</a></td>'+							
+							 		'<td>'+url+'</td>'+							
 							 		'<td>'+dataDet[i].Observacion+'</td>'+					
 							 		'<td>'+dataDet[i].fm+' | '+dataDet[i].fd+'</td>'+							 							
 							 '</tr>';
@@ -93,21 +96,24 @@ function ShowHistoriaMov(id,iddni){
 		$('#IdShowDetailsMov').html("");
 		var tableHtml 	="";
 		var htmlHead 	="";
-		console.log("---->"+dataDa);
+		//console.log("---->"+dataDa);
+		var url="";
 		
        	var xy=0;   
        	var ErrorHtml='<tr><td colspan="9"><div class="alert alert-danger alert-dismissable margin5"><strong>Ups</strong> no existe registros!</div></td></tr>';
-        var HtmlHeadTr='<tr class="filters"><th>#</th><th>DEPENDENCIA</th><th>NIVEL</th><th>CARGO</th><th>T.MOV</th><th>F.MOV</th> <th>F.DOC</th><th>DOC.DE&nbspREF.</th> <th>OBSERVACION</th><th>DOC.ADJ</th></tr>';
+        var HtmlHeadTr='<tr class="filters"><th>#</th><th>DEPENDENCIA</th><th>NIVEL</th><th>CARGO</th><th>T.MOV</th><th>F.MOV</th> <th>F.DOC</th><th>DOC.DE&nbspREF.</th> <th>OBSERVACION</th><th>DOC.ADJ.</th></tr>';
        		if(dataDa.length!=0){  
        		 $('.loading').show();	
        		$('#headTR').html(HtmlHeadTr);	       		
 			for (var i=0; i < dataDa.length; i++) 	{
 				xy++; 
-				console.log("==sede=>"+dataDa[i].sede+' / '+dataDa[i].dependencia);
+				//console.log("==sede=>"+dataDa[i].sede+' / '+dataDa[i].dependencia);
 						if(i=="0"){
 							 htmlHead ='<b>'+dataDa[0].dni +'  |  '+dataDa[0].nom+'  |  PLAZA N°['+dataDa[0].NroPlaza+']</b>';
 							 $('#IdHeadDetMov').html(htmlHead);
-						}						
+						}
+				if(dataDa[i].FileAdjunto=="") url='---'; else url='<a href="../uploads/files/'+dataDa[i].FileAdjunto+'" target="_blank" class="btn btn-info btn-sm btn-responsive" role="button"><span class="livicon" data-name="notebook" data-size="14" data-loop="true" data-c="#fff" data-hc="white"></span><br/>Abrir</a>';
+						
 				tableHtml += '<tr><td>'+xy+'</td>'+
 				'<td>'+dataDa[i].centro+' | <br> '+dataDa[i].dep+' | '+dataDa[i].dep2+' | '+' | '+dataDa[i].ofi+' | '+ dataDa[i].dependencia+'</td>'+
 				'<td>'+dataDa[i].IdNivel+'</td>'+
@@ -117,7 +123,7 @@ function ShowHistoriaMov(id,iddni){
 				'<td>'+dataDa[i].fechaDoc+'</td>'+
 				'<td>'+dataDa[i].DocRef+'</td>'+
 				'<td>'+dataDa[i].Observacion+'</td>'+
-				'<td><a href="../uploads/files/'+dataDa[i].FileAdjunto+'" target="_blank" class="btn btn-info btn-sm btn-responsive" role="button"><span class="livicon" data-name="notebook" data-size="14" data-loop="true" data-c="#fff" data-hc="white"></span><br/>Abrir</a></td>'+
+				'<td>'+url+'</td>'+
 				'</tr>';
 				$('#IdShowDetailsMov').html(tableHtml);	
 			}
@@ -148,7 +154,7 @@ function GetDetalleGeneralPlaza(id,dni){
 							 htmlHead ='<b> DETALLE DE LA  PLAZA N°['+dataDet[0].NroPlaza+']</b>';
 							 $('#IdHeadDetMov').html(htmlHead);
 						}						
-				tableHtml += '<tr><th colspan="2" width="1">PERSONA:</th></tr>'+
+				tableHtml += '<tr><th colspan="2" width="1">TITULAR:</th></tr>'+
 							 '<tr ><td colspan="2"><p style="margin: 0px 0px 0px 30px;">'+dataDet[i].dni+' | '+dataDet[i].nom+'</p></td></tr>'+
 							 '<tr><th colspan="2">DEPENDENCIA</th></tr>'+
 							 '<tr><td colspan="2"><p style="margin: 0px 0px 0px 30px;">'+dataDet[i].organo+' | '+dataDet[i].gerencia+'</p></td></tr>'+					

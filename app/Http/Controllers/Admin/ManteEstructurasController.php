@@ -41,7 +41,7 @@ function getResultSelect($id){
 }
 
 public function GetSelect($id){
-          if(strlen($id)=="2"){
+        if(strlen($id)=="2"){
             $data=DB::table('estructura')->select('IdEstructura','Descripcion')->where(DB::raw('LENGTH(IdEstructura)'), '=', "4")->where('IdEstructura', 'like', $id.'%')->get();
         } elseif (strlen($id)=="4") { 
              $data=DB::table('estructura')->select('IdEstructura','Descripcion')->where(DB::raw('LENGTH(IdEstructura)'), '=', "6")->where('IdEstructura', 'like', $id.'%')->get();
@@ -56,24 +56,22 @@ public function GetSelect($id){
          return $data;
     }
 
-public function showdetalleestructura(Request $request,$id){
-    $_string="";
-  if($request->ajax()){ 
-        $idx                      = $request->input("id");
-        //if($idx==2) {$_string     = $request->input("select_4dig"); }        
-        if($idx==3) {$_string     = $request->input("select_6dig"); }
-        if($idx==4) {$_string     = $request->input("select_8dig"); }
-        if($idx==5) {$_string     = $request->input("select_10dig"); }
-        $data=DB::select("SELECT IdEstructura,
-        (SELECT Descripcion FROM estructura WHERE LENGTH(IdEstructura)=4 AND LEFT(IdEstructura,4)=LEFT('$_string',4) LIMIT 1) AS organo,
-        (SELECT Descripcion FROM estructura WHERE LENGTH(IdEstructura)=6 AND LEFT(IdEstructura,6)=LEFT('$_string',6) LIMIT 1) AS gerencia,
-        (SELECT Descripcion FROM estructura WHERE LENGTH(IdEstructura)=8 AND LEFT(IdEstructura,8)=LEFT('$_string%',8) LIMIT 1) AS dependencia,
-        (SELECT Descripcion FROM estructura WHERE LENGTH(IdEstructura)=10 AND LEFT(IdEstructura,10)=LEFT('$_string%',10) LIMIT 1) AS oficina,
-        descripcion AS servicio
-        FROM estructura WHERE IdEstructura like '$_string%' ");  
-  }               
-      return Response::json($data);
-
+ function showdetalleestructura($id){
+      // $_string="";
+       // if($request->ajax()){ 
+           /*   $idx                      = $request->input("id");//if($idx==2) {$_string     = $request->input("select_4dig"); }        
+              if($idx==3) {$_string     = $request->input("select_6dig"); }
+              if($idx==4) {$_string     = $request->input("select_8dig"); }
+              if($idx==5) {$_string     = $request->input("select_10dig"); }   */     
+              
+              $data=DB::select("SELECT IdEstructura,
+              (SELECT Descripcion FROM estructura WHERE LENGTH(IdEstructura)=4 AND LEFT(IdEstructura,4)=LEFT('$id',4) LIMIT 1) AS organo,
+              (SELECT Descripcion FROM estructura WHERE LENGTH(IdEstructura)=6 AND LEFT(IdEstructura,6)=LEFT('$id',6) LIMIT 1) AS gerencia,
+              (SELECT Descripcion FROM estructura WHERE LENGTH(IdEstructura)=8 AND LEFT(IdEstructura,8)=LEFT('$id%',8) LIMIT 1) AS dependencia,
+              (SELECT Descripcion FROM estructura WHERE LENGTH(IdEstructura)=10 AND LEFT(IdEstructura,10)=LEFT('$id%',10) LIMIT 1) AS oficina,
+              descripcion AS servicio  FROM estructura WHERE IdEstructura like '$id%'");  
+       //   }               
+      return $data;
 }
 
 
@@ -109,7 +107,7 @@ function updateOficinaEstruct(Request $Request){
               }
               if($_flat==2){ // add estructura de 4 digitos
                 $_idest         = $Request->input("select_4dig"); 
-                $Nombre        = $Request->input("txtiddepen3");          
+                $Nombre         = $Request->input("txtiddepen3");          
                      
                 $GetCod     =DB::table('estructura')->where(DB::raw('LENGTH(IdEstructura)'), '=', "6")->where('IdEstructura','like',"$_idest".'%')->select(DB::raw('IF(LPAD(MAX(IdEstructura)+1,6,"0") IS NULL,CONCAT("'.$_idest.'","01"),LPAD(MAX(IdEstructura)+1,6,"0")) AS idmax'))->get('idmax');
                 $maxCod="";
@@ -123,15 +121,17 @@ function updateOficinaEstruct(Request $Request){
                 $GetCod     =DB::table('estructura')->where(DB::raw('LENGTH(IdEstructura)'), '=', "8")->where('IdEstructura','like',"$_idest".'%')->select(DB::raw('IF(LPAD(MAX(IdEstructura)+1,8,"0") IS NULL,CONCAT("'.$_idest.'","01"),LPAD(MAX(IdEstructura)+1,8,"0")) AS idmax'))->get('idmax');
                 $maxCod="";
                 foreach ($GetCod as $key) $maxCod  =$key->idmax; 
+                showdetalleestructura($Request,3);
               }
 
               if($_flat==4){ // add estructura de 4 digitos
-                $_idest         = $Request->input("select_8dig"); 
+                $_idest        = $Request->input("select_8dig"); 
                 $Nombre        = $Request->input("txtiddepen5");          
                      
                 $GetCod     =DB::table('estructura')->where(DB::raw('LENGTH(IdEstructura)'), '=', "10")->where('IdEstructura','like',"$_idest".'%')->select(DB::raw('IF(LPAD(MAX(IdEstructura)+1,10,"0") IS NULL,CONCAT("'.$_idest.'","01"),LPAD(MAX(IdEstructura)+1,10,"0")) AS idmax'))->get('idmax');
                 $maxCod="";
                 foreach ($GetCod as $key) $maxCod  =$key->idmax; 
+                
               }
               if($_flat==5){ // add estructura de 4 digitos
                 $_idest         = $Request->input("select_10dig"); 
@@ -140,7 +140,8 @@ function updateOficinaEstruct(Request $Request){
                 $GetCod     =DB::table('estructura')->where(DB::raw('LENGTH(IdEstructura)'), '=', "12")->where('IdEstructura','like',"$_idest".'%')->select(DB::raw('IF(LPAD(MAX(IdEstructura)+1,12,"0") IS NULL,CONCAT("'.$_idest.'","01"),LPAD(MAX(IdEstructura)+1,12,"0")) AS idmax'))->get('idmax');
                 $maxCod="";
                 foreach ($GetCod as $key) $maxCod  =$key->idmax; 
-              }
+
+                    }
 
               if($_flat==1 || $_flat==2 || $_flat==3 || $_flat==4 || $_flat==5 ){
                 $aff = DB::table('estructura')->insert([

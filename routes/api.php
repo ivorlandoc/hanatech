@@ -56,7 +56,8 @@ Route::group(['middleware' =>['api', 'cors'],'namespace'=>'Admin','prefix' => 'a
 		route::get('/mantestruct/getlist/{id}','ManteEstructurasController@getResultSelect');		
 		route::get('/mantestruct/list/{id}','ManteEstructurasController@getresult_change');
 		route::get('/mantestruct/list2/{id}','ManteEstructurasController@showDetails');
-		route::post('/mantestruct/insert','ManteEstructurasController@addNewEstructura');
+		route::get('/mantestruct/list3/{id}','ManteEstructurasController@showdetalleestructura');
+		//route::post('/mantestruct/insert','ManteEstructurasController@addNewEstructura');
 		//route::post('/mantestruct/update','ManteEstructurasController@_cambiarDeEstructurapersona');
 
 		route::get('/rptetempo/list/{id}','RpteTempoController@GetResultDet'); // temporal para  eliminar

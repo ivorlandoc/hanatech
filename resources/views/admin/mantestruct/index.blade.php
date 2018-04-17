@@ -343,14 +343,11 @@ Banco de Estructuras
                                  <!-- =========== -->   
 
                             </div>                       
-                            {{ Form::close()}} 
-                       
-                      
-
-                       
+                            {{ Form::close()}}    
+                            
                              <!-- ==========draw table========== -->
-                            {{ Form::open(array('route' => ['showdet-mantestruct','x'], 'method' => 'post', 'id' => 'frmshowdet','name' => 'frmshowdet'))}}
-                           <input type="hidden" name="token" value="{{ csrf_token()}}">
+                          
+                                <input type="hidden" name="token" value="{{ csrf_token()}}">
                                 <div class="panel-body">
                                     <div class="table-responsive" >
                                         <table  class="table dataTable no-footer dtr-inline">
@@ -363,11 +360,12 @@ Banco de Estructuras
                                                 <div class="loading">                                                   
                                                     <span>Loading</span>
                                                 </div>
+
                                             </tbody>
                                         </table>
                                     </div>
                                 </div> 
-                             {{ Form::close()}}                      
+                                               
                 </div>
             </div>
             <!--   =================    -->
