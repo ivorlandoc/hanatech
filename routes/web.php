@@ -136,11 +136,12 @@ Route::group(['prefix' => 'admin', 'namespace'=>'Admin','middleware' => 'admin']
     /*============================Show Nominativo======================*/
     //Route::group(['prefix' => 'plazas'], function () {
     Route::get('plazas','PlazasController@index'); 
-    Route::post('plazas/{id}',array('as' =>'get-export-excel','uses' => 'PlazasController@ExportExcel')); 
-    Route::resource('plazas', 'PlazasController');
+    //Route::post('plazas/{id}','PlazasController@excel');
+   // Route::post('plazas/{id}',array('as' =>'get-export-excel','uses' => 'PlazasController@excel')); 
+    Route::get('plazas/{id}', 'PlazasController@excel')->name('plazas.excel');
+    //Route::resource('plazas', 'PlazasController');
    //});    
      /*============================Activar Plaza Sin Presupuesto======================*/
-
     Route::get('activap','ActivarplazaController@index'); 
     Route::post('activap',array('as' =>'get-datos-activa','uses' => 'ActivarplazaController@Getdatosparaactivar')); 
     Route::post('activap/{id}',array('as' =>'save-datos-activa','uses' => 'ActivarplazaController@ProcesaActivaPlazas')); 

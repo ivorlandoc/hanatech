@@ -198,7 +198,7 @@ return [
         Sofa\Eloquence\BaseServiceProvider::class,
         Spatie\Analytics\AnalyticsServiceProvider::class,
         Barryvdh\DomPDF\ServiceProvider::class, // add by iv.orlando.c   
-        Maatwebsite\Excel\ExcelServiceProvider::class,// add by iv.orlando.c
+        Maatwebsite\Excel\ExcelServiceProvider::class,// add by iv.orlando.c       
         Caffeinated\Shinobi\ShinobiServiceProvider::class, // add by iv.orlando.c
       
     ],
@@ -265,7 +265,7 @@ return [
         'Charts'    => ConsoleTVs\Charts\Facades\Charts::class,
         'Analytics' => Spatie\Analytics\AnalyticsFacade::class,
         'PDF'       => Barryvdh\DomPDF\Facade::class,  // add by iv.orlando.c
-        'Excel'     => Maatwebsite\Excel\Facades\Excel::class,// add by iv.orlando.c       
+        'Excel'     => Maatwebsite\Excel\Facades\Excel::class,// add by iv.orlando.c 
 
     ],
 

@@ -10,6 +10,15 @@ Consulta de Plazas
 @section('header_styles')
 <link rel="stylesheet" type="text/css" href="{{ asset('assets/vendors/datatables/css/dataTables.bootstrap.css') }}" />
 <link href="{{ asset('assets/css/pages/tables.css') }}" rel="stylesheet" type="text/css" />
+
+<link href="{{ asset('assets/vendors/daterangepicker/css/daterangepicker.css') }}" rel="stylesheet" type="text/css" />
+<link href="{{ asset('assets/vendors/datetimepicker/css/bootstrap-datetimepicker.min.css') }}" rel="stylesheet" type="text/css" />
+<link href="{{ asset('assets/vendors/clockface/css/clockface.css') }}" rel="stylesheet" type="text/css"/>
+<link href="{{ asset('assets/vendors/jasny-bootstrap/css/jasny-bootstrap.css') }}" rel="stylesheet" type="text/css" />
+
+<link href="{{ asset('assets/vendors/modal/css/component.css') }}" rel="stylesheet"/>
+<link href="{{ asset('assets/css/pages/advmodals.css') }}" rel="stylesheet"/>
+
 <link href="{{ asset('assets/css/loading.css') }}" rel="stylesheet" type="text/css" />
 @stop
 
@@ -29,7 +38,12 @@ Consulta de Plazas
         <li class="active">Plazas</li>
     </ol>
 </section>
-
+<script type="text/javascript">
+    function vapr(){
+    var xyz=$('#select_4').val()
+    return xyz;
+}
+</script>
 <!-- Main content -->
 <section class="content paddingleft_right15">
     <div class="row">
@@ -46,35 +60,55 @@ Consulta de Plazas
                     </span>
                 </div>
                 <div class="panel-body">
-                 {{ Form::open(array( 'route' => ['get-export-excel','1'], 'method' => 'post', 'id' => 'frmexportex','name' => 'frmexportex','class'=>'form-inline'))}}   
-                <!--<form method="get" name="frmOnline" id='form_validation' onsubmit="return Validation()" enctype="multipart/form-data" action="#" class="form-inline">   -->
+                
+
+                <form method="GET" name="frmexportex" id='frmexportex'  action="{{ route('plazas.excel','1') }}" > 
                             <div class="form-group">
-                                    <label>
-                                      <input type="checkbox" name="regimenId" id="regimenId" class="polaris"  /> 
-                                      <input type="hidden" name="checkText" id="checkText">
-                                    </label>
-                                    <label>CAS</label>
+                               
+                                        <!--
+                                        <label>
+                                          <input type="checkbox" name="regimenId" id="regimenId" class="polaris"  /> 
+                                          <input type="hidden" name="checkText" id="checkText">
+                                        </label>
+                                        <label>CAS</label>-->
+                             </div>
+                              <div class="form-group">     
+                                     <label> Dependencia</label>
+                                        <select id="select_4" class="form-control select2" name="select_10dig"  > <!-- onchange="GetIdSelectFour()"  -->
+                                        <option value="%">Todos</option>                                        
+                                           @foreach ($getDosDig as $getAll) 
+                                               <option value="{{ $getAll->IdEstructura }}">{{ $getAll->IdEstructura }} - {{ $getAll->Descripcion }}</option>
+                                            @endforeach 
+                                        </select>  
+                             </div>     
+
+                              <div class="form-group">  
+                              <label> Nivel</label>    
+                                        <select id="select_e" class="form-control select2" name="select_e"  > <!-- onchange="GetIdSelectFour()"  -->
+                                        <option value="%">Todos</option>                                       
+                                            @foreach ($nivel as $key) 
+                                               <option value="{{ $key->id }}">{{ $key->nom }}</option>
+                                            @endforeach 
+                                        </select> 
+                                   
+                                </div>
+                                 <div class="form-group">
+                                    
+                                         <button  type="submit" class="btn btn-sm btn-primary">
+                                            <span class="glyphicon glyphicon-hand-right"> Exportar Nominativo a Excel</span>
+                                         </button>                               
+                                   
+
+                                </div>
                             </div>
 
-                            <div class="form-group"> 
-                                    <select id="select_4" class="form-control select2" name="select_10dig" onchange="GetIdSelectFour()">
-                                    <option value="%">Todos</option>                                        
-                                       @foreach ($getDosDig as $getAll) 
-                                           <option value="{{ $getAll->IdEstructura }}">{{ $getAll->IdEstructura }} - {{ $getAll->Descripcion }}</option>
-                                        @endforeach 
-                                    </select>              
-                            </div>
-
-                            <div class="form-group">
-                              <a href="javascript:void(0)" onclick="ExportExcel()" class="btn btn-sm btn-primary">Exportar a Excel</a>   
-                            </div> 
 
                         <!-- ==========draw table========== -->
                         <div class="panel-body">
                             <div class="table-responsive" >
                                 <table  class="table dataTable no-footer dtr-inline">
                                     <thead>
-                                        <tr class="filters">
+                                       <!-- <tr class="filters">
                                             <th>#</th>                                           
                                             <th>CENTRO</th>
                                             <th>DEPENDENCIA</th>
@@ -87,7 +121,7 @@ Consulta de Plazas
                                             <th>CARGO</th>                        
                                             <th>NIVEL</th>                        
                                             <th>ESTADO</th>                        
-                                        </tr>
+                                        </tr>-->
                                     </thead>
                                     <tbody id="IdShowPlazas">
                                         <div class="loading">
@@ -121,6 +155,8 @@ Consulta de Plazas
     <script type="text/javascript" src="{{ asset('assets/vendors/datatables/js/jquery.dataTables.js') }}" ></script>
     <script type="text/javascript" src="{{ asset('assets/vendors/datatables/js/dataTables.bootstrap.js') }}" ></script>
 
+
+<script src="{{ asset('assets/vendors/jasny-bootstrap/js/jasny-bootstrap.js') }}" type="text/javascript"></script>
 
 
 <div class="modal fade" id="delete_confirm" tabindex="-1" role="dialog" aria-labelledby="user_delete_confirm_title" aria-hidden="true">

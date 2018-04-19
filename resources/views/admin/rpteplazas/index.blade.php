@@ -112,14 +112,17 @@ Consulta - Plazas
                                                         </thead>
                                                         <tbody > 
 
-                                                         <?php $i=0; $plaz=""; $_dni="";?>  
+                                                         <?php $i=0; $plaz=""; $_dni=""; $html='<p class="text-danger">.text-danger</p>';?>  
 
                                                             @foreach($DataM as $Data) 
-                                                            <?php $i++; $plaz=$Data->NroPlaza; $_dni=$Data->dni; ?>                                           
+                                                            <?php $i++;                                                               
+                                                                $plaz=$Data->NroPlaza;
+                                                                $_dni=$Data->dni;
+                                                                ?>                                           
                                                             <tr>
                                                                 <td>{{$i}}</td>                                                                
                                                                 <!-- <td>{{$Data->cargo}}</td>  -->
-                                                                <td>{{$Data->NroPlaza}}</td> 
+                                                                <td><?php if($Data->NroPlaza =="") { ?> <p class="text-danger"><b>INACTIVO</b></p><?php } else { ?>  {{ $plaz }}<?php }?></td> 
                                                                 <td>{{$Data->IdNivel}}</td>                                                              
                                                                  <td>{{$Data->dni}}</td>
                                                                 <td>{{$Data->nom}} </td>

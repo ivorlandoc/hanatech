@@ -9,31 +9,6 @@ $('#select_3').on('click',OnSelectFour);
 
 
 
-function ExportExcel(){    
-   var formData = new FormData($("form[name='frmexportex']")[0]);  
-      $('.loading').show();
-
-                $.ajax({  
-                        type: "post",
-                        headers: {'X-CSRF-TOKEN':$('#token').val()},
-                        url:  $('#frmexportex').attr('action'),
-                        dataType: 'json',
-                        data: formData,
-                        cache: false,
-                        contentType: false,
-                        processData: false,
-                    success: function (data) {                                      
-                       
-                       $('.loading').hide();          
-                    },
-                    error: function (xhr, status, error) {
-                        alert(xhr.responseText);
-                    }
-                });
-       
-     //   return false;
-}
-
 
 
 function OnSelectOne(){

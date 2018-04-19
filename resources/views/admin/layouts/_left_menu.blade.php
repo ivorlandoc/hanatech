@@ -125,7 +125,7 @@
                     Actualizar Población
                 </a>
             </li>
-            <li {!! (Request::is('admin/periodop/') ? 'class="active" id="active"' : '') !!}>
+            <li {!! (Request::is('admin/periodop') ? 'class="active" id="active"' : '') !!}>
                 <a href="{{ URL::to('admin/periodop') }}">
                     <i class="fa fa-angle-double-right"></i>
                     Actualizar Periodo Ppto
@@ -156,7 +156,7 @@
     </li>
 
  
-<li {!! (( Request::is('admin/estructura') || Request::is('admin/plazas/create') || Request::is('admin/plazas') || Request::is('admin/bajaplazas') || Request::is('admin/gesplazas')  || Request::is('admin/upmov') || Request::is('admin/rpteplazas') || Request::is('admin/altaplaza') || Request::is('admin/creaplaza') || Request::is('admin/reserva') || Request::is('admin/cambio') || Request::is('admin/integra')  ) ||  Request::is('admin/tipo/*') ? 'class="active"' : '') !!}>
+<li {!! (( Request::is('admin/estructura') || Request::is('admin/plazas/create') || Request::is('admin/plazas') || Request::is('admin/bajaplazas') || Request::is('admin/gesplazas')  || Request::is('admin/upmov') || Request::is('admin/rpteplazas') || Request::is('admin/altaplaza') || Request::is('admin/creaplaza') || Request::is('admin/reserva') || Request::is('admin/cambio') || Request::is('admin/activap') || Request::is('admin/integra')  ) ||  Request::is('admin/tipo/*') ? 'class="active"' : '') !!}>
         <a href="#">
             <i class="livicon" data-name="users" data-c="#F89A14" data-hc="#F89A14" data-size="18"
                data-loop="true"></i>
@@ -294,7 +294,7 @@
             <li {!! (Request::is('reportes/externo') ? 'class="active" id="active"' : '') !!}>
                 <a href="{{ URL::to('reportes/externo') }}">
                     <i class="fa fa-angle-double-right"></i>
-                    Consulta de Plaza
+                    Consulta de Plaza 
                 </a>
             </li>
            

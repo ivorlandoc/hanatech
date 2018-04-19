@@ -99,25 +99,12 @@ Consulta - Plazas
                     {!!Form::close()!!}   
                                        
                     <div id="msjerror"></div>
-                    <div class="table-responsive" style="display: none;" id="idalldatos">
-                        <table  class="table dataTable no-footer dtr-inline">
-                            <thead>
-                                <tr class="filters">
-                                        <th>#</th>                                        
-                                        <th>#DNI</th>                                      
-                                        <th>APELLIDOS Y NOMBRES</th>
-                                        <th>PLAZA</th>                                                             
-                                </tr>
-                            </thead>
-                            <tbody > 
-
-                           
-                            </tbody>
-                            </table>                                
-                    </div> 
-                    <!-- ========================================== --> 
-                        <div id="divgetdataexter">
-                            
+                        <div id="idalldatos"></div> 
+                        <!-- ========================= --> 
+                        <div id="divgetdataexter"></div>
+                         <div id="IdGetShowEstadoPlazaDet"></div>
+                        
+                        <div id="divreturn" style="display:none;">                            
                         </div>
                  
                 </div>

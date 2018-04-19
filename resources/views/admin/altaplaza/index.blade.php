@@ -104,7 +104,7 @@ Alta de Plazas
                               <input type="hidden" class="form-control"  id="IdCargoA"    name="IdCargoA"      value="">
                               <input type="hidden" class="form-control" id="NroPlazaA" name="NroPlazaA" value="">                                     
                            <!-- <div id ="IdshowExample"> Aqui mostra el return</div>-->
-                                <div id="IdMsjeErrorAltaPlaza"></div>
+                              <div id="IdMsjeErrorAltaPlaza"></div>
                         <!-- ========== Load dependencia ============ -->
                             <div id="ShowDataHead" style="display:none">
                                 <input type="text" class="form-control" id="NroPlazaDescripcion" name="NroPlazaDescripcion" value="" disabled="">
@@ -116,8 +116,7 @@ Alta de Plazas
                             <div id="FormAltaPlaza">
 
                                 <div class="form-group">
-                                   <!-- <label for="formEmail">Tipo de Documento</label>-->
-                                     
+                                   <!-- <label for="formEmail">Tipo de Documento</label>-->                                     
                                     <div class="input-group select2-bootstrap-append"> 
                                         <select id="IdTipoDocument" class="form-control select2" name="IdTipoDocument" >
                                             <option value="">Tipo de Documento</option>

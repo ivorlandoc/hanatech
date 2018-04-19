@@ -6,10 +6,10 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Database\Eloquent\Model;
 use Maatwebsite\Excel\Facades\Excel;
+
 use DB;
-
-
-//use Maatwebsite\Excel\Excel;
+use Input;
+use json;
 
 class PlazasController extends Controller { 
    /* public function __construct(\Maatwebsite\Excel\Excel $excel)
@@ -18,9 +18,10 @@ class PlazasController extends Controller {
     }
 */
     public function index(Request $request){ 
-      //$getDosDig=DB::table('estructuraorganica')->select('IdEstructuraorg as IdEstructura','Descripcion')->get();
+      $nivel=DB::select("SELECT LEFT(IdNivel,1) AS id, IF(LEFT(IdNivel,1)='E','EJECUTIVOS',IF(LEFT(IdNivel,1)='P','PROFESIONALES',IF(LEFT(IdNivel,1)='T','TECNICOS','AUXILIARES'))) AS nom FROM nivel  
+GROUP BY LEFT(IdNivel,1) ");
       $getDosDig=DB::table('estructura')->select('IdEstructura','Descripcion')->where(DB::raw('LENGTH(IdEstructura)'), '=', "4")->get();
-      return view('admin.plazas.index',compact('getDosDig')); 
+      return view('admin.plazas.index',compact('getDosDig','nivel')); 
     }
 
 
@@ -62,47 +63,106 @@ public function show($id){
     }
     
 /*========================*/
-public function ExportExcel(Request $request, $format) {   
-    if($request->ajax()){
-      $data=DB::select('SELECT  IdPlaza,  c.IdEstructura,
-                     (SELECT Descripcion FROM estructura WHERE LEFT(IdEstructura,2)=LEFT((SELECT IdEstructura FROM estructura WHERE IdEstructura=c.IdEstructura),2) LIMIT 1) AS sede,
-      (SELECT Descripcion FROM estructura WHERE LEFT(IdEstructura,4)=LEFT((SELECT IdEstructura FROM estructura WHERE IdEstructura=c.IdEstructura),4) LIMIT 1) AS organo,
-      (SELECT Descripcion FROM estructura WHERE LEFT(IdEstructura,8)=LEFT((SELECT IdEstructura FROM estructura WHERE IdEstructura=c.IdEstructura),8) LIMIT 1) AS dep,
-      (SELECT Descripcion FROM estructura WHERE LEFT(IdEstructura,10)=LEFT((SELECT IdEstructura FROM estructura WHERE IdEstructura=c.IdEstructura),10) LIMIT 1) AS ofi,
-                    e.Descripcion AS descripcion,c.NroPlaza,IF(dni IS NULL,"--",dni) AS dni,
-                    IF(p.ApellidoPat IS NULL,"-",p.ApellidoPat)  AS ApellidoPat,IF(p.ApellidoMat IS NULL,"-",p.ApellidoMat) AS ApellidoMat,IF(p.Nombres IS NULL,"-",p.Nombres) AS Nombres,
-                    IF((SELECT sigla FROM regimen WHERE IdRegimen=p.IdRegimen) IS NULL,"---",(SELECT sigla FROM regimen WHERE IdRegimen=p.IdRegimen)) AS condicion,
-                    IF(fechaingreso IS NULL,"--",DATE_FORMAT(fechaingreso,"%m/%d/%y")) AS fi,car.Descripcion AS cargo,car.IdNivel,
-                    IF(c.IdEstadoPlaza IS NULL," ",(SELECT Descripcion FROM estadoplaza WHERE IdEstadoplaza=c.IdEstadoPlaza)) AS Estado,c.IdPersona
-                    FROM cuadronominativo  c  LEFT JOIN persona p ON p.IdPersona=c.IdPersona
-                      INNER JOIN cargo car ON car.IdCargo=c.IdCargo   INNER JOIN estructura e ON e.IdEstructura=c.IdEstructura
-                       WHERE  c.IdEstructura LIKE "0104%" AND IdEstadoplaza<>"0"');
+public function excel(Request $request, $id) {   
+    $_string = $_GET["select_10dig"];
+     $_nivel = $_GET["select_e"];
 
 
-       Excel::create('Nomina de Plazas', function($excel) use ($data)  {
-                $excel->sheet('Nomina', function($sheet) use ($data){
-                    $sheet->fromArray($data);
-                    $sheet->loadView('admin.plazas.nominaexcel', array('Nomina de Plazas' => $payments));
-                    $sheet->setOrientation('landscape');
-                });
-            })->download('xls');
-
-        }
-    }
+          $results=DB::select("
+            SELECT  
+                IdPlaza,  
+                c.IdEstructura,
+           --   (SELECT Descripcion FROM estructura WHERE LEFT(IdEstructura,2)=LEFT((SELECT IdEstructura FROM estructura WHERE IdEstructura=c.IdEstructura),2) LIMIT 1) AS sede,
+                (SELECT Descripcion FROM estructura WHERE LEFT(IdEstructura,4)=LEFT((SELECT IdEstructura FROM estructura WHERE IdEstructura=c.IdEstructura),4) LIMIT 1) AS organo,
+                (SELECT Descripcion FROM estructura WHERE LEFT(IdEstructura,6)=LEFT((SELECT IdEstructura FROM estructura WHERE IdEstructura=c.IdEstructura),6) LIMIT 1) AS dep,
+                (SELECT Descripcion FROM estructura WHERE LEFT(IdEstructura,8)=LEFT((SELECT IdEstructura FROM estructura WHERE IdEstructura=c.IdEstructura),8) LIMIT 1) AS dep2,
+               (SELECT Descripcion FROM estructura WHERE LEFT(IdEstructura,10)=LEFT((SELECT IdEstructura FROM estructura WHERE IdEstructura=c.IdEstructura),10) LIMIT 1) AS oficina,
+              e.Descripcion AS descripcion,
+              c.NroPlaza,
+              IF(dni IS NULL,'--',dni) AS dni,
+              CONCAT(IF(p.ApellidoPat IS NULL,'-',p.ApellidoPat),' ', IF(p.ApellidoMat IS NULL,'-',p.ApellidoMat),' ',IF(p.Nombres IS NULL,'-',p.Nombres)) AS Nombres,
+              IF((SELECT sigla FROM regimen WHERE IdRegimen=p.IdRegimen) IS NULL,'---',(SELECT sigla FROM regimen WHERE IdRegimen=p.IdRegimen)) AS condicion,
+              IF(fechaingreso IS NULL,'--',DATE_FORMAT(fechaingreso,'%m/%d/%Y')) AS fi,
+              car.CodigoAnt AS CodCargo,
+              car.Descripcion AS cargo,car.IdNivel,
+              IF(c.IdEstadoPlaza IS NULL,' ',(SELECT Descripcion FROM estadoplaza WHERE IdEstadoplaza=c.IdEstadoPlaza)) AS Estado,
+              IF(fechaCese='1000-01-01','',DATE_FORMAT(fechaCese,'%m/%d/%Y')) AS fcese -- ,                      
+              FROM cuadronominativo  c  LEFT JOIN persona p ON p.IdPersona=c.IdPersona
+              INNER JOIN cargo car ON car.IdCargo=c.IdCargo  
+              INNER JOIN estructura e ON e.IdEstructura=c.IdEstructura
+              WHERE  c.IdEstructura LIKE '$_string%' AND NroPlaza NOT LIKE '9______9%' AND IdEstadoplaza<>'0'  and c.IdCargo like '$_nivel%'
+            ");
 /*
- public function all_users_report($format)
-    {
-        Excel::create('all_users_records', function ($excel) use ($format) {
-            $excel->sheet('Epay.Li - all users report', function ($sheet) use ($format) {
-                $all_records = ChangeMoney::all();
-                $sheet->loadView('layouts.admin.all_users_report', array(  'all_records' => $all_records,));
+          $results=DB::table('cuadronominativo as cu')        
+          ->leftjoin('persona as p', 'p.IdPersona', '=', 'cu.IdPersona')          
+            ->join('cargo as car','car.IdCargo','=','cu.IdCargo') 
+            ->join('estructura as e','e.IdEstructura','=','cu.IdEstructura')
+            ->select(
+              'cu.IdPlaza',
+              'cu.IdEstructura as IdEstructura',
+               DB::raw('(SELECT Descripcion FROM estructura WHERE LEFT(IdEstructura,4)=LEFT((SELECT IdEstructura FROM estructura WHERE IdEstructura=cu.IdEstructura),4) LIMIT 1) AS organo'),
+               DB::raw('(SELECT Descripcion FROM estructura WHERE LEFT(IdEstructura,6)=LEFT((SELECT IdEstructura FROM estructura WHERE IdEstructura=cu.IdEstructura),6) LIMIT 1) AS dep'),
+               DB::raw('(SELECT Descripcion FROM estructura WHERE LEFT(IdEstructura,8)=LEFT((SELECT IdEstructura FROM estructura WHERE IdEstructura=cu.IdEstructura),8) LIMIT 1) AS dep2'),
+               DB::raw('(SELECT Descripcion FROM estructura WHERE LEFT(IdEstructura,10)=LEFT((SELECT IdEstructura FROM estructura WHERE IdEstructura=cu.IdEstructura),10) LIMIT 1) AS oficina'),
+              'e.Descripcion AS descripcion',
+              'cu.NroPlaza',
+              DB::raw('IF(dni IS NULL,"--",dni) AS dni'),
+              DB::raw('CONCAT(IF(p.ApellidoPat IS NULL,"-",p.ApellidoPat)," " , IF(p.ApellidoMat IS NULL," - ",p.ApellidoMat)," ",IF(p.Nombres IS NULL,"-",p.Nombres)) AS Nombres'),
+              DB::raw('IF((SELECT sigla FROM regimen WHERE IdRegimen=p.IdRegimen) IS NULL,"---",(SELECT sigla FROM regimen WHERE IdRegimen=p.IdRegimen)) AS condicion'),
+              DB::raw('IF(fechaingreso IS NULL,"--",DATE_FORMAT(fechaingreso,"%m/%d/%Y")) AS fi'),
+              'car.CodigoAnt AS CodCargo',
+              'car.Descripcion AS cargo',
+              'car.IdNivel',
+              DB::raw('IF(cu.IdEstadoPlaza IS NULL," ",(SELECT Descripcion FROM estadoplaza WHERE IdEstadoplaza=cu.IdEstadoPlaza)) AS Estado'),
+              DB::raw('IF(fechaCese="1000-01-01"," ",DATE_FORMAT(fechaCese,"%m/%d/%Y")) AS fcese')
+            )
+            ->where('cu.IdEstructura','like','$_string%')
+            ->where('cu.NroPlaza','not like','9______9%')
+            ->where('cu.IdEstadoplaza','<>','0')
+            ->orderby('organo','asc')->get();*/
+      
+
+      $data = array();
+      foreach ($results as $key) { $data[] = (array)$key;}
+
+       Excel::create('Laravel Excel', function($excel) use ($data){
+            $excel->sheet('Excel sheet', function($sheet)  use ($data) {   
+
+                $sheet->fromArray($data);
+                $sheet->setOrientation('landscape');
             });
-        })->export($format);
-    }
-*/
+        })->export('xls');
 
-
-
-
+      } 
+  
 
  }
+//  {{ Form::open(array( 'route' => ['get-export-excel','1'], 'method' => 'post', 'id' => 'frmexportex','name' => 'frmexportex','class'=>'form-inline'))}}  
+ /*
+
+   $results=DB::select("
+            SELECT  
+                IdPlaza,  
+                c.IdEstructura,
+           --   (SELECT Descripcion FROM estructura WHERE LEFT(IdEstructura,2)=LEFT((SELECT IdEstructura FROM estructura WHERE IdEstructura=c.IdEstructura),2) LIMIT 1) AS sede,
+                (SELECT Descripcion FROM estructura WHERE LEFT(IdEstructura,4)=LEFT((SELECT IdEstructura FROM estructura WHERE IdEstructura=c.IdEstructura),4) LIMIT 1) AS organo,
+                (SELECT Descripcion FROM estructura WHERE LEFT(IdEstructura,6)=LEFT((SELECT IdEstructura FROM estructura WHERE IdEstructura=c.IdEstructura),6) LIMIT 1) AS dep,
+           --  (SELECT Descripcion FROM estructura WHERE LEFT(IdEstructura,8)=LEFT((SELECT IdEstructura FROM estructura WHERE IdEstructura=c.IdEstructura),8) LIMIT 1) AS dep2,
+            -- (SELECT Descripcion FROM estructura WHERE LEFT(IdEstructura,10)=LEFT((SELECT IdEstructura FROM estructura WHERE IdEstructura=c.IdEstructura),10) LIMIT 1) AS oficina,
+              e.Descripcion AS descripcion,
+              c.NroPlaza,IF(dni IS NULL,'--',dni) AS dni,
+              CONCAT(IF(p.ApellidoPat IS NULL,'-',p.ApellidoPat),' ', IF(p.ApellidoMat IS NULL,'-',p.ApellidoMat),' ',IF(p.Nombres IS NULL,'-',p.Nombres)) AS Nombres,
+              IF((SELECT sigla FROM regimen WHERE IdRegimen=p.IdRegimen) IS NULL,'---',(SELECT sigla FROM regimen WHERE IdRegimen=p.IdRegimen)) AS condicion,
+              IF(fechaingreso IS NULL,'--',DATE_FORMAT(fechaingreso,'%m/%d/%Y')) AS fi,
+              car.CodigoAnt AS CodCargo,
+              car.Descripcion AS cargo,car.IdNivel,
+              IF(c.IdEstadoPlaza IS NULL,' ',(SELECT Descripcion FROM estadoplaza WHERE IdEstadoplaza=c.IdEstadoPlaza)) AS Estado,
+              IF(fechaCese='1000-01-01','',DATE_FORMAT(fechaCese,'%m/%d/%Y')) AS fcese -- ,
+              -- IF(Fechacese>=(SELECT fecha FROM periodopresupuesto WHERE estado='1' LIMIT 1),'SI','NO') AS sino            
+              FROM cuadronominativo  c  LEFT JOIN persona p ON p.IdPersona=c.IdPersona
+              INNER JOIN cargo car ON car.IdCargo=c.IdCargo  
+              INNER JOIN estructura e ON e.IdEstructura=c.IdEstructura
+              WHERE  c.IdEstructura LIKE '%' AND NroPlaza NOT LIKE '9______9%' AND IdEstadoplaza<>'0'  limit 500
+            ");
+
+ */

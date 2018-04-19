@@ -345,11 +345,10 @@ Banco de Estructuras
                             </div>                       
                             {{ Form::close()}}    
                             
-                             <!-- ==========draw table========== -->
-                          
+                             <!-- ==========draw table========== -->                          
                                 <input type="hidden" name="token" value="{{ csrf_token()}}">
                                 <div class="panel-body">
-                                    <div class="table-responsive" >
+                                    <div class="table-responsive">
                                         <table  class="table dataTable no-footer dtr-inline">
                                             <thead>
                                                 <tr class="filters">
