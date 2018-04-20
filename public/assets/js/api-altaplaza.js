@@ -285,6 +285,10 @@ function getEstructuraAll(id){
 	
 }
 
+function getflat(ix){
+	$("#idflat").val(ix);
+}
+
 function GetAllPlazasForAlta(idx){	
 	console.log('ID==>'+idx);	
 	$('#IdShowPlazasAlta').html("");
@@ -296,11 +300,17 @@ function GetAllPlazasForAlta(idx){
        		
        		console.log('ID==3===>'+idx);
        		var NroPlaza;
-       		if(dataDa.length!=0){  		
+       		if(dataDa.length!=0){ 
+       		$('#IdShowPlazasAlta').html(""); 		
 			for (var i=0; i < dataDa.length; i++) 	{		
 				xy++; 
 				NroPlaza=dataDa[i].NroPlaza;
-				tableHtml += '<tr><td>'+xy+'</td><td>'+dataDa[i].descripcion+'</td> <td><a href="#" onclick=setPrmFiltroDatos("'+NroPlaza+'")>'+dataDa[i].NroPlaza+'</a></td><td>'+dataDa[i].IdNivel+'</td><td>'+dataDa[i].cargo+'</td><td>'+dataDa[i].ApellidoPat+' '+dataDa[i].ApellidoMat+'  '+dataDa[i].Nombres+'</td></tr>';
+				if($("#idflat").val()=="0"){
+					tableHtml += '<tr><td>'+xy+'</td><td>'+dataDa[i].IdEstructura+'</td> <td><a href="#" onclick=setPrmFiltroDatos("'+NroPlaza+'")>'+dataDa[i].NroPlaza+'</a></td><td>'+dataDa[i].IdNivel+'</td><td>'+dataDa[i].cargo+'</td><td>'+dataDa[i].ApellidoPat+' '+dataDa[i].ApellidoMat+'  '+dataDa[i].Nombres+'</td></tr>';
+				}
+				if($("#idflat").val()=="1"){
+					tableHtml += '<tr><td>'+xy+'</td><td><a href="#" onclick=setPrmFiltroDatosEstru("'+dataDa[i].IdEstructura+'")>'+dataDa[i].IdEstructura+'</a></td><td>'+dataDa[i].NroPlaza+'</td><td>'+dataDa[i].IdNivel+'</td><td>'+dataDa[i].cargo+'</td><td>--</td></tr>';
+				}
 				$('#IdShowPlazasAlta').html(tableHtml);	
 			}
 			if(xy>=500){
@@ -317,6 +327,16 @@ function setPrmFiltroDatos(id){
 	$('#search_plaza').val(id);		
 	$('#CierrameModal').click();
 }
+
+function setPrmFiltroDatosEstru(id){
+	$('#IdEstructuraA').val(id);	
+
+	$('#CierrameModal').click();
+	$('#IdDepenorgano').val($('#select_nivel-0 option:selected').html()+' | '+$('#select_nivel-1 option:selected').html()+' | '+$('#select_nivel-2 option:selected').html()+' | '+$('#select_nivel-3 option:selected').html()+' | '+$('#select_nivel-4 option:selected').html());
+
+	
+}
+
 
 function checkboxS(){
 	var select= "0";

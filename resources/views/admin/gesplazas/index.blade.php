@@ -137,7 +137,7 @@ Gestionar Plazas
                                       <input type="hidden" class="form-control"  id="IdCargoG"    name="IdCargoG"      value="">
                                       <input type="hidden" class="form-control"  id="NroPlazaG" name="NroPlazaG"     value="">
                                    <!-- <div id ="IdshowExample"> Aqui mostra el return</div>-->
-                              
+                               
             
 
                                 <!-- ============== fin head =============================== -->
@@ -148,7 +148,7 @@ Gestionar Plazas
                                         
                                     </select>
                                 </div>
-                                <!-- ========== Load dependencia ============ -->
+                                <!-- ========== Load dependencia ============ --> 
                         
                                 <div class="form-group">
                                      <label for="formEmail">A:</label>   

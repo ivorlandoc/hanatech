@@ -54,8 +54,9 @@ class RptegeneralplazasController extends Controller {
                     DB::raw('IF(Nombres IS NULL,"",Nombres) AS Nombres'),
                     DB::raw('(SELECT Descripcion FROM estadoplaza WHERE IdEstadoPlaza=c.IdEstadoPlaza) as EstadoPlaza'),
                     DB::raw('if((SELECT DocRef FROM historiamovimiento WHERE IdEstadoPlaza =c.IdEstadoPlaza and NroPlaza=c.NroPlaza limit 1) is null,"",(SELECT DocRef FROM historiamovimiento WHERE IdEstadoPlaza =c.IdEstadoPlaza and NroPlaza=c.NroPlaza limit 1)) AS DocRef'),
-                    DB::raw('IF((SELECT sigla FROM regimen WHERE IdRegimen=p.IdRegimen) IS NULL,"",(SELECT sigla FROM regimen WHERE IdRegimen=p.IdRegimen)) AS Regimen'),'c.IdPersona')
-                               
+                    DB::raw('IF((SELECT sigla FROM regimen WHERE IdRegimen=p.IdRegimen) IS NULL," ",(SELECT sigla FROM regimen WHERE IdRegimen=p.IdRegimen)) AS reg'),
+                     DB::raw('IF(FechaCese="1000-01-01","--",FechaCese) AS FechaCese'),
+                    'c.IdPersona')                               
                    ->join('estructura as e','e.IdEstructura','=','c.IdEstructura')
                    ->leftJoin('persona as p','p.IdPersona','=','c.IdPersona')
                    ->where('c.IdEstadoPlaza','=',$_esta)

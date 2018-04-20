@@ -98,6 +98,9 @@ Route::group(['prefix' => 'reportes', 'namespace'=>'Reporte','middleware' => 'ad
     /*==================================Altas y bajas=============================================*/
     Route::get('externo', 'ConsplzextController@index'); 
     Route::post('externo', array('as' => 'getdata-result','uses' => 'ConsplzextController@getdatforConsultExter'));
+       /*==================================cap2=============================================*/
+    Route::get('cap2', 'Cap2Controller@index'); 
+
 });
 
 Route::resource('reportes', 'PlazasporcargoController'); // add by iv.orlando.c 22.02.18

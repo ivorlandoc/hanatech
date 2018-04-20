@@ -82,15 +82,16 @@ public function excel(Request $request, $id) {
               IF(dni IS NULL,'--',dni) AS dni,
               CONCAT(IF(p.ApellidoPat IS NULL,'-',p.ApellidoPat),' ', IF(p.ApellidoMat IS NULL,'-',p.ApellidoMat),' ',IF(p.Nombres IS NULL,'-',p.Nombres)) AS Nombres,
               IF((SELECT sigla FROM regimen WHERE IdRegimen=p.IdRegimen) IS NULL,'---',(SELECT sigla FROM regimen WHERE IdRegimen=p.IdRegimen)) AS condicion,
-              IF(fechaingreso IS NULL,'--',DATE_FORMAT(fechaingreso,'%m/%d/%Y')) AS fi,
+              IF(fechaingreso IS NULL,'--',DATE_FORMAT(fechaingreso,'%d/%m/%Y')) AS fi,
               car.CodigoAnt AS CodCargo,
               car.Descripcion AS cargo,car.IdNivel,
               IF(c.IdEstadoPlaza IS NULL,' ',(SELECT Descripcion FROM estadoplaza WHERE IdEstadoplaza=c.IdEstadoPlaza)) AS Estado,
-              IF(fechaCese='1000-01-01','',DATE_FORMAT(fechaCese,'%m/%d/%Y')) AS fcese -- ,                      
+              IF(fechaCese='1000-01-01','',DATE_FORMAT(fechaCese,'%d/%m/%Y')) AS fcese,                      
+              CodigoAntEst
               FROM cuadronominativo  c  LEFT JOIN persona p ON p.IdPersona=c.IdPersona
               INNER JOIN cargo car ON car.IdCargo=c.IdCargo  
               INNER JOIN estructura e ON e.IdEstructura=c.IdEstructura
-              WHERE  c.IdEstructura LIKE '$_string%' AND NroPlaza NOT LIKE '9______9%' AND IdEstadoplaza<>'0'  and c.IdCargo like '$_nivel%'
+              WHERE  c.IdEstructura LIKE '$_string%' AND NroPlaza NOT LIKE '9______9%' AND IdEstadoplaza<>'0'  and c.IdCargo like '$_nivel%' AND flat IS NULL 
             ");
 /*
           $results=DB::table('cuadronominativo as cu')        
@@ -125,8 +126,8 @@ public function excel(Request $request, $id) {
       $data = array();
       foreach ($results as $key) { $data[] = (array)$key;}
 
-       Excel::create('Laravel Excel', function($excel) use ($data){
-            $excel->sheet('Excel sheet', function($sheet)  use ($data) {   
+       Excel::create('Nominativo-'.date('d-m-Y'), function($excel) use ($data){
+            $excel->sheet('Nominativo-'.date('d-m-Y'), function($sheet)  use ($data) {   
 
                 $sheet->fromArray($data);
                 $sheet->setOrientation('landscape');

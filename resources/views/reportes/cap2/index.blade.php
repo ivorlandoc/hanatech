@@ -43,7 +43,7 @@ Estructuras
            <div class="panel panel-info">
                 <div class="panel-heading">
                     <h3 class="panel-title">
-                        <i class="livicon" data-name="search" data-size="16" data-loop="true" data-c="#fff" data-hc="white"></i> Lista de Estructuras
+                        <i class="livicon" data-name="search" data-size="16" data-loop="true" data-c="#fff" data-hc="white"></i> Lista de Estructuras[En Construccion]
                     </h3>
                     <span class="pull-right clickable">
                             <i class="glyphicon glyphicon-chevron-up"></i>
@@ -175,7 +175,7 @@ Estructuras
   </div>
 </div>
 
-<script type="text/javascript" src="{{ asset('assets/js/api-estructura.js') }}">
+<script type="text/javascript" src="{{ asset('assets/js/js-cap2.js') }}">
     
 </script>
 <script type="text/javascript" src="{{ asset('assets/vendors/modal/js/classie.js')}}"></script>

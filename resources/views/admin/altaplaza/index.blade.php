@@ -81,9 +81,9 @@ Alta de Plazas
                                             </button>
                                         </span>
                                          <span class="input-group-btn">
-                                           <a data-href="#responsive" href="#responsive" data-toggle="modal" onclick="getEstructuraAll('1')">
+                                           <a data-href="#responsive" href="#responsive" data-toggle="modal" onclick="getEstructuraAll('1');getflat('0')">
                                             <button class="btn btn-default" type="button" data-select2-open="single-append-text">
-                                                <span class="glyphicon glyphicon-search"></span>
+                                                <span class="glyphicon glyphicon-book"></span>
                                             </button>
                                         </a>
                                         </span>
@@ -97,20 +97,37 @@ Alta de Plazas
                         <form method="POST" action="/gpessalud/public/api/admin/altaplaza/insert" name="frmSaveAlta" id="frmSaveAlta" enctype="multipart/form-data">
                              <input type="hidden" name="_token" value="{{ csrf_token()}}"> 
                                 <!-- Datos Estáticos de cabecera-->                          
-                                 <input type="hidden" name="idUserSession" value="{{ $idUserSession }}"> <!-- idsesion para enviar por ajax al api -->
+                              <input type="hidden" name="idUserSession" value="{{ $idUserSession }}"> <!-- idsesion para enviar por ajax al api -->
                               <input type="hidden" class="form-control" id="IdPlazaA"     name="IdPlazaA"  value="">
                               <input type="hidden" class="form-control"  id="IdPersonaA"   name="IdPersonaA"    value="">
                               <input type="hidden" class="form-control"  id="IdEstructuraA" name="IdEstructuraA" value="">
                               <input type="hidden" class="form-control"  id="IdCargoA"    name="IdCargoA"      value="">
-                              <input type="hidden" class="form-control" id="NroPlazaA" name="NroPlazaA" value="">                                     
+                              <input type="hidden" class="form-control" id="NroPlazaA" name="NroPlazaA" value=""> 
+                              <input type="hidden" class="form-control" id="idflat" name="idflat" value="">                                      
                            <!-- <div id ="IdshowExample"> Aqui mostra el return</div>-->
                               <div id="IdMsjeErrorAltaPlaza"></div>
                         <!-- ========== Load dependencia ============ -->
-                            <div id="ShowDataHead" style="display:none">
-                                <input type="text" class="form-control" id="NroPlazaDescripcion" name="NroPlazaDescripcion" value="" disabled="">
-                                <input type="text" class="form-control" id="IdNivelNroPlaza" name="IdNivelNroPlaza" value="" readonly="">
-                                <input type="text" class="form-control" id="IdDepenorgano" name="IdDepenorgano" value="" readonly="">
-                                <!--<input type="text" class="form-control" id="IdDependenciaDes" name="IdDependenciaDes" value="" readonly="">-->
+                            <div id="ShowDataHead" style="display:none">                                   
+                                    <div class="form-group">
+                                            <input type="text" class="form-control" id="NroPlazaDescripcion" name="NroPlazaDescripcion" value="" disabled="">
+                                            <input type="text" class="form-control" id="IdNivelNroPlaza" name="IdNivelNroPlaza" value="" readonly="">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="input-group select2-bootstrap-append"> 
+                                                <input type="text" class="form-control" id="IdDepenorgano" name="IdDepenorgano" value="" readonly="">
+                                                <!--<input type="text" class="form-control" id="IdDependenciaDes" name="IdDependenciaDes" value="" readonly="">-->
+                                             <span class="input-group-btn">
+                                                   <a data-href="#responsive" href="#responsive" data-toggle="modal" onclick="getEstructuraAll('1');getflat('1')">
+                                                    <button class="btn btn-default" type="button" data-select2-open="single-append-text">
+                                                        <span class="glyphicon glyphicon-th-list"></span>
+                                                    </button>
+                                                    </a>
+                                            </span>
+
+                                    </div>
+                                </div>
+
                             </div>
                             <div class="form-group" id="IdSpaceHead"></div>
                             <div id="FormAltaPlaza">
@@ -124,7 +141,7 @@ Alta de Plazas
                                         <span class="input-group-btn">
                                                <a data-href="#responsive-search" href="#responsive-search" data-toggle="modal" >
                                                 <button class="btn btn-default" type="button" data-select2-open="single-append-text">
-                                                    <span class="glyphicon glyphicon-search"></span>
+                                                    <span class="glyphicon glyphicon-user"></span>
                                                 </button>
                                             </a>
                                         </span>

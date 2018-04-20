@@ -81,8 +81,9 @@ function manageRows(data) {
                  '<td>'+value.dni+'</td> '+                             
                  '<td>'+value.ApellidoPat+' '+value.ApellidoMat+' '+value.Nombres+'</td> '+    
                  '<td>'+value.EstadoPlaza+'</td> '+                        
-                 '<td>'+value.Regimen+'</td>'+
-                 '<td>'+value.DocRef+'</td>'+ 
+                 '<td>'+value.reg+'</td>'+
+                 '<td>'+value.DocRef+'</td>'+
+                 '<td>'+value.FechaCese+'</td>'+  
                  '</tr>';
     });   
     $('#IdShowRptePlazas').html(tableHtml);

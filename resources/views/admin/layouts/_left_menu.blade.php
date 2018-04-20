@@ -250,7 +250,7 @@
 
         </ul>
         
-        <li {!! (Request::is('admin/rptetempo') || Request::is('admin/rptetempo/create') || Request::is('reportes/rplazas') || Request::is('reportes/rbajas') || Request::is('reportes/externo')  || Request::is('reportes/plazacargo') || Request::is('admin/rptetempo/*') ? 'class="active"' : '') !!}>
+        <li {!! (Request::is('admin/rptetempo') || Request::is('admin/rptetempo/create') || Request::is('reportes/rplazas') || Request::is('reportes/rbajas') || Request::is('reportes/externo')  || Request::is('reportes/plazacargo')  || Request::is('reportes/cap2')|| Request::is('admin/rptetempo/*') ? 'class="active"' : '') !!}>
         <a href="#">
             <i class="livicon" data-name="barchart" data-size="18" data-c="#6CC66C" data-hc="#6CC66C"
                data-loop="true"></i>
@@ -297,6 +297,12 @@
                     Consulta de Plaza 
                 </a>
             </li>
+            <li {!! (Request::is('reportes/cap2') ? 'class="active" id="active"' : '') !!}>
+                <a href="{{ URL::to('reportes/cap2') }}">
+                    <i class="fa fa-angle-double-right"></i>
+                    Consulta Plaza x Dep.
+                </a>
+            </li>
            
         </ul>
     </li>
@@ -335,12 +341,12 @@
             <span class="fa arrow"></span>
         </a>
         <ul class="sub-menu">
-             <!-- <li {!! (Request::is('admin/reserva') ? 'class="active"' : '') !!}>
+              <li {!! (Request::is('admin/reserva') ? 'class="active"' : '') !!}>
                 <a href="{{ URL::to('admin/reserva') }}">
                     <i class="fa fa-angle-double-right"></i>
                     Reserva de Plaza
                 </a>
-            </li>-->
+            </li>
 
              <li {!! (Request::is('admin/estructura') ? 'class="active"' : '') !!}>
                 <a href="{{ URL::to('admin/estructura') }}">
@@ -354,7 +360,12 @@
                     Plazas x Dependencia
                 </a>
             </li>
-
+             <li {!! (Request::is('admin/plazas') ? 'class="active"' : '') !!}>
+                <a href="{{ URL::to('admin/plazas') }}">
+                    <i class="fa fa-angle-double-right"></i>
+                    Nominativo | Depend.
+                </a>
+            </li>
              <li {!! (Request::is('admin/altaplaza') ? 'class="active"' : '') !!}>
                 <a href="{{ URL::to('admin/altaplaza') }}">
                     <i class="fa fa-angle-double-right"></i>
@@ -476,7 +487,40 @@
         </ul>
     </li>
 
-    @elseif(Sentinel::getUser()->permissions === 2)
+    @elseif(Sentinel::getUser()->permissions ===3)
+    <li {!! (Request::is('reportes/externo') || Request::is('admin/rptetempo/create') || Request::is('admin/rptetempo/*') ? 'class="active"' : '') !!}>
+        <a href="#">
+            <i class="livicon" data-name="show" data-size="18" data-c="#418BCA" data-hc="#418BCA"
+               data-loop="true"></i>
+            <span class="title">Reportes</span>
+            <span class="fa arrow"></span>
+        </a>
+             
+           <ul class="sub-menu"> 
+
+               <li {!! (Request::is('reportes/externo') ? 'class="active" id="active"' : '') !!}>
+                        <a href="{{ URL::to('reportes/externo') }}">
+                        <i class="fa fa-angle-double-right"></i>
+                        Consulta de Plaza
+                    </a>
+                </li>
+
+
+                <li {!! (Request::is('admin/plazas') ? 'class="active"' : '') !!}>
+                    <a href="{{ URL::to('admin/plazas') }}">
+                        <i class="fa fa-angle-double-right"></i>
+                        Nominativo | Depend.
+                    </a>
+                </li>
+
+
+
+
+               
+            </ul>
+    
+    </li>
+     @elseif(Sentinel::getUser()->permissions ===2)
     <li {!! (Request::is('reportes/externo') || Request::is('admin/rptetempo/create') || Request::is('admin/rptetempo/*') ? 'class="active"' : '') !!}>
         <a href="#">
             <i class="livicon" data-name="show" data-size="18" data-c="#418BCA" data-hc="#418BCA"
@@ -487,19 +531,21 @@
   
 
              
-       <ul class="sub-menu">           
-           <li {!! (Request::is('reportes/externo') ? 'class="active" id="active"' : '') !!}>
+            <ul class="sub-menu">           
+                <li {!! (Request::is('reportes/externo') ? 'class="active" id="active"' : '') !!}>
                     <a href="{{ URL::to('reportes/externo') }}">
                         <i class="fa fa-angle-double-right"></i>
                         Consulta de Plaza
                     </a>
                 </li>
+
+
+
                
             </ul>
     
     </li>
-    @else
-
+    @else  
             <a href="#">
                 <i class="livicon" data-name="users" data-c="#F89A14" data-hc="#F89A14" data-size="18"
                    data-loop="true"></i>

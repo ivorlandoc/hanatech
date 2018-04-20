@@ -106,11 +106,12 @@ Reporte  - Plazas
                                                 <th>DEPENDENCIA</th>                                                
                                                 <th>#PLAZA</th>
                                                 <th>CARGO</th>
-                                                <th>#DNI</th>
+                                                <th>#DNI</th> 
                                                 <th>NOMBRES</th>
                                                 <th>ESTADO</th>
                                                 <th>RÉGIMEN</th>
-                                                <th>OBSERV.</th>
+                                                <th>DOC.REF</th>
+                                                <th>F.CESE</th>
                                             </tr>
                                         </thead>
                                         <tbody id="IdShowRptePlazas">                                          

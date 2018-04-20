@@ -16,7 +16,7 @@ class GestionarPlazasController extends Controller {
     public function index(Request $request){ 
       $idUserSession = Sentinel::getUser()->id;   //almacena id de sesion activa      
      // $getDosDig=DB::table('estructura')->select('IdEstructura','Descripcion')->where('IdEstructura', 'like', "__00000000")->get();
-      $getDosDig=DB::table('estructura')->select('IdEstructura','Descripcion')->where(DB::raw('LENGTH(IdEstructura)'), '=', "4")->get();
+      $getDosDig=DB::table('estructura')->select('IdEstructura','Descripcion')->where(DB::raw('LENGTH(IdEstructura)'), '=', "2")->get();
       return view('admin.gesplazas.index',compact('getDosDig', 'idUserSession')); 
 
   }

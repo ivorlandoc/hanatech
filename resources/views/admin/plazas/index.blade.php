@@ -81,7 +81,7 @@ Consulta de Plazas
                                             @endforeach 
                                         </select>  
                              </div>     
-
+ 
                               <div class="form-group">  
                               <label> Nivel</label>    
                                         <select id="select_e" class="form-control select2" name="select_e"  > <!-- onchange="GetIdSelectFour()"  -->
