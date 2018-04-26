@@ -45,11 +45,13 @@ class RptePlazaController extends Controller {
                     } 
            $DataM = DB::select("SELECT persona,sede,centro,dep,dep2,ofi,dependencia,IdNivel,cargo,NroPlaza,CONCAT(ApellidoPat, ' ', ApellidoMat,' ', Nombres) AS nom,dni, TipoMov,FechaMov,fechaDoc,DocRef,FileAdjunto,Observacion FROM (
               SELECT IdPersona AS persona, 
-              (SELECT descripcion FROM estructura WHERE LEFT(IdEstructura,2)=LEFT((SELECT IdEstructura FROM estructura WHERE IdEstructura=h.IdEstructura),2) LIMIT 1) AS sede,
-              (SELECT descripcion FROM estructura WHERE LEFT(IdEstructura,4)=LEFT((SELECT IdEstructura FROM estructura WHERE IdEstructura=h.IdEstructura),4) LIMIT 1) AS centro,
-              (SELECT descripcion FROM estructura WHERE LEFT(IdEstructura,6)=LEFT((SELECT IdEstructura FROM estructura WHERE IdEstructura=h.IdEstructura),6) LIMIT 1) AS dep,
-              (SELECT descripcion FROM estructura WHERE LEFT(IdEstructura,8)=LEFT((SELECT IdEstructura FROM estructura WHERE IdEstructura=h.IdEstructura),8) LIMIT 1) AS dep2,
-              (SELECT descripcion FROM estructura WHERE LEFT(IdEstructura,10)=LEFT((SELECT IdEstructura FROM estructura WHERE IdEstructura=h.IdEstructura),10) LIMIT 1) AS ofi,
+            
+            (SELECT descripcion FROM estructura WHERE LENGTH(IdEstructura)=2 AND LEFT(IdEstructura,2)=LEFT((SELECT IdEstructura FROM estructura WHERE IdEstructura=h.IdEstructura),2) LIMIT 1) AS sede,
+            (SELECT descripcion FROM estructura WHERE LENGTH(IdEstructura)=4 AND LEFT(IdEstructura,4)=LEFT((SELECT IdEstructura FROM estructura WHERE IdEstructura=h.IdEstructura),4) LIMIT 1) AS centro,
+            (SELECT descripcion FROM estructura WHERE LENGTH(IdEstructura)=6 AND LEFT(IdEstructura,6)=LEFT((SELECT IdEstructura FROM estructura WHERE IdEstructura=h.IdEstructura),6) LIMIT 1) AS dep,
+            (SELECT descripcion FROM estructura WHERE LENGTH(IdEstructura)=8 AND LEFT(IdEstructura,8)=LEFT((SELECT IdEstructura FROM estructura WHERE IdEstructura=h.IdEstructura),8) LIMIT 1) AS dep2,
+            (SELECT descripcion FROM estructura WHERE LENGTH(IdEstructura)=10 AND LEFT(IdEstructura,10)=LEFT((SELECT IdEstructura FROM estructura WHERE IdEstructura=h.IdEstructura),10) LIMIT 1) AS ofi,
+
               (SELECT descripcion FROM estructura WHERE IdEstructura=h.IdEstructura LIMIT 1) AS dependencia,
               IdNivel, c.Descripcion as cargo,NroPlaza,(SELECT Descripcion FROM tipomovimiento WHERE IdTipoMov=h.IdTipoMov) AS TipoMov,
               FechaMov,FechaDocRef AS fechaDoc,DocRef,FileAdjunto,Observacion
@@ -64,11 +66,13 @@ class RptePlazaController extends Controller {
               $Plaza  =   substr($id,0,8); 
             $DataM = DB::select("SELECT persona,sede,organo,gerencia,dep2,IF(ofi ='SN','',ofi) AS ofi,IF(dependencia='SN','',dependencia) AS dependencia,tipo,IdNivel,nivel,cargo,NroPlaza,dni,CONCAT(ApellidoPat, ' ', ApellidoMat,' ', Nombres) AS nom,DATE_FORMAT(FechaNac, '%d/%m/%Y')  AS FechaNac,  DATE_FORMAT(FechaIngreso, '%d/%m/%Y')  AS fingreso,(SELECT Descripcion FROM regimen WHERE IdRegimen=p.IdRegimen) AS regimen,Direccion,Genero,documento FROM (
             SELECT IdPersona AS persona,
-            (SELECT descripcion FROM estructura WHERE LEFT(IdEstructura,2)=LEFT((SELECT IdEstructura FROM estructura WHERE IdEstructura=cu.IdEstructura),2) LIMIT 1) AS sede,
-            (SELECT descripcion FROM estructura WHERE LEFT(IdEstructura,4)=LEFT((SELECT IdEstructura FROM estructura WHERE IdEstructura=cu.IdEstructura),4) LIMIT 1) AS organo,
-          (SELECT descripcion FROM estructura WHERE LEFT(IdEstructura,6)=LEFT((SELECT IdEstructura FROM estructura WHERE IdEstructura=cu.IdEstructura),6) LIMIT 1) AS gerencia,
-            (SELECT descripcion FROM estructura WHERE LEFT(IdEstructura,8)=LEFT((SELECT IdEstructura FROM estructura WHERE IdEstructura=cu.IdEstructura),8) LIMIT 1) AS dep2,
-            (SELECT descripcion FROM estructura WHERE LEFT(IdEstructura,10)=LEFT((SELECT IdEstructura FROM estructura WHERE IdEstructura=cu.IdEstructura),10) LIMIT 1) AS ofi,
+
+            (SELECT descripcion FROM estructura WHERE LENGTH(IdEstructura)=2 AND LEFT(IdEstructura,2)=LEFT((SELECT IdEstructura FROM estructura WHERE IdEstructura=cu.IdEstructura),2) LIMIT 1) AS sede,
+            (SELECT descripcion FROM estructura WHERE LENGTH(IdEstructura)=4 AND LEFT(IdEstructura,4)=LEFT((SELECT IdEstructura FROM estructura WHERE IdEstructura=cu.IdEstructura),4) LIMIT 1) AS organo,
+            (SELECT descripcion FROM estructura WHERE LENGTH(IdEstructura)=6 AND LEFT(IdEstructura,6)=LEFT((SELECT IdEstructura FROM estructura WHERE IdEstructura=cu.IdEstructura),6) LIMIT 1) AS gerencia,
+            (SELECT descripcion FROM estructura WHERE LENGTH(IdEstructura)=8 AND LEFT(IdEstructura,8)=LEFT((SELECT IdEstructura FROM estructura WHERE IdEstructura=cu.IdEstructura),8) LIMIT 1) AS dep2,
+            (SELECT descripcion FROM estructura WHERE LENGTH(IdEstructura)=10 AND LEFT(IdEstructura,10)=LEFT((SELECT IdEstructura FROM estructura WHERE IdEstructura=cu.IdEstructura),10) LIMIT 1) AS ofi,
+
             (SELECT descripcion FROM estructura WHERE IdEstructura=cu.IdEstructura LIMIT 1) AS dependencia,
             IdNivel, c.Descripcion AS cargo,NroPlaza,
             (SELECT Descripcion FROM tipocargo WHERE IdTipo=c.IdTipo) AS tipo,
@@ -79,12 +83,14 @@ class RptePlazaController extends Controller {
           ) xc INNER JOIN persona p ON xc.persona=p.IdPersona WHERE NroPlaza= '$Plaza'");  
         }else{
           $DataM = DB::select("SELECT persona,sede,organo,gerencia,dep2,IF(ofi ='SN','',ofi) AS ofi,IF(dependencia='SN','',dependencia) AS dependencia,tipo,IdNivel,nivel,cargo,NroPlaza,dni,CONCAT(ApellidoPat, ' ', ApellidoMat,' ', Nombres) AS nom,DATE_FORMAT(FechaNac, '%d/%m/%Y')  AS FechaNac,  DATE_FORMAT(FechaIngreso, '%d/%m/%Y')  AS fingreso,(SELECT Descripcion FROM regimen WHERE IdRegimen=p.IdRegimen) AS regimen,Direccion,Genero  FROM (
-              SELECT IdPersona AS persona,
-               (SELECT descripcion FROM estructura WHERE LEFT(IdEstructura,2)=LEFT((SELECT IdEstructura FROM estructura WHERE IdEstructura=cu.IdEstructura),2) LIMIT 1) AS sede,
-            (SELECT descripcion FROM estructura WHERE LEFT(IdEstructura,4)=LEFT((SELECT IdEstructura FROM estructura WHERE IdEstructura=cu.IdEstructura),4) LIMIT 1) AS organo,
-          (SELECT descripcion FROM estructura WHERE LEFT(IdEstructura,6)=LEFT((SELECT IdEstructura FROM estructura WHERE IdEstructura=cu.IdEstructura),6) LIMIT 1) AS gerencia,
-            (SELECT descripcion FROM estructura WHERE LEFT(IdEstructura,8)=LEFT((SELECT IdEstructura FROM estructura WHERE IdEstructura=cu.IdEstructura),8) LIMIT 1) AS dep2,
-            (SELECT descripcion FROM estructura WHERE LEFT(IdEstructura,10)=LEFT((SELECT IdEstructura FROM estructura WHERE IdEstructura=cu.IdEstructura),10) LIMIT 1) AS ofi,
+            SELECT IdPersona AS persona,
+
+            (SELECT descripcion FROM estructura WHERE LENGTH(IdEstructura)=2 AND LEFT(IdEstructura,2)=LEFT((SELECT IdEstructura FROM estructura WHERE IdEstructura=cu.IdEstructura),2) LIMIT 1) AS sede,
+            (SELECT descripcion FROM estructura WHERE LENGTH(IdEstructura)=4 AND LEFT(IdEstructura,4)=LEFT((SELECT IdEstructura FROM estructura WHERE IdEstructura=cu.IdEstructura),4) LIMIT 1) AS organo,
+            (SELECT descripcion FROM estructura WHERE LENGTH(IdEstructura)=6 AND LEFT(IdEstructura,6)=LEFT((SELECT IdEstructura FROM estructura WHERE IdEstructura=cu.IdEstructura),6) LIMIT 1) AS gerencia,
+            (SELECT descripcion FROM estructura WHERE LENGTH(IdEstructura)=8 AND LEFT(IdEstructura,8)=LEFT((SELECT IdEstructura FROM estructura WHERE IdEstructura=cu.IdEstructura),8) LIMIT 1) AS dep2,
+            (SELECT descripcion FROM estructura WHERE LENGTH(IdEstructura)=10 AND LEFT(IdEstructura,10)=LEFT((SELECT IdEstructura FROM estructura WHERE IdEstructura=cu.IdEstructura),10) LIMIT 1) AS ofi,
+
               (SELECT descripcion FROM estructura WHERE IdEstructura=cu.IdEstructura LIMIT 1) AS dependencia,
               '' as IdNivel, '' AS cargo,'' AS NroPlaza,
               '' AS tipo,
@@ -100,16 +106,16 @@ class RptePlazaController extends Controller {
 
         public function GetEstadoDePlazas($id){      
                 $DataM = DB::select(" SELECT  c.IdPersona, c.NroPlaza, c.IdEstructura,
-               (SELECT descripcion FROM estructura WHERE LEFT(IdEstructura,2)=LEFT((SELECT IdEstructura FROM estructura WHERE IdEstructura=c.IdEstructura),2) LIMIT 1) AS sede,
-            (SELECT descripcion FROM estructura WHERE LEFT(IdEstructura,4)=LEFT((SELECT IdEstructura FROM estructura WHERE IdEstructura=c.IdEstructura),4) LIMIT 1) AS organo,
-          (SELECT descripcion FROM estructura WHERE LEFT(IdEstructura,6)=LEFT((SELECT IdEstructura FROM estructura WHERE IdEstructura=c.IdEstructura),6) LIMIT 1) AS gerencia,
-            (SELECT descripcion FROM estructura WHERE LEFT(IdEstructura,8)=LEFT((SELECT IdEstructura FROM estructura WHERE IdEstructura=c.IdEstructura),8) LIMIT 1) AS dep2,
-            (SELECT descripcion FROM estructura WHERE LEFT(IdEstructura,10)=LEFT((SELECT IdEstructura FROM estructura WHERE IdEstructura=c.IdEstructura),10) LIMIT 1) AS ofi,
+              (SELECT descripcion FROM estructura WHERE LENGTH(IdEstructura)=2 AND LEFT(IdEstructura,2)=LEFT((SELECT IdEstructura FROM estructura WHERE IdEstructura=c.IdEstructura),2) LIMIT 1) AS sede,
+              (SELECT descripcion FROM estructura WHERE LENGTH(IdEstructura)=4 AND LEFT(IdEstructura,4)=LEFT((SELECT IdEstructura FROM estructura WHERE IdEstructura=c.IdEstructura),4) LIMIT 1) AS organo,
+              (SELECT descripcion FROM estructura WHERE LENGTH(IdEstructura)=6 AND LEFT(IdEstructura,6)=LEFT((SELECT IdEstructura FROM estructura WHERE IdEstructura=c.IdEstructura),6) LIMIT 1) AS gerencia,
+              (SELECT descripcion FROM estructura WHERE LENGTH(IdEstructura)=8 AND LEFT(IdEstructura,8)=LEFT((SELECT IdEstructura FROM estructura WHERE IdEstructura=c.IdEstructura),8) LIMIT 1) AS dep2,
+              (SELECT descripcion FROM estructura WHERE LENGTH(IdEstructura)=10 AND LEFT(IdEstructura,10)=LEFT((SELECT IdEstructura FROM estructura WHERE IdEstructura=c.IdEstructura),10) LIMIT 1) AS ofi,
                   e.Descripcion AS descripcion,
                       car.IdNivel,(SELECT descripcion FROM nivel WHERE IdNivel=car.IdNivel) AS Nivel,car.Descripcion AS cargo,IF(p.ApellidoPat IS NULL,'-',p.ApellidoPat)  AS ApellidoPat,
                       IF(p.ApellidoMat IS NULL,'-',p.ApellidoMat) AS ApellidoMat,IF(p.Nombres IS NULL,'-',p.Nombres) AS Nombres,
                       (SELECT descripcion FROM estadoplaza WHERE IdEstadoPlaza=c.IdEstadoPlaza) AS estado, IF(FechaCese='1000-01-01','',DATE_FORMAT(Fechacese,'%d/%m/%Y')) AS fcese,
-                      IF(Fechacese>=(SELECT fecha FROM periodopresupuesto WHERE estado='1' LIMIT 1),'SI','NO') AS sino
+                      IF(Fechacese>=(SELECT fecha FROM periodopresupuestos WHERE estado='1' LIMIT 1),'SI','NO') AS sino
                       FROM cuadronominativo  c  LEFT JOIN persona p ON p.IdPersona=c.IdPersona
                         INNER JOIN cargo car ON car.IdCargo=c.IdCargo   INNER JOIN estructura e ON e.IdEstructura=c.IdEstructura
                          WHERE  c.NroPlaza = '$id'"); 
@@ -121,14 +127,15 @@ class RptePlazaController extends Controller {
         IF(h.IdTipoMov<>'',(SELECT CASE WHEN IdTipoMov IN ('12','13','14','15','16','17','18','19','20') THEN CONCAT('MOV. POR ',descripcion)  ELSE CONCAT('MOV. POR ',descripcion) END AS ss FROM tipomovimiento WHERE IdTipoMov=h.IdTipoMov),
           IF(IdTipoBaja<>'',(SELECT CONCAT('BAJA POR ',descripcion) FROM tipobaja WHERE IdTipoBaja=h.IdTipoBaja),
           (SELECT descripcion FROM estadoplaza WHERE IdEstadoPlaza=h.IdEstadoPlaza))) AS tipomov, 
-         (SELECT descripcion FROM estructura WHERE LEFT(IdEstructura,2)=LEFT((SELECT IdEstructura FROM estructura WHERE IdEstructura=h.IdEstructura),2) LIMIT 1) AS sede,
-            (SELECT descripcion FROM estructura WHERE LEFT(IdEstructura,4)=LEFT((SELECT IdEstructura FROM estructura WHERE IdEstructura=h.IdEstructura),4) LIMIT 1) AS organo,
-          (SELECT descripcion FROM estructura WHERE LEFT(IdEstructura,6)=LEFT((SELECT IdEstructura FROM estructura WHERE IdEstructura=h.IdEstructura),6) LIMIT 1) AS gerencia,
-            (SELECT descripcion FROM estructura WHERE LEFT(IdEstructura,8)=LEFT((SELECT IdEstructura FROM estructura WHERE IdEstructura=h.IdEstructura),8) LIMIT 1) AS dep2,
-            (SELECT descripcion FROM estructura WHERE LEFT(IdEstructura,10)=LEFT((SELECT IdEstructura FROM estructura WHERE IdEstructura=h.IdEstructura),10) LIMIT 1) AS ofi, 
+
+          (SELECT descripcion FROM estructura WHERE LENGTH(IdEstructura)=2 AND LEFT(IdEstructura,2)=LEFT((SELECT IdEstructura FROM estructura WHERE IdEstructura=h.IdEstructura),2) LIMIT 1) AS sede,
+          (SELECT descripcion FROM estructura WHERE LENGTH(IdEstructura)=4 AND LEFT(IdEstructura,4)=LEFT((SELECT IdEstructura FROM estructura WHERE IdEstructura=h.IdEstructura),4) LIMIT 1) AS organo,
+          (SELECT descripcion FROM estructura WHERE LENGTH(IdEstructura)=6 AND LEFT(IdEstructura,6)=LEFT((SELECT IdEstructura FROM estructura WHERE IdEstructura=h.IdEstructura),6) LIMIT 1) AS gerencia,
+          (SELECT descripcion FROM estructura WHERE LENGTH(IdEstructura)=8 AND LEFT(IdEstructura,8)=LEFT((SELECT IdEstructura FROM estructura WHERE IdEstructura=h.IdEstructura),8) LIMIT 1) AS dep2,
+          (SELECT descripcion FROM estructura WHERE LENGTH(IdEstructura)=10 AND LEFT(IdEstructura,10)=LEFT((SELECT IdEstructura FROM estructura WHERE IdEstructura=h.IdEstructura),10) LIMIT 1) AS ofi, 
 
         IdEstructura,(SELECT Descripcion FROM cargo WHERE IdCargo=h.IdCargo) AS cargo,DocRef,IF(Observacion IS NULL,'',Observacion) AS Observacion,DATE_FORMAT(FechaMov,'%d/%m/%y') AS fm,DATE_FORMAT(FechaDocRef,'%d/%m/%y') AS fd,FileAdjunto
-        FROM historiamovimiento h WHERE NroPlaza='$id'");
+        FROM historiamovimiento h WHERE NroPlaza='$id' ORDER BY IdHistoria DESC ");
                  return Response::json($data);                 
         }
 

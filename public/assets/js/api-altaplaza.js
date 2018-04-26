@@ -144,7 +144,7 @@ $("#IdSaveAltaDePlazas").click(function (e) {
 		        processData: false,
 		        success: function(data){ 
 		        console.log("-2->"+data);		        	  
-		           	if(data===true) {		           	
+		           	if(data===true || data===1) {		           	
 		                   $("#IdMensajeAlert").html('<div class="alert alert-success" role="alert">La Operación se realizó con éxito</div>').fadeIn().delay(4000).fadeOut('slow');		             		
 		                   $("#frmSaveAlta")[0].reset();		                   	
 		                   $('#NroPlazaA').val("");		                  	              
@@ -168,7 +168,7 @@ function GetDatosPlazaForAlta(id){
 		var htmlNombre="";
  
        	var ErrorHtml='<div class="alert alert-danger alert-dismissable margin5"><strong>Ups</strong> no existe registros!</div>';
-       	var HtmlPlaza='<div class="alert alert-danger alert-dismissable margin5"><strong>Ups</strong> La Plaza no esta disponible!</div>';
+       	var HtmlPlaza='<div class="alert alert-danger alert-dismissable margin5"><strong>Ups!</strong> La Plaza no esta disponible!</div>';
        	if(dataAlta.length!=0){
        		$('#ShowDataHead').show();
        		$('#IdMsjeErrorAltaPlaza').html("");	
@@ -188,18 +188,23 @@ function GetDatosPlazaForAlta(id){
    				_sede			=dataAlta[i].sede +' | '+dataAlta[i].organo+' | '+dataAlta[i].dep+' | '+dataAlta[i].dep2+ ' | '+dataAlta[i].descrip;   				
    				//_dep		  	=dataAlta[i].dep+' | '+dataAlta[i].descrip;  
 
-   				if(_IdPersona==""){   					   					
+   				if($("#checkboxalta").prop('checked')) {		   									   					
    					$('#NroPlazaDescripcion').val(_NroPlaza+"[PLAZA VACANTE]");
    					$('#FormAltaPlaza').show();
    					$('#IdSpaceHead').html("");
-   				}
-   				else { 
-   					$('#NroPlazaDescripcion').val(_NroPlaza+"[PLAZA NO DISPONIBLRE]");
-   					$('#FormAltaPlaza').hide();
-   					$('#IdSpaceHead').html(HtmlPlaza);
-   					
-   					
-   				}
+		   		}else{
+		   			if(_IdPersona==""){   					   					
+		   					$('#NroPlazaDescripcion').val(_NroPlaza+"[PLAZA VACANTE]");
+		   					$('#FormAltaPlaza').show();
+		   					$('#IdSpaceHead').html("");
+		   				}
+		   				else { 
+		   					$('#NroPlazaDescripcion').val(_NroPlaza+"[PLAZA NO DISPONIBLRE]");
+		   					$('#FormAltaPlaza').hide();
+		   					$('#IdSpaceHead').html(HtmlPlaza); 
+		   				}
+		   		}
+
    				$('#IdNivelNroPlaza').val(_IdNivelCargo);
    				$('#IdDepenorgano').val(_sede);
    				//$('#IdDependenciaDes').val(_dep);				
@@ -212,6 +217,25 @@ function GetDatosPlazaForAlta(id){
 	});	
 }
 
+
+function CheckboxAltaSup(){
+	if($("#checkboxalta").prop('checked')) {	
+		$("#flatcheckbox").val("1");
+		loaddatosform();
+		$("#ObserAlta").attr('readonly', true);
+		$("#idlabeladjunto").html("<p class='text-red'>Alta Por Suplencia: No adjuntar archivo</p>");
+		
+		
+	}else{
+		$("#flatcheckbox").val("0");
+		$('#FormAltaPlaza').hide();
+		$("#search_persona").focus(); 
+		loaddatosform();
+		$("#ObserAlta").attr('readonly', false);
+		$("#idlabeladjunto").html("Adjuntar Documento");
+	}
+
+}
 function getTipoDoc(idx){
 	$.get('../api/admin/tipodoc/getforalta/'+idx,function(data){
 	var html_select="";

@@ -42,7 +42,7 @@ class ConsplzextController extends Controller {
                         IF(p.Nombres IS NULL,'-',p.Nombres) AS Nombres,
                         (SELECT descripcion FROM estadoplaza WHERE IdEstadoPlaza=c.IdEstadoPlaza) AS estado,
                         IF(FechaCese='1000-01-01','',DATE_FORMAT(Fechacese,'%d/%m/%Y')) AS fcese,
-                        IF(Fechacese>=(SELECT fecha FROM periodopresupuesto WHERE estado='1' LIMIT 1),'SI','NO') AS sino
+                        IF(Fechacese>=(SELECT fecha FROM periodopresupuestos WHERE estado='1' LIMIT 1),'SI','NO') AS sino
                     FROM cuadronominativo  c  LEFT JOIN persona p ON p.IdPersona=c.IdPersona
                     INNER JOIN cargo car ON car.IdCargo=c.IdCargo   
                     INNER JOIN estructura e ON e.IdEstructura=c.IdEstructura

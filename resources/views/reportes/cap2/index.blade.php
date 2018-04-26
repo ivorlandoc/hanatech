@@ -2,7 +2,7 @@
 
 {{-- Page title --}}
 @section('title')
-Estructuras
+Plazas
 @parent
 @stop
 
@@ -21,7 +21,7 @@ Estructuras
 {{-- Page content --}}
 @section('content')
 <section class="content-header">
-    <h1>Estructuras Funcionales</h1>
+    <h1>Plazas Por Dependencia</h1>
     <ol class="breadcrumb">
         <li>
             <a href="{{ route('admin.dashboard') }}">
@@ -29,8 +29,8 @@ Estructuras
                 Dashboard
             </a>
         </li>
-        <li><a href="#"> Gestionar Estructura</a></li>
-        <li class="active">Estructuras</li>
+        <li><a href="#"> Plazas Por Dependencia</a></li>
+        <li class="active">Dependencias</li>
     </ol>
 </section>
 
@@ -43,61 +43,71 @@ Estructuras
            <div class="panel panel-info">
                 <div class="panel-heading">
                     <h3 class="panel-title">
-                        <i class="livicon" data-name="search" data-size="16" data-loop="true" data-c="#fff" data-hc="white"></i> Lista de Estructuras[En Construccion]
+                        <i class="livicon" data-name="search" data-size="16" data-loop="true" data-c="#fff" data-hc="white"></i> Plazas Por Dependencia
                     </h3>
                     <span class="pull-right clickable">
                             <i class="glyphicon glyphicon-chevron-up"></i>
                     </span>
                 </div>
                 <div class="panel-body">
-                <form method="get" name="frmOnline" id='form_validation' enctype="multipart/form-data" action="#">   
+                    {{ Form::open(array( 'route' => ['getdata-result_cap2'], 'method' => 'post', 'id' => 'frmcap2','name' => 'frmcap2'))}}  
+                     <input type="hidden" name="token" value="{{ csrf_token()}}">   
+                        <!--<form method="get" name="frmOnline" id='form_validation' enctype="multipart/form-data" action="#">  -->
+
                     <div class="col-md-12">
                             <div class="form-group">                          
                                 <select id="select_nivel-0" class="form-control select2" name="select_2dig">
-                                <option value="%">Todos</option>                                        
+                                <option value="">Todos</option>                                        
                                    @foreach ($getDosDig as $getAll) 
                                         <option value="{{ $getAll->IdEstructura }}">{{ $getAll->IdEstructura }} | {{ $getAll->Descripcion }}</option>
                                     @endforeach 
                                 </select>
+                               
                             </div>
 
                         <div class="form-group">                          
                             <select id="select_nivel-1" class="form-control select2" name="select_2dig" >
-                                <option value="%">Todos</option>
+                                <option value="">Todos</option>
                             </select>
                         </div>
 
                         <div class="form-group">                      
-                            <select id="select_nivel-2" class="form-control select2" name="select_4dig"  onclick="GetIdSelectLevelThree()">
-                                <option value="%">Todos</option>        
+                            <select id="select_nivel-2" class="form-control select2" name="select_4dig"  onchange="ajaxgetloadPlazas('1')">
+                                <option value="">Todos</option>        
                                 
                             </select>
                             
                         </div>
 
                         <div class="form-group">
-                            <select id="select_nivel-3" class="form-control select2" name="select_7dig" onclick ="GetIdSelectLevelFour()">
-                                <option value="%">Todos</option>                                
+                            <select id="select_nivel-3" class="form-control select2" name="select_7dig" onchange ="ajaxgetloadPlazas('2')">
+                                <option value="">Todos</option>                                
                             </select>                            
                         </div>
                     
                          <div class="form-group">
                             <!--<label for="e1" class="control-label">Todos</label>-->
-                            <select id="select_nivel-4" class="form-control select2" name="select_10dig" onclick="GetIdSelectLevelFive()">
-                                <option value="%">Todos</option>                                
+                            <select id="select_nivel-4" class="form-control select2" name="select_10dig" onchange="ajaxgetloadPlazas('3')">
+                                <option value="">Todos</option>                                
                             </select>                            
                         </div>
-                        
+                         <div class="form-group">
+                          
+                                <label>
+                                    <input type="checkbox" class="flat-red" id="idcheckbox-ej" checked onclick="classShow()" />Ejecutivos
+                                </label>                          
+                                             
+                        </div>
                          <!-- ==========draw table========== -->
                         <div class="panel-body">
                             <div class="table-responsive" >
                                 <table  class="table dataTable no-footer dtr-inline">
                                     <thead>
                                         <tr class="filters">
-                                            <th>#</th><th>DEPENDENCIA</th><th>ADMIN</th> <th>ASIST</th> <th>VAC.</th> <th>TOTAL</th>                       
+                                            <th>#</th><th>NIVEL</th><th>CARGO</th> <th>#PLAZA</th> <th>TITULAR</th>                      
                                         </tr>
                                     </thead>
-                                    <tbody id="IdShowresume">
+                                    <tbody id="IdShowDetails">
                                         <div class="loading">
                                             <i class="fa fa-refresh fa-spin fa-2x fa-tw"></i>
                                             <br>
@@ -113,7 +123,7 @@ Estructuras
                     </div>
                   
                         
-                    </form>
+                       {{ Form::close()}}   
                 </div>
             </div>
 
@@ -124,38 +134,7 @@ Estructuras
 </section>
 
 
-
-
-            <div class="modal fade expandOpen" id="responsive" tabindex="-1" role="dialog" aria-hidden="false">
-                <div class="modal-dialog modal-lg">
-                        <div class="modal-content">
-                            <div class="modal-header bg-info">
-                               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                                        <h5 class="modal-title"><div id="IdHeadDet"></div></h5>
-                            </div>
-                            <div class="modal-body">
-                                <div class="row">
-                                    <div class="table-responsive" >
-                                            <table  class="table dataTable no-footer dtr-inline">
-                                                <thead>
-                                                    <tr class="filters"> 
-                                                        <th>#</th><th>N° PLAZA</th> <th>NIVEL</th> <th>CARGO</th> <th>NOMBRES</th>                       
-                                                    </tr>
-                                                </thead>
-                                                <tbody id="IdShowDetails">
-                                                
-
-                                                </tbody>
-                                            </table>
-                                    </div>
-                                </div>
-                            <div class="modal-footer">
-                                <button type="button" data-dismiss="modal" class="btn btn-default">Ciérrame!</button>
-                           
-                            </div>
-                        </div>
-                </div>
-            </div>        
+    
           
           
         </div>
@@ -175,10 +154,10 @@ Estructuras
   </div>
 </div>
 
-<script type="text/javascript" src="{{ asset('assets/js/js-cap2.js') }}">
-    
-</script>
+<script type="text/javascript" src="{{ asset('assets/js/js-cap2.js') }}"></script>
 <script type="text/javascript" src="{{ asset('assets/vendors/modal/js/classie.js')}}"></script>
+
+
 <script>
     
 $(function () {

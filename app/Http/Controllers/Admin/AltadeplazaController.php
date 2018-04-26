@@ -90,6 +90,8 @@ public function ProcesaInsertAlta(Request $Request){
                
             if($Request->ajax()){           
                 //=======Datos para insert persona====================
+                
+                $_CheckboxFlat      = $Request->input("flatcheckbox");
               //  $_IdPersona         = $__IdPersona;  
                 $_IdTipoDoc         = $Request->input("IdTipoDocument");
                 $_Nrodni            = $Request->input("nrodocumento");
@@ -170,67 +172,70 @@ public function ProcesaInsertAlta(Request $Request){
                         $_IdPersona=$IdPersona;
                 }                              
                 // ===Asignamos la persona a la plaza en elnominativo========== 
-                if($Resp==1){
-                        if($_IdPersona!=""){
-                                if($_TipoAlta=="24"){
-                                    $aff=DB::table('cuadronominativo')->where('NroPlaza', $_NroPlaza)->where('IdCargo', $_IdCargo)
-                                    ->update([
-                                                'IdPersona'     =>$_IdPersona,
-                                                'IdEstructura'  =>$_IdEstructura,
-                                                'IdEstadoPlaza' =>"1",
-                                                'FechaCese'     =>"1000-01-01",
-                                                'Flat'          =>'(NULL)',
-                                                'IdUsuario'     =>$UserSession->email,
-                                                'Ip'            =>$ipAddress,
-                                                'updated_at'    =>date('Y-m-d H:i:s'),
-                                                'created_at'    =>date('Y-m-d H:i:s')
-                                                ]);
-                                }else{
-                                     $aff=DB::table('cuadronominativo')->where('NroPlaza', $_NroPlaza)->where('IdCargo', $_IdCargo)->where('IdEstructura',$_IdEstructura)
-                                    ->update([
-                                                'IdPersona'     =>$_IdPersona,
-                                                'IdEstadoPlaza' =>"1",
-                                                'FechaCese'     =>"1000-01-01",
-                                                'IdUsuario'     =>$UserSession->email,
-                                                'Ip'            =>$ipAddress,
-                                                'updated_at'    =>date('Y-m-d H:i:s'),
-                                                'created_at'    =>date('Y-m-d H:i:s')
-                                                ]);
-                                }
-                            }
-                       //========Para insertar en el historial de movimientos===========================
-                        //if($aff===true){
-                                $res=array($_IdPlaza);
-                                $fileName=$_IdPersona.$_IdPlaza.$_NroPlaza;// nombre del archivo .pdf
-                                $name="";
-                                if($_FileAdjuntoAlta) 
-                                    {
-                                        $file = $Request->file('FileAdjuntoAlta'); 
-                                        $path = public_path('uploads/files/');
-                                        array_push($res, $path);
-                                        $name = $fileName.'.'.$file->getClientOriginalExtension();
-                                        $file->move($path, $name);
-                                    }               
-                                $Resp = DB::table('historiamovimiento')->insert([
-                                    'IdPersona'     => $_IdPersona,
-                                    'IdPlaza'       => $_IdPlaza,
-                                    'IdEstructura'  => $_IdEstructura,
-                                    'IdCargo'       => $_IdCargo,
-                                    'NroPlaza'      => $_NroPlaza,
-                                    'IdTipoMov'     => $_TipoAlta,
-                                    'IdTipoBaja'    => "",
-                                    'FechaDocRef'   => Carbon::parse($_FechaAlta)->format('Y-m-d H:i:s'),
-                                    'FechaMov'      => date('Y-m-d H:i:s'),
-                                    'DocRef'        => $_ObserAlta,
-                                    'FileAdjunto'   => $name,
-                                    'Observacion'   => "",
-                                    'IdUsuario'     => $UserSession->email,
-                                    'Ip'            => $ipAddress,
-                                    'created_at'    => date('Y-m-d H:i:s'),
-                                    'updated_at'    => date('Y-m-d H:i:s')
-                                ]);
-                        //}
+                if($_CheckboxFlat=="0"){
+                        if($Resp==1){
+                                if($_IdPersona!=""){
+                                        if($_TipoAlta=="24"){
+                                            $aff=DB::table('cuadronominativo')->where('NroPlaza', $_NroPlaza)->where('IdCargo', $_IdCargo)
+                                            ->update([
+                                                        'IdPersona'     =>$_IdPersona,
+                                                        'IdEstructura'  =>$_IdEstructura,
+                                                        'IdEstadoPlaza' =>"1",
+                                                        'FechaCese'     =>"1000-01-01",
+                                                        'Flat'          =>'(NULL)',
+                                                        'IdUsuario'     =>$UserSession->email,
+                                                        'Ip'            =>$ipAddress,
+                                                        'updated_at'    =>date('Y-m-d H:i:s'),
+                                                        'created_at'    =>date('Y-m-d H:i:s')
+                                                        ]);
+                                        }else{
+                                             $aff=DB::table('cuadronominativo')->where('NroPlaza', $_NroPlaza)->where('IdCargo', $_IdCargo)->where('IdEstructura',$_IdEstructura)
+                                            ->update([
+                                                        'IdPersona'     =>$_IdPersona,
+                                                        'IdEstadoPlaza' =>"1",
+                                                        'FechaCese'     =>"1000-01-01",
+                                                        'IdUsuario'     =>$UserSession->email,
+                                                        'Ip'            =>$ipAddress,
+                                                        'updated_at'    =>date('Y-m-d H:i:s'),
+                                                        'created_at'    =>date('Y-m-d H:i:s')
+                                                        ]);
+                                        }
+                                    }
+                               //========Para insertar en el historial de movimientos===========================
+                                //if($aff===true){
+                                        $res=array($_IdPlaza);
+                                        $fileName=$_IdPersona.$_IdPlaza.$_NroPlaza;// nombre del archivo .pdf
+                                        $name="";
+                                        if($_FileAdjuntoAlta) 
+                                            {
+                                                $file = $Request->file('FileAdjuntoAlta'); 
+                                                $path = public_path('uploads/files/');
+                                                array_push($res, $path);
+                                                $name = $fileName.'.'.$file->getClientOriginalExtension();
+                                                $file->move($path, $name);
+                                            }               
+                                        $Resp = DB::table('historiamovimiento')->insert([
+                                            'IdPersona'     => $_IdPersona,
+                                            'IdPlaza'       => $_IdPlaza,
+                                            'IdEstructura'  => $_IdEstructura,
+                                            'IdCargo'       => $_IdCargo,
+                                            'NroPlaza'      => $_NroPlaza,
+                                            'IdTipoMov'     => $_TipoAlta,
+                                            'IdTipoBaja'    => "",
+                                            'FechaDocRef'   => Carbon::parse($_FechaAlta)->format('Y-m-d H:i:s'),
+                                            'FechaMov'      => date('Y-m-d H:i:s'),
+                                            'DocRef'        => $_ObserAlta,
+                                            'FileAdjunto'   => $name,
+                                            'Observacion'   => "",
+                                            'IdUsuario'     => $UserSession->email,
+                                            'Ip'            => $ipAddress,
+                                            'created_at'    => date('Y-m-d H:i:s'),
+                                            'updated_at'    => date('Y-m-d H:i:s')
+                                        ]);
+                                //}
+                        }
                 }
+
                 if($Resp)                  
                     return Response::json($Resp); // redirect()->route('admin.gesplazas.index')->with('success','La operación se realizó con éxito!');  
                     else                  

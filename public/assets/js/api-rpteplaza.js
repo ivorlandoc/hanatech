@@ -25,26 +25,48 @@ function GetAllPlazas(id){
 		var htmlNombre="";
 		var Tinesino="";
 		var url="";
-
+		var ofi="";
+    	var desc="";
+    	var Tinesino="";
+    	var htmlAlta="";
        	var ErrorHtml='<tr><td colspan="2"><div class="alert alert-danger alert-dismissable margin5"><strong>Ups</strong> no existe registros!</div></td></tr>';
        	if(dataDet.length!=0){        		
        		$('#IdGetShowEstadoPlaza').html(""); // "{{ URL::to('admin/bajaplazas') }}?x={{$plaz}}"
 			for (var i=0; i < dataDet.length; i++) 	{	
-				if(dataDet[i].fcese!=""){ Tinesino= '<p class="btn btn-info start">'+dataDet[i].sino+'</p>';} else{ Tinesino=" ";}				
-				url= "altaplaza?x="+dataDet[i].NroPlaza;			
-				if(dataDet[i].IdPersona=="") htmlNombre="<p class='btn btn-info start'>"+dataDet[i].estado+"</p>&nbsp;&nbsp;&nbsp;<a href="+url+ ' class="btn btn-primary start">DAR DE ALTA</a>'; else htmlNombre=dataDet[i].ApellidoPat+'  '+dataDet[i].ApellidoMat+' '+dataDet[i].Nombres;
+				if(dataDet[i].fcese!=""){ Tinesino= '<p class="btn btn-info start">'+dataDet[i].sino+'</p>';} else{ Tinesino=" ";}	
 
-				tableHtml += '<table><tr><th width="23%"># DE PLAZA:</th><td ><p style="margin: 0px 0px 0px 0px;">'+dataDet[i].NroPlaza+' </p></td></tr> '+
-							 '<tr><th>TITULAR:</th><td><p style="margin: 0px 0px 0px 30px;">'+htmlNombre+'</p></td></tr> '+
-							 '<tr><th colspan="2">DEPENDENCIA</th></tr>'+
-							 '<tr><td colspan="2"><p style="margin: 0px 0px 0px 0px;">'+dataDet[i].sede+'  <b>|</b>  '+dataDet[i].organo+' </p></td></tr>'+												
-							 '<tr><td colspan="2"><p style="margin: 0px 0px 0px 0px;">'+dataDet[i].gerencia+'  <b> | </b>  '+dataDet[i].dep2+'<b> | </b>  '+dataDet[i].descripcion+'</p></td></tr>'+							
-							 '<tr><th>NIVEL:</th><td><p style="margin: 0px 0px 0px 0px;">'+dataDet[i].IdNivel+'  <b>|</b>  '+dataDet[i].Nivel+' </p></td></tr> '+					
-							 '<tr><th>CARGO:</th><td><p style="margin: 0px 0px 0px 0px;">'+dataDet[i].cargo+' </p></td></tr> '+
-							 '<tr><th>FECHA DE CESE:</th><td><p style="margin: 0px 0px 0px 0px;">'+dataDet[i].fcese+' </p></td></tr> '+	
-							 '<tr><th>CUENTA CON PRESUPUESTO?</th><td>'+Tinesino+' </td></tr> '+						 							
+				url= "altaplaza?x="+dataDet[i].NroPlaza;	
+
+
+				if(dataDet[i].IdPersona=="") htmlAlta="<a href="+url+ ' class="btn btn-info">DAR DE ALTA</a>'; else htmlAlta="";
+				
+				if(dataDet[i].fcese!=""){ Tinesino= '<p class="btn btn-info start">'+dataDet[i].sino+'</p>';} else{ 
+	              if(dataDet[i].estado=="ACTIVA"){Tinesino="<p class='btn btn-info start'> SI </p>";} else{Tinesino=" ";}
+	          	} 
+
+				htmlEsta="<p class='btn btn-info start'> "+dataDet[i].NroPlaza+" | "+dataDet[i].estado+"</p>" 
+				htmlNombre=dataDet[i].ApellidoPat+'  '+dataDet[i].ApellidoMat+' '+dataDet[i].Nombres;
+				
+				if(dataDet[i].ofi=="SN"){ofi='';} else {ofi="<br>"+dataDet[i].ofi;}
+	            if(dataDet[i].descripcion=="SN"){desc='';} else {desc="<br>"+dataDet[i].descripcion;}
+
+				tableHtml += '<table class="table dataTable no-footer dtr-inline">'+
+							 '<tr><th width="23%">PLAZA:</th>		<td>'+htmlEsta+'</td><td><p class="text-right">'+htmlAlta+'</p></td></tr> '+
+							 '<tr><th>TITULAR:</th>					<td colspan="2">'+htmlNombre+'</td></tr> '+						
+							 '<tr><th>DEPENDENCIA</th>           	<td colspan="2"><b>'+dataDet[i].organo+'</b> <br> '+dataDet[i].gerencia+' <br>'+dataDet[i].dep2+' '+ofi+'  '+desc+'</td></tr>'+
+							 '<tr><th>NIVEL:</th>					<td colspan="2">'+dataDet[i].IdNivel+'  <b>|</b>  '+dataDet[i].Nivel+' </p></td></tr> '+					
+							 '<tr><th>CARGO:</th>					<td colspan="2">'+dataDet[i].cargo+'</td></tr> '+
+							 '<tr><th>FECHA DE CESE:</th>			<td colspan="2">'+dataDet[i].fcese+'</td></tr> '+	
+							 '<tr><th>CUENTA CON PRESUPUESTO?</th>	<td colspan="2">'+Tinesino+' </td></tr> '+						 							
 							 '</tr></table>';
 				$('#IdGetShowEstadoPlaza').html(tableHtml);	
+
+
+				
+
+
+
+
 			}
 		}else{
 			$('#IdGetShowEstadoPlaza').html(ErrorHtml);

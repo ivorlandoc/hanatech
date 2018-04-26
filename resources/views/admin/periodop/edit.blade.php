@@ -2,7 +2,7 @@
 
 {{-- Page title --}}
 @section('title')
-Lista de Cargos
+Periodos
 @parent
 @stop
 
@@ -16,7 +16,7 @@ Lista de Cargos
 {{-- Page content --}}
 @section('content')
 <section class="content-header">
-    <h1>Cargos</h1>
+    <h1>Periodos de PPTO</h1>
     <ol class="breadcrumb">
         <li>
             <a href="{{ route('admin.dashboard') }}">
@@ -24,8 +24,8 @@ Lista de Cargos
                 Dashboard
             </a>
         </li>
-        <li><a href="#">Cargos</a></li>
-        <li class="active">Lista de Cargos</li>
+        <li><a href="#"> Periodos</a></li>
+        <li class="active">Lista de Periodos </li>
     </ol>
 </section>
 
@@ -35,43 +35,39 @@ Lista de Cargos
         <div class="panel panel-info">
             <div class="panel-heading">
                 <h4 class="panel-title"> <i class="livicon" data-name="user" data-size="16" data-loop="true" data-c="#fff" data-hc="white"></i>
-                    Lista de Cargos
+                    Actualizando Periodos
                 </h4>
             </div>
             <br />
             <div class="panel-body">
-                <div class="table-responsive">
-                <table class="table table-bordered width100" id="table">
-                    <thead>
-                        <tr class="filters">
-                            <th>#</th>
-                             <th>CLASIFICACION</th>
-                            <th>#NIVEL</th>
-                            <th>N.OCUPACIONAL</th>
-                            <th>C.CARGO</th>
-                            <th>DESCRIPCION</th>
-                            <th>C.ANT.</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php $i=0;?> 
-                         @foreach ($getAll as $getA)   
-                            <?php $i++;?>        
-                                <tr>
-                                    <td>{{ $i }}</td>
-                                    <td>{{ $getA->TipoCargo }}</td>
-                                    <td>{{ $getA->IdNivel }}</td>
-                                    <td>{{ $getA->Nivel }}</td>
-                                    <td>{{ $getA->IdCargo }}</td>
-                                    <td>{{ $getA->Descripcion }}</td> 
-                                    <td>{{ $getA->CodigoAnt }}</td>
-                                </tr>
-                            @endforeach 
-
-                    </tbody>
-                </table>
-                {{$getAll->render()}}
+            <!-- ========================== -->               
+           
+                <div class="col-lg-12 margin-tb">                 
+                    <div class="pull-right">
+                        <a class="btn btn-primary" href="{{ URL::to('admin/periodop') }}"> Regresar</a>
+                    </div>
                 </div>
+       
+
+
+            @if (count($errors) > 0)
+                <div class="alert alert-danger">
+                     <strong>¡Ups!</strong> Hubo algunos problemas con su entrada<br><br>
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
+
+            {!! Form::model($periodo, ['method' => 'PATCH','route' => ['admin.periodop.update', $periodo->id]]) !!}
+                @include('admin.periodop.form')
+            {!! Form::close() !!}
+
+
+             <!-- ========================== -->   
             </div>
         </div>
     </div>    <!-- row-->

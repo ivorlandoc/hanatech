@@ -17,24 +17,23 @@ use Hash;
 
 class ActivarplazaController extends Controller { 
     public function index(Request $request){  
-       $idUserSession = Sentinel::getUser()->id; 
-    
+       $idUserSession = Sentinel::getUser()->id;     
       return view('admin.activap.index',compact('idUserSession')); 
     }
 
 
 public function Getdatosparaactivar(Request $Request){
      if($Request->ajax()){
-         $id         = $Request->input("txtplaza");          
-         $data= DB::select('SELECT  IdPlaza,c.IdEstructura,
-           --  (SELECT Descripcion FROM Estructura WHERE LEFT(IdEstructura,2)=LEFT((SELECT NewCodigo FROM estructura WHERE IdEstructura=c.IdEstructura),2) LIMIT 1) AS sede,
-           --  (SELECT Descripcion FROM Estructura WHERE LEFT(IdEstructura,4)=LEFT((SELECT NewCodigo FROM estructura WHERE IdEstructura=c.IdEstructura),4) LIMIT 1) AS organo,
-           -- (SELECT Descripcion FROM Estructura WHERE LEFT(IdEstructura,7)=LEFT((SELECT NewCodigo FROM estructura WHERE IdEstructura=c.IdEstructura),7) LIMIT 1) AS dep,
-           -- e.Descripcion AS descripcion,
-          c.NroPlaza,car.Descripcion AS cargo,car.IdNivel,
-          IF(c.IdEstadoPlaza IS NULL," ",(SELECT Descripcion FROM estadoplaza WHERE IdEstadoplaza=c.IdEstadoPlaza)) AS Estado
-          FROM cuadronominativo  c  INNER JOIN cargo car ON car.IdCargo=c.IdCargo INNER JOIN estructura e ON e.IdEstructura=c.IdEstructura
-             WHERE  c.NroPlaza = "'.$id.'" AND c.IdEstadoPlaza NOT IN("0","1")');        
+         $id         = $Request->input("txtplazaA");          
+         $data= DB::select('SELECT  
+          IdPlaza,
+          IdEstructura,
+          NroPlaza,
+          IF(c.IdEstadoPlaza IS NULL," ",(SELECT Descripcion FROM estadoplaza WHERE IdEstadoplaza=c.IdEstadoPlaza)) AS Estado,
+          DATE_FORMAT(FechaCese,"%d/%m/%Y") AS FechaCese,
+          IF(Fechacese>=(SELECT fecha FROM periodopresupuestos WHERE estado="1" LIMIT 1),"SI","NO") AS sino
+          FROM cuadronominativo  c 
+          WHERE  c.NroPlaza = "'.$id.'"');        
           return Response::json($data); 
         }    
 
@@ -54,106 +53,67 @@ public function ProcesaActivaPlazas(Request $Request,$id){
                 }
                
 
-            if($Request->ajax()){
-                $_DocRef         = $Request->input("docrefintegra");
-                $_FechaDocInte   = $Request->input("fechadocintegra");
-                $_SelMotivo      = $Request->input("_selectMotivo");
-                $_NroPlazaInteg  = $Request->input("nroplazaintegrada");  
-                $_FileAdjunto    = $Request->hasFile('FileAdjuntoIntegra');
+            if($Request->ajax()){               
+
+                $_NroPza          = $Request->input("nroplazaactivar");
+                $_Fcese          = $Request->input("fechaceseActivar");
+                $_DocRefActivar  = $Request->input("docrefActivar");  
+                $_FileAdjunto    = $Request->hasFile('FileAdjuntoActivar');
+                $_Observacion    = $Request->input("obserActivar");  
 
                 //----------------Get contador-------------
-                 $getdata     =DB::table('cuadronominativo')->where('NroPlaza', $_NroPlazaInteg)->select(DB::raw('CONVERT(IdPlaza,CHAR(6)) AS IdPlaza'),'IdEstructura','IdCargo')->get();
-                 $_idPlaza=""; $_idEstr=""; $_idcargo="";                 
+                 $getdata     =DB::table('cuadronominativo')->where('NroPlaza', $_NroPza)->select(DB::raw('CONVERT(IdPlaza,CHAR(6)) AS IdPlaza'),'IdEstructura','IdCargo','NroPlaza','Fechacese')->get();
+                 $_idPlaza=""; $_idEstr=""; $_idcargo=""; $_Plaza=""; $_fcese="";                
                 foreach ($getdata as $key) 
                   {
                     $_idPlaza  =$key->IdPlaza;
-                    $_idEstr  =$key->IdEstructura; 
+                    $_idEstr   =$key->IdEstructura; 
                     $_idcargo  =$key->IdCargo;
+                    $_Plaza    =$key->NroPlaza;
+                    $_fcese    =$key->Fechacese;
                   }
        
-                   
-                 
-                    /*================================*/
-                    $i=0;
-                    $_PlazasUnificadas="";
-                    while($i<=4){$i++;
-                      if($Request->input("IN".$i)) $_PlazasUnificadas =$_PlazasUnificadas.$Request->input("IN".$i)." | ";
-                    }
-                    /*================================*/
-                    $fileName=$_NroPlazaInteg;// nombre del archivo .pdf
+                    $aff=DB::table('cuadronominativo')->where('NroPlaza',$_Plaza)->update([
+                      'FechaCese' =>Carbon::parse($_Fcese)->format('Y-m-d'),
+                      'IdUsuario' =>$UserSession->email,
+                      'Ip' =>$ipAddress,
+                      'created_at'    => date('Y-m-d H:i:s'),
+                      'updated_at'    => date('Y-m-d H:i:s')
+                    ]);
+        
+                    $fileName=$_idPlaza.$_Plaza;// nombre del archivo .pdf
                     $name="";
-                    $res=array($_NroPlazaInteg);
+                    $res=array($_Plaza);
                     if($_FileAdjunto) {
-                        $file = $Request->file('FileAdjuntoIntegra'); 
+                        $file = $Request->file('FileAdjuntoActivar'); 
                         $path = public_path('uploads/files/');
                         array_push($res, $path);
-                        $name = "I-".$fileName.'.'.$file->getClientOriginalExtension();
+                        $name = "A-".$fileName.'.'.$file->getClientOriginalExtension();
                         $file->move($path, $name);
                         } 
 
                       $Resp=  DB::table('historiamovimiento')->insert([                    
                         'IdPlaza'       => $_idPlaza,
-                        'IdPersona'     =>'',
+                        'IdPersona'     => '',
                         'IdEstructura'  => $_idEstr,
-                        'NroPlaza'      => $_NroPlazaInteg,
-                        'FechaDocRef'   => Carbon::parse($_FechaDocInte)->format('Y-m-d H:i:s'), 
+                        'NroPlaza'      => $_Plaza,
+                        'FechaDocRef'   => date('Y-m-d'), // Carbon::parse($_FechaDocInte)->format('Y-m-d H:i:s'), 
                         'IdCargo'       => $_idcargo, 
-                        'IdTipoMov'     => $_SelMotivo,
-                        'DocRef'        => $_DocRef,
+                        'IdTipoMov'     => '0',
+                        'DocRef'        => $_DocRefActivar,
                         'FechaMov'      => date('Y-m-d'),
-                        'Observacion'   => "SE INTEGRÓ LAS SIGUIENTES PLAZAS: ".$_PlazasUnificadas." A LA PLAZA:".$_NroPlazaInteg,
+                        'Observacion'   => "SE ACTIVO LA PLAZA: ".$_Plaza." SIN PRESUPUESTO(".$_fcese."). <br>".$_Observacion,
                         'FileAdjunto'   => $name,
                         'IdTipoBaja'    => '',
+                        'IdEstadoPlaza' => '',
                         'IdUsuario'     => $UserSession->email,
                         'Ip'            => $ipAddress,
                         'created_at'    => date('Y-m-d H:i:s'),
                         'updated_at'    => date('Y-m-d H:i:s')
                     ]);
-                      if($Resp==true){
-                         $j=0;
-                        $_idPlazaSet="";
-                        while($j<=4){$j++;
-                          if($Request->input("IN".$j)) {
-                              $_idPlazaSet =$Request->input("IN".$j);
-                              $Resp = DB::table('cuadronominativo')->where('NroPlaza',$_idPlazaSet)->update([
-                                              'IdEstadoPlaza' => "0",                                 
-                                              'IdUsuario'     => $UserSession->email,
-                                              'Ip'            => $ipAddress,
-                                              'created_at'    => date('Y-m-d H:i:s'),
-                                              'updated_at'    => date('Y-m-d H:i:s')
-                                          ]);  
-                              /*=================================*/
-                              $getdata     =DB::table('cuadronominativo')->where('NroPlaza',$_idPlazaSet)->select(DB::raw('CONVERT(IdPlaza,CHAR(6)) AS IdPlaza'),'IdEstructura','IdCargo')->get();
-                               $_idPlaza2=""; $_idEstr2=""; $_idcargo2="";
-                              foreach ($getdata as $key) $_idPlaza2  =$key->IdPlaza;   $_idEstr2  =$key->IdEstructura;  $_idcargo2  =$key->IdCargo;
-                              /*=================================*/
-                              DB::table('historiamovimiento')->insert([                    
-                                            'IdPlaza'       => $_idPlaza2,
-                                            'IdPersona'     =>'',
-                                            'IdEstructura'  => $_idEstr2,
-                                            'NroPlaza'      => $_idPlazaSet,
-                                            'FechaDocRef'   => Carbon::parse($_FechaDocInte)->format('Y-m-d H:i:s'), 
-                                            'IdCargo'       => $_idcargo2, 
-                                            'IdTipoBaja'    => '17',
-                                            'DocRef'        => $_DocRef,
-                                            'FechaMov'      => date('Y-m-d'),
-                                            'Observacion'   => $_idPlazaSet." | SE INTEGRÓ A PLAZA: ".$_NroPlazaInteg,
-                                            'FileAdjunto'   => $name,
-                                            'IdTipoBaja'    => '',
-                                            'IdUsuario'     => $UserSession->email,
-                                            'Ip'            => $ipAddress,
-                                            'created_at'    => date('Y-m-d H:i:s'),
-                                            'updated_at'    => date('Y-m-d H:i:s')
-                                        ]);
-
-                          }
-                        }                  
-                    }
-                if($Resp)                  
-                    return Response::json($Resp); 
-                    else                  
-                return Response::json($Resp);                 
+                     
+                if($Resp)  return Response::json($Resp);   else      return Response::json($Resp);                 
             }           
-        }   
+        }         
 
  }

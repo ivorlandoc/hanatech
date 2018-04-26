@@ -100,95 +100,85 @@ Route::group(['prefix' => 'reportes', 'namespace'=>'Reporte','middleware' => 'ad
     Route::post('externo', array('as' => 'getdata-result','uses' => 'ConsplzextController@getdatforConsultExter'));
        /*==================================cap2=============================================*/
     Route::get('cap2', 'Cap2Controller@index'); 
+    Route::post('cap2', array('as' => 'getdata-result_cap2','uses' => 'Cap2Controller@getshowCap2'));
 
 });
 
 Route::resource('reportes', 'PlazasporcargoController'); // add by iv.orlando.c 22.02.18
 
 Route::group(['prefix' => 'admin', 'namespace'=>'Admin','middleware' => 'admin'], function () {
-    /*==================================reservas=============================================*/
-    Route::get('reserva', 'ReservaController@index');
-    Route::post('reserva', array('as' => 'get-datos-parareserva','uses' => 'ReservaController@GetDatosRserva'));
-    Route::post('reserva/{id}', array('as' => 'get-datos-procesareserva','uses' => 'ReservaController@Procesareservaplaza'));
-    Route::post('reserva/{id}/{idx}', array('as' => 'procesa-ChangeEstado','uses' => 'ReservaController@ProcesaChangeEstado'));
-    /*==================================Crea plazas=============================================*/
-    Route::group([ 'prefix' => 'creaplaza'], function () {
-        Route::get('creaplaza', 'CrearplazaController@index');  
-        Route::post('creaplaza/{id}', array('as' => 'get-all-estruct','uses' => 'CrearplazaController@getStructuras'));
-        Route::post('creaplaza/{id}/{idx}', array('as' => 'set-save-contador_plaza','uses' => 'CrearplazaController@Procesacreaplaza'));
-    });
-    Route::resource('creaplaza', 'CrearplazaController');   
-     /*==================================Recategorización de  plazas=============================================*/
-    Route::get('integra', 'IntegrarPlazaController@index'); 
-    Route::post('integra', array('as' => 'get-datos-paraintegra','uses' => 'IntegrarPlazaController@getdatosintegra'));
-    Route::post('integra/{id}', array('as' => 'save-paraintegra-plazas','uses' => 'IntegrarPlazaController@Procesaintegraplaza'));
-    /*============================Cambio de denominación==============================================================*/
-    Route::group([ 'prefix' => 'cambio'], function () {
-        Route::get('cambio', 'CambiodenominacController@index'); 
-        Route::post('cambio', array('as' => 'get-datos-search','uses' => 'CambiodenominacController@SearchCargo'));
-        Route::post('cambio/{id}', array('as' => 'get-datos-saveChange','uses' => 'CambiodenominacController@SaveChangeCargo'));
-     });
-    Route::resource('cambio', 'CambiodenominacController');    
+/*==================================reservas=============================================*/
+Route::get('reserva', 'ReservaController@index');
+Route::post('reserva', array('as' => 'get-datos-parareserva','uses' => 'ReservaController@GetDatosRserva'));
+Route::post('reserva/{id}', array('as' => 'get-datos-procesareserva','uses' => 'ReservaController@Procesareservaplaza'));
+Route::post('reserva/{id}/{idx}', array('as' => 'procesa-ChangeEstado','uses' => 'ReservaController@ProcesaChangeEstado'));
+/*==================================Crea plazas=============================================*/
+Route::group([ 'prefix' => 'creaplaza'], function () {
+    Route::get('creaplaza', 'CrearplazaController@index');  
+    Route::post('creaplaza/{id}', array('as' => 'get-all-estruct','uses' => 'CrearplazaController@getStructuras'));
+    Route::post('creaplaza/{id}/{idx}', array('as' => 'set-save-contador_plaza','uses' => 'CrearplazaController@Procesacreaplaza'));
+});
+Route::resource('creaplaza', 'CrearplazaController');   
+ /*==================================Recategorización de  plazas=============================================*/
+Route::get('integra', 'IntegrarPlazaController@index'); 
+Route::post('integra', array('as' => 'get-datos-paraintegra','uses' => 'IntegrarPlazaController@getdatosintegra'));
+Route::post('integra/{id}', array('as' => 'save-paraintegra-plazas','uses' => 'IntegrarPlazaController@Procesaintegraplaza'));
+/*============================Cambio de denominación==============================================================*/
+Route::group([ 'prefix' => 'cambio'], function () {
+    Route::get('cambio', 'CambiodenominacController@index'); 
+    Route::post('cambio', array('as' => 'get-datos-search','uses' => 'CambiodenominacController@SearchCargo'));
+    Route::post('cambio/{id}', array('as' => 'get-datos-saveChange','uses' => 'CambiodenominacController@SaveChangeCargo'));
+ });
+Route::resource('cambio', 'CambiodenominacController');    
   
-    /*=========================Actualizar Periodos de PPTO========================*/  
-     Route::get('periodop', 'PeriodopptoController@index');
-    /*=========================Actualizar movimiento de plazas========================*/
-    Route::get('upmov', 'UpdateMovPlazasController@index'); 
-    Route::post('upmov', array('as' =>'search_mov','uses' => 'UpdateMovPlazasController@_getalldatosMov')); 
-    Route::post('upmov/{id}', array('as' =>'update-historia-mov','uses' => 'UpdateMovPlazasController@ProcesaUpdateMov')); 
-    /*============================Show Nominativo======================*/
-    //Route::group(['prefix' => 'plazas'], function () {
-    Route::get('plazas','PlazasController@index'); 
-    //Route::post('plazas/{id}','PlazasController@excel');
-   // Route::post('plazas/{id}',array('as' =>'get-export-excel','uses' => 'PlazasController@excel')); 
-    Route::get('plazas/{id}', 'PlazasController@excel')->name('plazas.excel');
-    //Route::resource('plazas', 'PlazasController');
-   //});    
-     /*============================Activar Plaza Sin Presupuesto======================*/
-    Route::get('activap','ActivarplazaController@index'); 
-    Route::post('activap',array('as' =>'get-datos-activa','uses' => 'ActivarplazaController@Getdatosparaactivar')); 
-    Route::post('activap/{id}',array('as' =>'save-datos-activa','uses' => 'ActivarplazaController@ProcesaActivaPlazas')); 
-    Route::resource('activarp', 'ActivarplazaController');
-    /*============================Permisos======================*/    
-    //Route::get('permisos', 'PermisosController@create')->name('admin.permisos.create'); //->middleware('admin.permisos.create');
-    //Route::get('permisos', 'PermisosController@index')->name('admin.permisos.index');
-    Route::put('permisos', 'PermisosController@store')->name('admin.permisos.store');
-    //Route::post('permisos', 'PermisosController@update')->name('admin.permisos.update');
-    //Route::get('permisos/{id}', 'PermisosController@edit')->name('admin.permisos.edit');
-    Route::delete('permisos/{id}', 'PermisosController@destroy')->name('admin.permisos.destroy');
-    Route::resource('permisos','PermisosController');
+/*=========================Actualizar Periodos de PPTO========================*/  
+ Route::put('periodop', 'periodopresupuestoController@store')->name('admin.periodop.store');
+ Route::patch('periodop/{id}', 'periodopresupuestoController@update')->name('admin.periodop.update');
+ Route::delete('periodop/{id}', 'periodopresupuestoController@destroy')->name('admin.periodop.destroy');
+ Route::resource('periodop','periodopresupuestoController');
+ /*====================================Suplencias=============================*/
+ //Route::get('suplencias', 'SuplenciaController@index'); 
+ Route::post('suplencias/{id}', array('as' => 'get-datos-suplencia','uses' => 'SuplenciaController@getdatasuplencia'));
+
+ Route::resource('suplencias','SuplenciaController');
+/*=========================Actualizar movimiento de plazas========================*/
+Route::get('upmov', 'UpdateMovPlazasController@index'); 
+Route::post('upmov', array('as' =>'search_mov','uses' => 'UpdateMovPlazasController@_getalldatosMov')); 
+Route::post('upmov/{id}', array('as' =>'update-historia-mov','uses' => 'UpdateMovPlazasController@ProcesaUpdateMov')); 
+/*============================Show Nominativo======================*/
+Route::get('plazas','PlazasController@index'); 
+Route::get('plazas/{id}', 'PlazasController@excel')->name('plazas.excel');  
+ /*============================Activar Plaza Sin Presupuesto======================*/
+Route::get('activap','ActivarplazaController@index'); 
+Route::post('activap',array('as' =>'get-datos-activa','uses' => 'ActivarplazaController@Getdatosparaactivar')); 
+Route::post('activap/{id}',array('as' =>'save-datos-activa','uses' => 'ActivarplazaController@ProcesaActivaPlazas')); 
+Route::resource('activarp', 'ActivarplazaController');
+/*============================Permisos======================*/    
+
+Route::put('permisos', 'PermisosController@store')->name('admin.permisos.store');
+Route::delete('permisos/{id}', 'PermisosController@destroy')->name('admin.permisos.destroy');
+Route::resource('permisos','PermisosController');
 
 });
 
- Route::group(['prefix' => 'admin', 'namespace'=>'Admin','middleware' => 'admin'], function () {    
-    route::get('mantestruct','ManteEstructurasController@index');      
-    Route::post('mantestruct',array('as'=>'addupdate-mantestruct','uses'=>'ManteEstructurasController@updateOficinaEstruct')); 
-   // Route::post('mantestruct/{id}',array('as'=>'showdet-mantestruct','uses'=>'ManteEstructurasController@showdetalleestructura')); 
-
-    Route::post('mantestruct/{id}/{ix}',array('as'=>'save-change-estr-per','uses'=>'ManteEstructurasController@_cambiarDeEstructurapersona')); 
-    //Route::post('mantestruct/{id}/{ix}/{z}',array('as'=>'save-change-estr-per','uses'=>'ManteEstructurasController@getresult_change')); 
-    //{{ Form::open(array('route' => ['showdet-mantestruct','x'], 'method' => 'post', 'id' => 'frmshowdet','name' => 'frmshowdet'))}}  {{ Form::close()}}   
-
-    route::get('mantestruct/{id}','ManteEstructurasController@create')->name("create");    
+Route::group(['prefix' => 'admin', 'namespace'=>'Admin','middleware' => 'admin'], function () {    
+route::get('mantestruct','ManteEstructurasController@index');      
+Route::post('mantestruct',array('as'=>'addupdate-mantestruct','uses'=>'ManteEstructurasController@updateOficinaEstruct')); 
+Route::post('mantestruct/{id}/{ix}',array('as'=>'save-change-estr-per','uses'=>'ManteEstructurasController@_cambiarDeEstructurapersona')); 
+route::get('mantestruct/{id}','ManteEstructurasController@create')->name("create");    
 });       
 
-//Route::resource('mantestruct','ManteEstructurasController');
-
- 
-
-
 Route::group(['prefix' => 'admin','namespace'=>'Admin', 'middleware' => 'admin', 'as' => 'admin.'], function () {
-    # User Management
-        Route::group([ 'prefix' => 'users'], function () {
-        Route::get('data', 'UsersController@data')->name('users.data');
-        Route::get('{user}/delete', 'UsersController@destroy')->name('users.delete');
-        Route::get('{user}/confirm-delete', 'UsersController@getModalDelete')->name('users.confirm-delete');
-        Route::get('{user}/restore', 'UsersController@getRestore')->name('restore.user');
-//        Route::post('{user}/passwordreset', 'UsersController@passwordreset')->name('passwordreset');
-        Route::post('passwordreset', 'UsersController@passwordreset')->name('passwordreset');
+# User Management
+    Route::group([ 'prefix' => 'users'], function () {
+    Route::get('data', 'UsersController@data')->name('users.data');
+    Route::get('{user}/delete', 'UsersController@destroy')->name('users.delete');
+    Route::get('{user}/confirm-delete', 'UsersController@getModalDelete')->name('users.confirm-delete');
+    Route::get('{user}/restore', 'UsersController@getRestore')->name('restore.user');
+    Route::post('passwordreset', 'UsersController@passwordreset')->name('passwordreset');
 
-    });
-    Route::resource('users', 'UsersController');
+});
+Route::resource('users', 'UsersController');
 
     Route::get('deleted_users',['before' => 'Sentinel', 'uses' => 'UsersController@getDeletedUsers'])->name('deleted_users');
 
@@ -246,10 +236,6 @@ Route::group(['prefix' => 'admin','namespace'=>'Admin', 'middleware' => 'admin',
             route::get('filespdf/{id}','PdfEstructuraController@index')->name("admin.filespdf.index"); 
         }); 
         Route::resource('filespdf','PdfEstructuraController'); 
-
-        
-
-        /*===================================================================*/
    
     /*=================================Baja de plazas=========================================================*/
         Route::group(['prefix' => 'bajaplazas'], function () {
@@ -265,7 +251,6 @@ Route::group(['prefix' => 'admin','namespace'=>'Admin', 'middleware' => 'admin',
         /*======================Consulta de plazas===================================*/
          Route::group(['prefix' => 'admin', 'namespace'=>'admin','middleware' => 'admin'], function () { 
             Route::get('rpteplazas/{id}', 'RptePlazaController@index'); 
-            //Route::post('/rpteplazas',array('as'=>'getdatosvacante','uses'=>'RptePlazaController@GetEstadoDePlazasMov')); 
         });
         Route::resource('rpteplazas', 'RptePlazaController');
 
@@ -282,13 +267,6 @@ Route::group(['prefix' => 'admin','namespace'=>'Admin', 'middleware' => 'admin',
         });
         Route::resource('rptetempo', 'RpteTempoController');
         /*==============hasta aquí el tempo, elimnar luego*/
-
-        //Route::get('pdf','PdfEstructuraController@getIndex');
-        
-
-
-
-
 
 
 

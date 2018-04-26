@@ -31,7 +31,7 @@ Estructuras
         </li>
         <li><a href="#"> Gestionar Estructura</a></li>
         <li class="active">Estructuras</li>
-    </ol>
+    </ol> 
 </section>
 
 <!-- Main content -->

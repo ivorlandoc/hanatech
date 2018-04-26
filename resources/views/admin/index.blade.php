@@ -117,11 +117,23 @@
                         <h3 class="panel-title">
                             <i class="livicon" data-name="users" data-size="18" data-color="#00bc8c" data-hc="#00bc8c"
                                data-l="true"></i>
-                            Usuarios recientes
+                            Plazas a Nivel Nacional
                         </h3>
                     </div>
-                    <div class="panel-body nopadmar users">
-                        @foreach($users as $user )
+                    <div class="panel-body nopadmar users" >
+                        <div class="table-responsive">
+                            <table  class="table dataTable no-footer dtr-inline small">                                  
+                                @foreach($pobla as $user )  
+                                    <tr>
+                                        <td>{{ $user->red }}</td>
+                                        <td class="text-right">{{ $user->Plaza }}</td>
+                                   </tr>
+                                @endforeach                        
+                            </table>
+                            {{$pobla->render()}}
+                        </div>
+
+                        <!-- @foreach($users as $user )
                             <div class="media">
                                 <div class="media-left">
                                     @if($user->pic)
@@ -135,7 +147,7 @@
                                     <p>{{ $user->email }}  <span class="user_create_date pull-right">{{ $user->created_at->format('d M') }} </span></p>
                                 </div>
                             </div>
-                        @endforeach
+                        @endforeach-->
 
                     </div>
                 </div>
@@ -149,7 +161,25 @@
 
                     </div>
                     <div class="panel-body nopadmar">
-                        <div id="visitors_chart"></div>
+                        <div id="visitors_chart">                            
+                            @foreach($users as $user )
+                                <div class="media">
+                                    <div class="media-left">
+                                        @if($user->pic)
+                                        <img src="{!! url('/').'/uploads/users/'.$user->pic !!}" class="media-object img-circle" >
+                                        @else
+                                            <img src="{{ asset('assets/images/authors/no_avatar.jpg') }}" class="media-object img-circle" >
+                                         @endif
+                                    </div>
+                                    <div class="media-body">
+                                        <h5 class="media-heading">{{ $user->full_name }}</h5>
+                                        <p>{{ $user->email }}  <span class="user_create_date pull-right">{{ $user->created_at->format('d M') }} </span></p>
+                                    </div>
+                                </div>
+                            @endforeach
+
+                        </div>
+                         
                     </div>
                 </div>
                

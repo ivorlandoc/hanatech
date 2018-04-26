@@ -38,73 +38,74 @@
  <li {!! (Request::is('admin/users') || Request::is('admin/users/create') || Request::is('admin/user_profile') || Request::is('admin/users/*') || Request::is('admin/deleted_users') ? 'class="active"' : '') !!}>       
   -->
     @if(Sentinel::getUser()->permissions === 1)
-      <li {!! (Request::is('admin/users') || Request::is('admin/users/create') || Request::is('admin/user_profile') || Request::is('admin/users/*') || Request::is('admin/deleted_users') ? 'class="active"' : '') !!}>
-        <a href="#">
-            <i class="livicon" data-name="user" data-size="18" data-c="#6CC66C" data-hc="#6CC66C"
-               data-loop="true"></i>
-            <span class="title">Usuarios</span>
-            <span class="fa arrow"></span>
-        </a>
-        <ul class="sub-menu">
-            <li {!! (Request::is('admin/users') ? 'class="active" id="active"' : '') !!}>
-                <a href="{{ URL::to('admin/users') }}">
-                    <i class="fa fa-angle-double-right"></i>
-                    Lista Usuarios 
+        @if(Sentinel::getUser()->email =="admin@admin.com")
+              <li {!! (Request::is('admin/users') || Request::is('admin/users/create') || Request::is('admin/user_profile') || Request::is('admin/users/*') || Request::is('admin/deleted_users') ? 'class="active"' : '') !!}>
+                <a href="#">
+                    <i class="livicon" data-name="user" data-size="18" data-c="#6CC66C" data-hc="#6CC66C"
+                       data-loop="true"></i>
+                    <span class="title">Usuarios</span>
+                    <span class="fa arrow"></span>
                 </a>
+                <ul class="sub-menu">
+                    <li {!! (Request::is('admin/users') ? 'class="active" id="active"' : '') !!}>
+                        <a href="{{ URL::to('admin/users') }}">
+                            <i class="fa fa-angle-double-right"></i>
+                            Lista Usuarios 
+                        </a>
+                    </li>
+                    <li {!! (Request::is('admin/users/create') ? 'class="active" id="active"' : '') !!}>
+                        <a href="{{ URL::to('admin/users/create') }}">
+                            <i class="fa fa-angle-double-right"></i>
+                            Nuevo Usuario
+                        </a>
+                    </li>
+                    <li {!! ((Request::is('admin/users/*')) && !(Request::is('admin/users/create')) ? 'class="active" id="active"' : '') !!}>
+                        <a href="{{ URL::route('admin.users.show',Sentinel::getUser()->id) }}">
+                            <i class="fa fa-angle-double-right"></i>
+                            Ver Perfil
+                        </a>
+                    </li>
+                    <li {!! (Request::is('admin/deleted_users') ? 'class="active" id="active"' : '') !!}>
+                        <a href="{{ URL::to('admin/deleted_users') }}">
+                            <i class="fa fa-angle-double-right"></i>
+                            Usuarios Eliminados
+                        </a>
+                    </li>
+                </ul>
             </li>
-            <li {!! (Request::is('admin/users/create') ? 'class="active" id="active"' : '') !!}>
-                <a href="{{ URL::to('admin/users/create') }}">
-                    <i class="fa fa-angle-double-right"></i>
-                    Nuevo Usuario
-                </a>
-            </li>
-            <li {!! ((Request::is('admin/users/*')) && !(Request::is('admin/users/create')) ? 'class="active" id="active"' : '') !!}>
-                <a href="{{ URL::route('admin.users.show',Sentinel::getUser()->id) }}">
-                    <i class="fa fa-angle-double-right"></i>
-                    Ver Perfil
-                </a>
-            </li>
-            <li {!! (Request::is('admin/deleted_users') ? 'class="active" id="active"' : '') !!}>
-                <a href="{{ URL::to('admin/deleted_users') }}">
-                    <i class="fa fa-angle-double-right"></i>
-                    Usuarios Eliminados
-                </a>
-            </li>
-        </ul>
-    </li>
  
 
-    <li {!! (Request::is('admin/groups') || Request::is('admin/groups/create') || Request::is('admin/permisos') || Request::is('admin/groups/*') ? 'class="active"' : '') !!}>
-        <a href="#">
-            <i class="livicon" data-name="users" data-size="18" data-c="#418BCA" data-hc="#418BCA"
-               data-loop="true"></i>
-            <span class="title">Roles y Permisos</span>
-            <span class="fa arrow"></span>
-        </a>
-        <ul class="sub-menu">
-            <li {!! (Request::is('admin/groups') ? 'class="active" id="active"' : '') !!}>
-                <a href="{{ URL::to('admin/groups') }}">
-                    <i class="fa fa-angle-double-right"></i>
-                    Lista de Roles
+            <li {!! (Request::is('admin/groups') || Request::is('admin/groups/create') || Request::is('admin/permisos') || Request::is('admin/groups/*') ? 'class="active"' : '') !!}>
+                <a href="#">
+                    <i class="livicon" data-name="users" data-size="18" data-c="#418BCA" data-hc="#418BCA"
+                       data-loop="true"></i>
+                    <span class="title">Roles y Permisos</span>
+                    <span class="fa arrow"></span>
                 </a>
-            </li>
-            <li {!! (Request::is('admin/groups/create') ? 'class="active" id="active"' : '') !!}>
-                <a href="{{ URL::to('admin/groups/create') }}">
-                    <i class="fa fa-angle-double-right"></i>
-                    Nuevo Rol
-                </a>
-            </li>
+                <ul class="sub-menu">
+                    <li {!! (Request::is('admin/groups') ? 'class="active" id="active"' : '') !!}>
+                        <a href="{{ URL::to('admin/groups') }}">
+                            <i class="fa fa-angle-double-right"></i>
+                            Lista de Roles
+                        </a>
+                    </li>
+                    <li {!! (Request::is('admin/groups/create') ? 'class="active" id="active"' : '') !!}>
+                        <a href="{{ URL::to('admin/groups/create') }}">
+                            <i class="fa fa-angle-double-right"></i>
+                            Nuevo Rol
+                        </a>
+                    </li>
 
-            <li {!! (Request::is('admin/permisos') ? 'class="active" id="active"' : '') !!}>
-                <a href="{{ URL::to('admin/permisos') }}">
-                    <i class="fa fa-angle-double-right"></i>
-                    Lista de Permisos
-                </a>
+                    <li {!! (Request::is('admin/permisos') ? 'class="active" id="active"' : '') !!}>
+                        <a href="{{ URL::to('admin/permisos') }}">
+                            <i class="fa fa-angle-double-right"></i>
+                            Lista de Permisos
+                        </a>
+                    </li>
+
+                </ul>
             </li>
-
-        </ul>
-    </li>
-
+       @endif 
     <li {!! ( Request::is('admin/periodop') || Request::is('admin/tipo') || Request::is('admin/tipo/create') || Request::is('admin/cargo') || Request::is('admin/nivel') || Request::is('admin/mantestruct') || Request::is('admin/mantestruct/create') ||  Request::is('admin/mantestruct/*') ? 'class="active"' : '') !!}>
         <a href="#">
             <i class="livicon" data-name="doc-portrait" data-size="18" data-c="#418BCA" data-hc="#418BCA"
@@ -156,7 +157,7 @@
     </li>
 
  
-<li {!! (( Request::is('admin/estructura') || Request::is('admin/plazas/create') || Request::is('admin/plazas') || Request::is('admin/bajaplazas') || Request::is('admin/gesplazas')  || Request::is('admin/upmov') || Request::is('admin/rpteplazas') || Request::is('admin/altaplaza') || Request::is('admin/creaplaza') || Request::is('admin/reserva') || Request::is('admin/cambio') || Request::is('admin/activap') || Request::is('admin/integra')  ) ||  Request::is('admin/tipo/*') ? 'class="active"' : '') !!}>
+<li {!! (( Request::is('admin/estructura') || Request::is('admin/plazas/create') || Request::is('admin/plazas') || Request::is('admin/bajaplazas') || Request::is('admin/gesplazas')  || Request::is('admin/upmov') || Request::is('admin/rpteplazas') || Request::is('admin/altaplaza') || Request::is('admin/creaplaza') || Request::is('admin/reserva') || Request::is('admin/cambio') || Request::is('admin/activap') || Request::is('admin/suplencias')  || Request::is('admin/integra')  ) ||  Request::is('admin/tipo/*') ? 'class="active"' : '') !!}>
         <a href="#">
             <i class="livicon" data-name="users" data-c="#F89A14" data-hc="#F89A14" data-size="18"
                data-loop="true"></i>
@@ -240,6 +241,12 @@
                     Baja de Plazas
                 </a>
             </li>
+            <li {!! (Request::is('admin/suplencias') ? 'class="active"' : '') !!}>
+                <a href="{{ URL::to('admin/suplencias') }}">
+                    <i class="fa fa-angle-double-right"></i>
+                    Suplencias
+                </a>
+            </li>
             
             <li {!! (Request::is('admin/rpteplazas') ? 'class="active"' : '') !!}>
                 <a href="{{ URL::to('admin/rpteplazas') }}">
@@ -300,7 +307,7 @@
             <li {!! (Request::is('reportes/cap2') ? 'class="active" id="active"' : '') !!}>
                 <a href="{{ URL::to('reportes/cap2') }}">
                     <i class="fa fa-angle-double-right"></i>
-                    Consulta Plaza x Dep.
+                    Consulta Plaza x Dep. 
                 </a>
             </li>
            
@@ -333,7 +340,7 @@
     </li>
 
   @elseif(Sentinel::getUser()->permissions === 4)
-    <li {!! ((Request::is('admin/estructura') || Request::is('admin/plazas') || Request::is('admin/bajaplazas') || Request::is('admin/gesplazas') || Request::is('admin/rpteplazas') || Request::is('admin/reserva')) ||  Request::is('admin/tipo/*') ? 'class="active"' : '') !!}>
+    <li {!! ((Request::is('admin/estructura') || Request::is('admin/plazas')  || Request::is('admin/activap')  || Request::is('admin/bajaplazas') || Request::is('admin/gesplazas') || Request::is('admin/rpteplazas') || Request::is('admin/upmov') || Request::is('admin/reserva')) ||  Request::is('admin/tipo/*') ? 'class="active"' : '') !!}>
         <a href="#">
             <i class="livicon" data-name="users" data-c="#F89A14" data-hc="#F89A14" data-size="18"
                data-loop="true"></i>
@@ -341,12 +348,20 @@
             <span class="fa arrow"></span>
         </a>
         <ul class="sub-menu">
-              <li {!! (Request::is('admin/reserva') ? 'class="active"' : '') !!}>
+            <!--
+            <li {!! (Request::is('admin/reserva') ? 'class="active"' : '') !!}>
                 <a href="{{ URL::to('admin/reserva') }}">
                     <i class="fa fa-angle-double-right"></i>
                     Reserva de Plaza
                 </a>
             </li>
+
+            <li {!! (Request::is('admin/activap') ? 'class="active"' : '') !!}>
+                <a href="{{ URL::to('admin/activap') }}">
+                    <i class="fa fa-angle-double-right"></i>
+                    Activar Plaza Sin Ptto
+                </a>
+            </li>-->
 
              <li {!! (Request::is('admin/estructura') ? 'class="active"' : '') !!}>
                 <a href="{{ URL::to('admin/estructura') }}">
@@ -354,6 +369,7 @@
                     Población x Dependencia
                 </a>
             </li> 
+
              <li {!! (Request::is('admin/plazas') ? 'class="active"' : '') !!}>
                 <a href="{{ URL::to('admin/plazas') }}">
                     <i class="fa fa-angle-double-right"></i>
@@ -379,6 +395,12 @@
                     Movimiento de Plazas
                 </a>
             </li>
+             <li {!! (Request::is('admin/upmov') ? 'class="active"' : '') !!}>
+                <a href="{{ URL::to('admin/upmov') }}">
+                    <i class="fa fa-angle-double-right"></i>
+                    Actualizar Movimientos
+                </a>
+            </li>
 
             <li {!! (Request::is('admin/bajaplazas') ? 'class="active"' : '') !!}>
                 <a href="{{ URL::to('admin/bajaplazas') }}">
@@ -392,7 +414,7 @@
                     <i class="fa fa-angle-double-right"></i>
                     Consulta por Plaza
                 </a>
-            </li>
+            </li>           
 
         </ul>
 
@@ -449,7 +471,7 @@
 
 
 
-    <li {!! (Request::is('admin/rptetempo') || Request::is('admin/rptetempo/create') || Request::is('reportes/rplazas') || Request::is('reportes/externo') || Request::is('reportes/rbajas') || Request::is('admin/rptetempo/*') ? 'class="active"' : '') !!}>
+    <li {!! (Request::is('admin/rptetempo') || Request::is('admin/rptetempo/create') || Request::is('reportes/cap2') || Request::is('reportes/rplazas') || Request::is('reportes/externo') || Request::is('reportes/rbajas') || Request::is('admin/rptetempo/*') ? 'class="active"' : '') !!}>
         <a href="#">
             <i class="livicon" data-name="barchart" data-size="18" data-c="#6CC66C" data-hc="#6CC66C"
                data-loop="true"></i>
@@ -483,11 +505,17 @@
                     Consulta de Plaza
                 </a>
             </li>
-           
+             <li {!! (Request::is('reportes/cap2') ? 'class="active" id="active"' : '') !!}>
+                <a href="{{ URL::to('reportes/cap2') }}">
+                    <i class="fa fa-angle-double-right"></i>
+                    Consulta Plaza x Dep.
+                </a>
+            </li>
+
         </ul>
     </li>
 
-    @elseif(Sentinel::getUser()->permissions ===3)
+    @elseif(Sentinel::getUser()->permissions ===3) <!-- For Lucho -->
     <li {!! (Request::is('reportes/externo') || Request::is('admin/rptetempo/create') || Request::is('admin/rptetempo/*') ? 'class="active"' : '') !!}>
         <a href="#">
             <i class="livicon" data-name="show" data-size="18" data-c="#418BCA" data-hc="#418BCA"
@@ -521,14 +549,13 @@
     
     </li>
      @elseif(Sentinel::getUser()->permissions ===2)
-    <li {!! (Request::is('reportes/externo') || Request::is('admin/rptetempo/create') || Request::is('admin/rptetempo/*') ? 'class="active"' : '') !!}>
+    <li {!! (Request::is('reportes/externo') || Request::is('admin/rptetempo/create') || Request::is('reportes/cap2') || Request::is('admin/rptetempo/*') ? 'class="active"' : '') !!}>
         <a href="#">
             <i class="livicon" data-name="show" data-size="18" data-c="#418BCA" data-hc="#418BCA"
                data-loop="true"></i>
             <span class="title">Reportes</span>
             <span class="fa arrow"></span>
         </a>
-  
 
              
             <ul class="sub-menu">           
@@ -539,7 +566,12 @@
                     </a>
                 </li>
 
-
+                 <li {!! (Request::is('reportes/cap2') ? 'class="active" id="active"' : '') !!}>
+                <a href="{{ URL::to('reportes/cap2') }}">
+                    <i class="fa fa-angle-double-right"></i>
+                    Consulta Plaza x Dep.
+                </a>
+            </li>
 
                
             </ul>

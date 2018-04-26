@@ -23,6 +23,7 @@ Cambio de Denominación
 <link href="{{ asset('assets/vendors/modal/css/component.css') }}" rel="stylesheet"/>
 <link href="{{ asset('assets/css/pages/advmodals.css') }}" rel="stylesheet"/>
 -->
+<style type="text/css"> input {text-transform:uppercase;></style>
 @stop
 
 {{-- Page content --}}

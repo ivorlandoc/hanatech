@@ -26,8 +26,7 @@ Baja de Plazas
 <link rel="stylesheet" href="{{ asset('assets/vendors/Buttons/css/buttons.css') }}" />
 <link rel="stylesheet" href="{{ asset('assets/css/pages/buttons.css') }}" />
 <link rel="stylesheet" href="{{ asset('assets/css/pages/advbuttons.css') }}" />
-
-
+<style type="text/css"> input {text-transform:uppercase;></style>
 
 @stop
 

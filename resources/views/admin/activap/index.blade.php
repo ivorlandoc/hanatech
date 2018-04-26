@@ -21,7 +21,7 @@ Activación de Plazas
 
 <link href="{{ asset('assets/vendors/modal/css/component.css') }}" rel="stylesheet"/>
 <link href="{{ asset('assets/css/pages/advmodals.css') }}" rel="stylesheet"/>
-
+<style type="text/css"> input {text-transform:uppercase;></style>
 @stop
 
 {{-- Page content --}}
@@ -49,7 +49,7 @@ Activación de Plazas
            <div class="panel panel-info" id="idheadinformcion">
                 <div class="panel-heading">
                     <h3 class="panel-title">
-                        <i class="livicon" data-name="search" data-size="16" data-loop="true" data-c="#fff" data-hc="white"></i> Activación de Plazas Sin Presupuesto[EN CONTRUCCIÓN]
+                        <i class="livicon" data-name="search" data-size="16" data-loop="true" data-c="#fff" data-hc="white"></i> Activación de Plazas Sin Presupuesto
                     </h3>
                     <span class="pull-right clickable">
                             <i class="glyphicon glyphicon-chevron-up"></i>
@@ -59,7 +59,7 @@ Activación de Plazas
                 <div class="panel-body"> 
                         <!-- ========== Cuerpo de Formulario ============================ -->
                     <div  id="IdFormbodyalta">
-                         {{ Form::open(array( 'route' => ['get-datos-activa'], 'method' => 'post', 'id' => 'frmintegra','name' => 'frmintegra'))}}                       
+                         {{ Form::open(array( 'route' => ['get-datos-activa'], 'method' => 'post', 'id' => 'frmactivap','name' => 'frmactivap'))}}                       
                              <input type="hidden" name="token" value="{{ csrf_token()}}"> 
                                 <!-- Datos Estáticos de cabecera-->                          
                                  <input type="hidden" name="idUserSession" value="{{ $idUserSession }}"> <!-- idsesion para enviar por ajax al api -->
@@ -67,14 +67,14 @@ Activación de Plazas
                                 <div id="FormAltaPlaza">
                                   <div class="form-group">                               
                                      <div id="IdMensajeAlert"></div>
+
                                     <div class="input-group select2-bootstrap-append"> 
-                                        <input type="text" class="form-control" id="txtplaza" name="txtplaza" maxlength="12" placeholder="#Plaza">
+                                        <input type="text" class="form-control" id="txtplazaA" name="txtplazaA" maxlength="12" placeholder="#Plaza">
                                         <span class="input-group-btn">
-                                                <button class="btn btn-default" type="button" onclick="_getdatosplaza()" data-select2-open="single-append-text">
+                                                <button class="btn btn-default" type="button" onclick="_getdatosplazaAct()" data-select2-open="single-append-text">
                                                     <span class="glyphicon glyphicon-search"></span>
                                                 </button>
-                                        </span>
-
+                                        </span>                                        
                                     
 
                                     </div>
@@ -82,25 +82,38 @@ Activación de Plazas
                                 </div>
                         {{ Form::close()}} 
                             
-                        {{ Form::open(array( 'route' => ['save-datos-activa','0'], 'method' => 'post', 'id' => 'frmintegrasave','name' => 'frmintegrasave'))}} 
+                        {{ Form::open(array( 'route' => ['save-datos-activa','0'], 'method' => 'post', 'id' => 'frmactivaplza','name' => 'frmactivaplza'))}} 
                                 <!-- ==========draw table========== -->
                                  <input type="hidden" name="token" value="{{ csrf_token()}}"> 
                                   <input type="hidden" name="idUserSession" value="{{ $idUserSession }}"> 
                                  
                                 <!-- ================ --> 
                                  <div class="form-group">                                  
-                                        <label for="formPassword">Fecha de Referencia Presupuestal</label> 
-                                        <input type="text" id="fecharefptto" name="fecharefptto" class="form-control" readonly="">
+                                        <label for="formPassword">Datos de la Plza</label> 
+
+
+
+                                         <div class="input-group select2-bootstrap-append">                                            
+                                            <input type="text" id="datosPpto" name="datosPpto" class="form-control" readonly="">
+
+                                            <span class="input-group-btn" id="getmsjeActiva">                                               
+                                                    <button class="btn btn-success" type="button" data-select2-open="single-append-text"><span class="glyphicon glyphicon"></span></button>                                       
+                                            </span>
+                                        </div>
+
+
+
+                                        <input type="hidden" id="nroplazaactivar" name="nroplazaactivar" class="form-control" >
                                        
-                                </div>
+                               
                                  <div class="form-group">                                  
-                                        <label for="formPassword">Fecha de Cese</label> 
-                                        <input type="date" id="datetime1" name="fechacese" class="form-control" pattern="(0[1-9]|1[0-9]|2[0-9]|3[01])/(0[1-9]|1[012])/[0-9]{4}">
+                                        <label for="formPassword">Actualizar Fecha de Cese</label> 
+                                        <input type="date" id="datetime1" name="fechaceseActivar" class="form-control" pattern="(0[1-9]|1[0-9]|2[0-9]|3[01])/(0[1-9]|1[012])/[0-9]{4}">
                                        
                                 </div>
 
                                 <div class="form-group">                                   
-                                    <input type="text" class="form-control" id="docrefintegra" name="docrefintegra" maxlength="128" placeholder="Doc. de Referencia">
+                                    <input type="text" class="form-control" id="docrefActivar" name="docrefActivar" maxlength="128" placeholder="Doc. de Referencia">
                                 </div>                                 
 
                                 <div class="form-group">
@@ -113,7 +126,7 @@ Activación de Plazas
                                                     <span class="input-group-addon btn btn-default btn-file">
                                                         <span class="fileinput-new">Selecione Archivo</span>
                                                         <span class="fileinput-exists">Cambiar</span>
-                                                        <input type="file" name="FileAdjuntoIntegra" id="FileAdjuntoIntegra" readonly="" accept="*.pdf"></span>
+                                                        <input type="file" name="FileAdjuntoActivar" id="FileAdjuntoActivar" readonly="" accept="*.pdf"></span>
                                             <a href="#" class="input-group-addon btn btn-default fileinput-exists" data-dismiss="fileinput">Eliminar</a>
                                         </div>
                                 </div>
@@ -123,13 +136,13 @@ Activación de Plazas
                                 <div class="form-group">                                
 
                                    <label for="formPassword">Observación</label>                          
-                                    <textarea id="obserActivacion" name="obserActivacion" rows="3" class="form-control resize_vertical" required=""></textarea>
+                                    <textarea id="obserActivar" name="obserActivar" rows="3" class="form-control resize_vertical" required=""></textarea>
                                 </div>
 
                                <div class="input-group select2-bootstrap-append"> 
                                     <div class="btn-group btn-group-lg">
-                                        <button type="button" class="alert alert-success alert-dismissable margin5" id="saveintegrarplaza" onclick="saveintegracionplaza()">Activar Plaza</button>
-                                        <a href="{{ URL::to('admin/integra') }}" class="alert alert-info alert-dismissable margin5" id="SalirIntegra" >[Salir]</a>
+                                        <button type="button" class="alert alert-success alert-dismissable margin5" id="saveintegrarplaza" onclick="saveActivaplaza()">Activar Plaza</button>
+                                        <a href="{{ URL::to('admin/activap') }}" class="alert alert-info alert-dismissable margin5" id="SalirIntegra" >[Salir]</a>
                                     </div> 
                                 </div>
 
@@ -165,7 +178,7 @@ Activación de Plazas
 <script src="{{ asset('assets/vendors/clockface/js/clockface.js') }}" type="text/javascript"></script>
 
 <script src="{{ asset('assets/vendors/jasny-bootstrap/js/jasny-bootstrap.js') }}" type="text/javascript"></script>
-<script type="text/javascript" src="{{ asset('assets/js/js-integra-plaza.js') }}"> </script>
+<script type="text/javascript" src="{{ asset('assets/js/js-activar-plaza.js') }}"> </script>
 
 
 

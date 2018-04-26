@@ -24,7 +24,7 @@ Consulta - Plazas
             }
         }
     </style>
-@stop
+@stop 
 
 {{-- Page content --}}
 @section('content')

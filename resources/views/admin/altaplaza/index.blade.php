@@ -32,7 +32,7 @@ Alta de Plazas
  <link href="{{ asset('assets/vendors/modal/css/component.css') }}" rel="stylesheet"/>
  <link href="{{ asset('assets/css/pages/advmodals.css') }}" rel="stylesheet"/>
 <link rel="stylesheet" type="text/css" href="{{ asset('assets/vendors/awesomeBootstrapCheckbox/awesome-bootstrap-checkbox.css') }}"/>
-
+<style type="text/css"> input {text-transform:uppercase;></style>
 @stop
 
 
@@ -72,23 +72,33 @@ Alta de Plazas
 
                 <div class="panel-body">
                         <div class="form-group">                            
-                            <div class="input-group select2-bootstrap-append">                          
-                                 {!! Form::text('search_plaza',null, ['class'=>'form-control','placeholder'=>'# de Plaza','type'=>'search','id'=>'search_plaza']) !!}  
-                                        <input type="hidden" name="token" value="{{ csrf_token()}}">                   
+                            <div class="input-group select2-bootstrap-append">                                      
+                                    <span class="input-group-btn"> 
+                                         <button class="btn btn-default" type="button" data-select2-open="single-append-text" >
+                                            <input type="checkbox"  id="checkboxalta" onclick="CheckboxAltaSup()" />Suplencia <!-- class="flat-red"-->
+                                        </button>                                      
+                                    </span>
+
+                                 {!! Form::text('search_plaza',null, ['class'=>'form-control','placeholder'=>'# de Plaza','type'=>'search','id'=>'search_plaza','style'=>'height:36px']) !!}  
+                                        <input type="hidden" name="token" value="{{ csrf_token()}}">   
+
                                         <span class="input-group-btn">
-                                            <button class="btn btn-default" type="button" onclick="loaddatosform()" data-select2-open="single-append-text" id="idsearchaltaform">
+                                            <button class="btn btn-default" type="button" onclick="loaddatosform()"  id="idsearchaltaform" style="height:36px">
                                                 <span class="glyphicon glyphicon-search"></span>
                                             </button>
                                         </span>
-                                         <span class="input-group-btn">
+
+                                        <span class="input-group-btn">
                                            <a data-href="#responsive" href="#responsive" data-toggle="modal" onclick="getEstructuraAll('1');getflat('0')">
-                                            <button class="btn btn-default" type="button" data-select2-open="single-append-text">
-                                                <span class="glyphicon glyphicon-book"></span>
-                                            </button>
-                                        </a>
+                                                <button class="btn btn-default" type="button" style="height:36px">
+                                                    <span class="glyphicon glyphicon-book"></span>
+                                                </button>
+                                            </a>
                                         </span>
+                                         
                                     {!!Form::close()!!} 
                             </div>
+                            
                         </div>                           
                         
 
@@ -103,7 +113,8 @@ Alta de Plazas
                               <input type="hidden" class="form-control"  id="IdEstructuraA" name="IdEstructuraA" value="">
                               <input type="hidden" class="form-control"  id="IdCargoA"    name="IdCargoA"      value="">
                               <input type="hidden" class="form-control" id="NroPlazaA" name="NroPlazaA" value=""> 
-                              <input type="hidden" class="form-control" id="idflat" name="idflat" value="">                                      
+                              <input type="hidden" class="form-control" id="idflat" name="idflat" value="">   
+                              <input type="hidden" name="flatcheckbox" id='flatcheckbox' value="0">                                   
                            <!-- <div id ="IdshowExample"> Aqui mostra el return</div>-->
                               <div id="IdMsjeErrorAltaPlaza"></div>
                         <!-- ========== Load dependencia ============ -->
@@ -242,7 +253,7 @@ Alta de Plazas
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="formPassword">Adjuntar Documento.</label>
+                                    <label for="formPassword" id="idlabeladjunto">Adjuntar Documento.</label>
                                     <div class="fileinput fileinput-new input-group" data-provides="fileinput">
                                             <div class="form-control" data-trigger="fileinput">
                                                 <i class="glyphicon glyphicon-file fileinput-exists"></i>
@@ -251,14 +262,14 @@ Alta de Plazas
                                                     <span class="input-group-addon btn btn-default btn-file">
                                                         <span class="fileinput-new">Selecione Archivo</span>
                                                         <span class="fileinput-exists">Cambiar</span>
-                                                        <input type="file" name="FileAdjuntoAlta" id="FileAdjuntoAlta" readonly="" accept="*.pdf"></span>
+                                                        <input type="file" name="FileAdjuntoAlta" id="FileAdjuntoAlta" accept="*.pdf"></span>
                                             <a href="#" class="input-group-addon btn btn-default fileinput-exists" data-dismiss="fileinput">Eliminar</a>
                                         </div>
                                 </div>
 
                                  <div class="form-group">
                                     <!--<label for="formPassword">Documento de Referencia</label>-->                                        
-                                        <input type="text" class="form-control" id="ObserAlta" name="ObserAlta" value="" required="" placeholder="Documento de Referencia">
+                                        <input type="text" class="form-control" id="ObserAlta" name="ObserAlta" value="--" required="" placeholder="Documento de Referencia">
                                 </div>
                                 <div class="form-group">
                                             

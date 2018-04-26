@@ -40,18 +40,57 @@ Periodos
             </div>
             <br />
             <div class="panel-body">
-                <div class="table-responsive">
-                <table class="table dataTable no-footer dtr-inline">
-                    <thead>
-                      
-                    </thead>
-                    <tbody><h1>EN CONSTRUCCION</h1>
-                   
-                </tbody>
-                   
-                </table>
-              
+            <!-- ========================== -->               
+            <div class="row">
+                <div class="col-lg-12 margin-tb">
+                    <div class="pull-left">                        
+                    </div>
+                    <div class="pull-right">                       
+                       <a href="{{ URL::to('admin/periodop/create') }}" class="btn btn-info"><span class="glyphicon glyphicon-plus"></span>Crear Nuevo</a>
+                    </div>
                 </div>
+            </div>
+
+
+       
+
+
+            <table class="table table-bordered">
+                <tr>
+                    <th>#</th>
+                    <th>Fecha</th>
+                    <th>Descripcion</th>
+                    <th>Estado</th>
+                    <th width="280px;" class="text-center">Acción</th>
+                </tr><?php $esta="";?>
+            @foreach ($periodo as $key) 
+            <?php if($key->Estado=="1") $esta="<p class='text-success'>Activo</p>"; else $esta="<p class='text-danger'>Inactivo</p>";?>
+            <tr>
+                <td>{{ ++$i }}</td>
+                <td>{{ $key->Fecha}}</td>
+                <td>{{ $key->Descripcion}}</td>                
+                <td>
+                    <?php if($key->Estado=="1"){?> <p class='text-success'><b>Activo</b></p>
+                    <?php } else{ ?> <p class='text-danger'><b>Inactivo</b></p> <?php }?>
+                </td>
+                <td class="text-center">
+                   <!-- <a class="btn btn-info" href="{{ route('periodop.show',$key->id) }}">Show</a>-->
+                    <a class="btn btn-info" href="{{ route('periodop.edit',$key->id) }}">Actualizar</a>
+                    {!! Form::open(['method' => 'DELETE','route' => ['periodop.destroy', $key->id],'style'=>'display:inline']) !!}
+                    {!! Form::submit('Eliminar', ['class' => 'btn btn-danger']) !!}
+                    {!! Form::close() !!}
+                </td>
+            </tr>
+            @endforeach
+            </table>
+
+
+            {!! $periodo->links() !!}
+
+
+
+
+             <!-- ========================== -->   
             </div>
         </div>
     </div>    <!-- row-->

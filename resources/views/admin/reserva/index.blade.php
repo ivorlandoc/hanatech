@@ -20,7 +20,7 @@ Reserva de Plazas
  <link href="{{ asset('assets/css/loading.css') }}" rel="stylesheet" type="text/css" />
 
 <link href="{{ asset('assets/css/pages/timeline.css') }}" rel="stylesheet" />
-
+<style type="text/css"> input {text-transform:uppercase;></style>
 @stop
 
 
