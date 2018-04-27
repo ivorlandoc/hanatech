@@ -16,6 +16,8 @@ use Illuminate\Support\Facades\DB;
 use Spatie\Analytics\Period;
 use Illuminate\Support\Carbon;
 use File;
+USE json;
+use Response;
 
 
 class JoshController extends Controller {
@@ -420,11 +422,12 @@ protected $countries = array(
             ->orderBy("created_at")
             ->groupBy(DB::raw("month(created_at)"))
             ->get();
+
         $db_chart =  Charts::database(User::all(), 'area', 'morris')
             ->elementLabel("Users")
             ->dimensions(0, 250)
             ->responsive(true)
-            ->groupByMonth( 2017, true);
+            ->groupByMonth( 2018, true);
         
 
         $countries = DB::table('users')->where('deleted_at', null)
@@ -437,24 +440,53 @@ protected $countries = array(
             ->groupBy('name');
 
         //==========================================
-   
-           $roles = DB::table('role_users')
+        
+          $roles = DB::table('role_users')
             ->join('users','users.id','=','role_users.user_id')->wherenull('deleted_at')
             ->leftJoin('roles', 'role_users.role_id', '=', 'roles.id')
             ->select('roles.name')
             ->get();
 
-        $user_roles = Charts::database($roles, 'pie', 'google')
+       /*
+            $roles = DB::table('cuadronominativo as c') 
+            ->select(    
+               DB::raw('COUNT(IdEstadoPlaza) AS value'),
+               DB::raw('(SELECT Descripcion FROM estadoplaza WHERE IdEstadoPlaza=c.IdEstadoPlaza) AS name')
+            )
+            ->where('NroPlaza','not like','9______9%')
+            ->where('IdEstadoPlaza','<>','0')
+            ->where('IdEstadoPlaza','<>','1')
+            ->where('IdEstructura','like','%')            
+            ->groupBy('IdEstadoPlaza')  
+            ->get();      
+            */
+            $user_roles = Charts::database($roles, 'donut', 'morris')// pie google
             ->dimensions(0, 200)
             ->responsive(true)
-            ->groupBy('name');
-        
+            ->groupBy('name');        
         //==========================================
-        $line_chart =  Charts::database(User::all(), 'donut', 'morris')
+       /* $line_chart =  Charts::database(User::all(), 'donut', 'morris')
             ->elementLabel("Users")
             ->dimensions(0, 150)
             ->responsive(true)
-            ->groupByMonth( 2017, true);
+            ->groupByMonth( 2018, true);
+            */
+
+        //==============================================     
+            $datacs = DB::table('cuadronominativo as c') 
+            ->select(DB::raw('IF(Fechacese>=(SELECT fecha FROM periodopresupuestos WHERE estado="1" LIMIT 1),"CON PPTO","SIN PPTO") AS sino'),DB::raw(' IF(Fechacese>=(SELECT fecha FROM periodopresupuestos WHERE estado="1" LIMIT 1),COUNT(NroPlaza),COUNT(NroPlaza)) AS cant'))
+            ->where('NroPlaza','not like','9______9%')
+            ->where('IdEstadoPlaza','<>','0')
+            ->where('IdEstadoPlaza','<>','1')
+            ->where('IdEstructura','like','%')            
+            ->groupBy('sino')  
+            ->get();
+
+             $line_chart = Charts::database($datacs, 'pie', 'google')// pie google
+            ->dimensions(0, 200)
+            ->responsive(true)
+            ->groupBy('cant');
+
         //==============================================
 
          /* $poblacion = DB::table('cuadronominativo')      
@@ -468,10 +500,10 @@ protected $countries = array(
             ->groupBy(DB::raw('LEFT(IdEstructura,4)'))            
             ->having(DB::raw('IF((SELECT Descripcion FROM estructura WHERE LENGTH(IdEstructura )=4 AND LEFT(IdEstructura,4)=LEFT(IdEstructura,4) LIMIT 1) IS NULL ,"XYZ", (SELECT Descripcion FROM estructura WHERE LENGTH(IdEstructura )=4 AND LEFT(IdEstructura,4)=LEFT(IdEstructura,4) LIMIT 1))'), '<>','XYZ')
             ->orderBy("red")->paginate(10);*/
+          //==============================================
 
-
-             $poblacion = DB::table('viewPoblacion')->paginate(10);
-
+        $poblacion = DB::table('viewPoblacion')->paginate(10); 
+       
 
         if(Sentinel::check())
             return view('admin.index',[
@@ -487,7 +519,8 @@ protected $countries = array(
                 'line_chart'=>$line_chart,
                 'month_visits'=>$month_visits,
                 'year_visits'=>$year_visits,
-                'pobla'=>$poblacion
+                'pobla'=>$poblacion            
+               
             ] );
         else
             return redirect('admin/signin')->with('error', 'You must be logged in!');

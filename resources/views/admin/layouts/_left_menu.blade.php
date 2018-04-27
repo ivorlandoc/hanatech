@@ -33,7 +33,7 @@
                 Activity Log
             </a>
         </li>
-     
+      
   <!--
  <li {!! (Request::is('admin/users') || Request::is('admin/users/create') || Request::is('admin/user_profile') || Request::is('admin/users/*') || Request::is('admin/deleted_users') ? 'class="active"' : '') !!}>       
   -->

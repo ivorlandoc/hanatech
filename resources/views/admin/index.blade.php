@@ -66,33 +66,36 @@
                                 <h4 class="panel-title">
                                     <i class="livicon" data-name="users" data-size="16" data-loop="true" data-c="#F89A14"
                                        data-hc="#F89A14"></i>
-                                    Roles del usuario
+                                    <!-- Roles del usuario-->Plazas Vacantes
                                 </h4>
 
                             </div>
                             <div class="panel-body nopadmar">
-                                {!! $user_roles->html() !!}
+                               {!! $user_roles->html() !!} 
+
                             </div>
                         </div>
                     </div>
 
                     <div class="col-md-6 ">
-                        <div class="panel panel-border">
+                        <div class="panel panel-border roles_chart">
                             <div class="panel-heading">
                                 <h4 class="panel-title">
                                     <i class="livicon" data-name="barchart" data-size="16" data-loop="true" data-c="#67C5DF"
                                        data-hc="#67C5DF"></i>
-                                    Visitantes anuales
+                                    <!--Visitantes anuales--> Plazas Vacantes: [C-S] Presupuesto
                                 </h4>
 
                             </div>
                             <div class="panel-body nopadmar">
-                                <div id="bar_chart"></div>
+                                <div id="bar_chart">                                   
+                                     {!! $line_chart->html() !!} 
+                                </div>
                             </div>
                         </div>
                     </div>
-
-                   <!-- <div class="col-md-12 ">
+                    <!--
+                    <div class="col-md-12 ">
                         <div class="panel panel-border map">
 
                             <div class="panel-heading">
@@ -130,7 +133,7 @@
                                    </tr>
                                 @endforeach                        
                             </table>
-                            {{$pobla->render()}}
+                            {{$pobla->render()}}                            
                         </div>
 
                         <!-- @foreach($users as $user )
@@ -146,7 +149,7 @@
                                     <h5 class="media-heading">{{ $user->full_name }}</h5>
                                     <p>{{ $user->email }}  <span class="user_create_date pull-right">{{ $user->created_at->format('d M') }} </span></p>
                                 </div>
-                            </div>
+                            </div> 
                         @endforeach-->
 
                     </div>
@@ -182,6 +185,10 @@
                          
                     </div>
                 </div>
+                <!-- ================ -->
+
+
+
                
             </div>
         </div>
@@ -239,7 +246,7 @@
             Morris.Line({
                 element: 'visitors_chart',
                 data: week_data,
-                lineColors: ['#418BCA', '#00bc8c', '#EF6F6C'],
+                lineColors: ['rgb(233, 30, 99)', 'rgb(0, 188, 212)', 'rgb(255, 152, 0)', 'rgb(0, 150, 136)', 'rgb(96, 125, 139)'],//['#418BCA', '#00bc8c', '#EF6F6C'],
                 xkey: 'date',
                 ykeys: ['pageViews', 'visitors'],
                 labels: ['pageViews', 'visitors'],
@@ -287,5 +294,5 @@
     {!! $db_chart->script() !!}
     {!! $geo->script() !!}
     {!! $user_roles->script() !!}
-    {{--{!! $line_chart->script() !!}--}}
+    {!! $line_chart->script() !!}
 @stop
