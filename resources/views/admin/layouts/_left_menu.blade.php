@@ -33,7 +33,7 @@
                 Activity Log
             </a>
         </li>
-      
+       
   <!--
  <li {!! (Request::is('admin/users') || Request::is('admin/users/create') || Request::is('admin/user_profile') || Request::is('admin/users/*') || Request::is('admin/deleted_users') ? 'class="active"' : '') !!}>       
   -->
@@ -577,6 +577,54 @@
             </ul>
     
     </li>
+    @elseif(Sentinel::getUser()->permissions ===5) <!-- Prerfil para Redes Asistenciales-->
+    <li {!! ((Request::is('admin/altaplaza') || Request::is('admin/plazas')  || Request::is('admin/activap')  || Request::is('admin/bajaplazas') || Request::is('admin/gesplazas') || Request::is('admin/rpteplazas') || Request::is('admin/upmov') || Request::is('admin/reserva')) ||  Request::is('admin/tipo/*') ? 'class="active"' : '') !!}>
+        <a href="#">
+            <i class="livicon" data-name="users" data-c="#F89A14" data-hc="#F89A14" data-size="18"
+               data-loop="true"></i>
+            <span class="title">Gestión RRHH</span>
+            <span class="fa arrow"></span>
+        </a>
+        <ul class="sub-menu">           
+             <li {!! (Request::is('admin/altaplaza') ? 'class="active"' : '') !!}>
+                <a href="{{ URL::to('admin/altaplaza') }}">
+                    <i class="fa fa-angle-double-right"></i>
+                    Alta de Plazas
+                </a>
+            </li>          
+           
+            <li {!! (Request::is('admin/bajaplazas') ? 'class="active"' : '') !!}>
+                <a href="{{ URL::to('admin/bajaplazas') }}">
+                    <i class="fa fa-angle-double-right"></i>
+                    Baja de Plazas
+                </a>
+            </li>  
+        </ul>  
+
+    <li {!! (Request::is('admin/rptetempo') || Request::is('admin/rptetempo/create') || Request::is('reportes/cap2') || Request::is('reportes/rplazas') || Request::is('reportes/externo') || Request::is('reportes/rbajas') || Request::is('admin/rptetempo/*') ? 'class="active"' : '') !!}>
+        <a href="#">
+            <i class="livicon" data-name="barchart" data-size="18" data-c="#6CC66C" data-hc="#6CC66C"
+               data-loop="true"></i>
+            <span class="title">Reportes</span>
+            <span class="fa arrow"></span>
+        </a>
+        <ul class="sub-menu">            
+             <li {!! (Request::is('reportes/externo') ? 'class="active" id="active"' : '') !!}>
+                <a href="{{ URL::to('reportes/externo') }}">
+                    <i class="fa fa-angle-double-right"></i>
+                    Consulta de Plaza
+                </a>
+            </li>
+             <li {!! (Request::is('reportes/cap2') ? 'class="active" id="active"' : '') !!}>
+                <a href="{{ URL::to('reportes/cap2') }}">
+                    <i class="fa fa-angle-double-right"></i>
+                    Consulta Plaza x Dep.
+                </a>
+            </li>
+
+        </ul>
+    </li>
+    <!-- ===========  fin menu Redes Asistenciales ==============  -->
     @else  
             <a href="#">
                 <i class="livicon" data-name="users" data-c="#F89A14" data-hc="#F89A14" data-size="18"

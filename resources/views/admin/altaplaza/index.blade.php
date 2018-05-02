@@ -129,8 +129,8 @@ Alta de Plazas
                                                 <input type="text" class="form-control" id="IdDepenorgano" name="IdDepenorgano" value="" readonly="">
                                                 <!--<input type="text" class="form-control" id="IdDependenciaDes" name="IdDependenciaDes" value="" readonly="">-->
                                              <span class="input-group-btn">
-                                                   <a data-href="#responsive" href="#responsive" data-toggle="modal" onclick="getEstructuraAll('1');getflat('1')">
-                                                    <button class="btn btn-default" type="button" data-select2-open="single-append-text">
+                                                   <a  data-href="#responsive" href="#responsive" data-toggle="modal">
+                                                    <button class="btn btn-default" type="button" id="getselectChange" data-select2-open="single-append-text" onclick="getEstructuraAll('1');getflat('1')">
                                                         <span class="glyphicon glyphicon-th-list"></span>
                                                     </button>
                                                     </a>
@@ -315,17 +315,20 @@ Alta de Plazas
                                            <form method="get" name="frmResult" id='form_validation' enctype="multipart/form-data" action="#">   
                                                 <div class="col-md-12">
 
-                                                    <div class="form-group">                          
+                                                   <!-- <div class="form-group">                        
                                                         <select id="select_nivel-0" class="form-control select2" name="select_nivel-0">
                                                             <option value="">Elegir</option>                                        
                                                            
-                                                        </select>
-                                                    </div>
+                                                        </select> 
+                                                    </div>-->
+
 
                                                      <div class="form-group">                          
                                                         <select id="select_nivel-1" class="form-control select2" name="select_nivel-1" >
                                                             <option value="%">Todos</option>                                        
-                                                           
+                                                            @foreach($data as $key) 
+                                                                <option value="{{ $key->IdEstructura }}">{{ $key->IdEstructura }} | {{ $key->Descripcion }}</option>
+                                                            @endforeach
                                                         </select>
                                                     </div>
 

@@ -60,7 +60,8 @@ class ConsplzextController extends Controller {
                             Nombres,
                             IF(NroPlaza IS NULL,'No',NroPlaza) AS NroPlaza,
                             (SELECT Descripcion FROM cargo WHERE IdCargo=c.IdCargo)AS cargo,
-                            (SELECT sigla FROM regimen WHERE IdRegimen=regimen) AS reg
+                            (SELECT sigla FROM regimen WHERE IdRegimen=regimen) AS reg,
+                            (SELECT IdNivel FROM cargo WHERE IdCargo=c.IdCargo) AS nivel 
                             FROM (
                                     SELECT 
                                         p.IdPersona AS perso,
@@ -68,7 +69,7 @@ class ConsplzextController extends Controller {
                                         IF(ApellidoPat IS NULL,'-',ApellidoPat) AS ApellidoPat,
                                         IF(ApellidoMat IS NULL,'-',ApellidoMat) AS ApellidoMat,
                                         IF(Nombres IS NULL,'-',Nombres) AS Nombres,
-                                        IdRegimen AS regimen    
+                                        IdRegimen AS regimen
                                     FROM persona p 
                                     WHERE 
                                         (CONCAT(ApellidoPat,' ',ApellidoMat) LIKE '%$string%' OR dni LIKE '$string%')

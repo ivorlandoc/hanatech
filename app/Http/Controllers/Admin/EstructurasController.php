@@ -2,21 +2,31 @@
 
 use Illuminate\Http\Request;
 use App\Estructura;
+use App\Http\Controllers\JoshController;
+use App\Http\Requests\UserRequest;
+
 use App\Http\Controllers\Controller;
 use Illuminate\Database\Eloquent\Model;
+
 use DB;
+use App\User;
+use Sentinel;
 
 
 class EstructurasController extends Controller { 
 
+
+
     public function index(Request $request){
        //$getPriNivel=\App\Estructura::Search($request->Desc)->orderby('Descripcion','asc')->paginate(10);        
        //$getDosDig=DB::table('estructura')->select('IdEstructura','Descripcion')->where('IdEstructura', 'like', "__00000000")->get();
+
        $getDosDig=DB::table('estructura')->select('IdEstructura','Descripcion')->where(DB::raw('LENGTH(IdEstructura)'), '=', "4")->get();
        return view('admin.estructura.index',compact('getDosDig')); 
     }
 
-public function GetSelectSegundoNivel($id){     
+public function GetSelectSegundoNivel($id){   
+   
         if(strlen($id)=="2"){
             $data=DB::table('estructura')->select('IdEstructura','Descripcion')->where(DB::raw('LENGTH(IdEstructura)'), '=', "4")->where('IdEstructura', 'like', $id.'%')->get();
         } elseif (strlen($id)=="4") { 

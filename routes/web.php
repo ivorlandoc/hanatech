@@ -285,9 +285,9 @@ Route::resource('users', 'UsersController');
 
     /* laravel example routes */
     #Charts
-   /* Route::get('laravel_chart', 'ChartsController@index')->name('laravel_chart');
+    Route::get('laravel_chart', 'ChartsController@index')->name('laravel_chart');
     Route::get('database_chart', 'ChartsController@databaseCharts')->name('database_chart');
-
+    /*
     # datatables
     Route::get('datatables', 'DataTablesController@index')->name('index');
     Route::get('datatables/data', 'DataTablesController@data')->name('datatables.data');

@@ -4,7 +4,6 @@ use Illuminate\Http\Request;
 use App\Cargo;
 use App\Http\Controllers\Controller;
 use Illuminate\Database\Eloquent\Model;
-use DB;
 
 use App\Http\Controllers\JoshController;
 use App\Http\Requests\UserRequest;
@@ -26,18 +25,23 @@ use Response;
 use Carbon\Carbon;
 use Persona;
 use Illuminate\Database\Eloquent;
+use DB;
+
 
 class AltadeplazaController extends JoshController {
 
     public function index(Request $request){
-        $idUserSession = Sentinel::getUser()->id;   //almacena id de sesion activa  
+            $idUserSession = Sentinel::getUser()->id;   //almacena id de sesion activa  
+            $IdUser = Sentinel::findById(Sentinel::getUser()->id);$IdEstrUser=$IdUser->IdEstructura;
 		    $groups = Sentinel::getRoleRepository()->all();
-        	$countries = $this->countries;               
-        return view('admin.altaplaza.index', compact('groups', 'countries', 'idUserSession'));
+        	$countries = $this->countries;
+            $data=DB::table('estructura')->select('IdEstructura','Descripcion')->where(DB::raw('LENGTH(IdEstructura)'), '=', "4")
+            ->where('IdEstructura', 'like', $IdEstrUser."%")->get();            
+        return view('admin.altaplaza.index', compact('groups', 'countries', 'idUserSession','data'));
     }
      public function getEstructura($id){       
        //$data=DB::table('estructura')->select('IdEstructura','Descripcion')->where('IdEstructura', 'like', "__00000000")->get();    
-       $data=DB::table('estructura')->select('IdEstructura','Descripcion')->where(DB::raw('LENGTH(IdEstructura)'), '=', "2")->get();
+       $data=DB::table('estructura')->select('IdEstructura','Descripcion')->where(DB::raw('LENGTH(IdEstructura)'), '=', "4")->get();
 
       return  $data;
     }

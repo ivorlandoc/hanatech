@@ -419,27 +419,13 @@ protected $countries = array(
             ->orderBy("created_at")
             ->groupBy(DB::raw("month(created_at)"))
             ->get();
-        //=============Estadisticas de Usuario/Altas y bajas====================            
+
         $db_chart = Charts::database(User::all(), 'area', 'morris')
-            ->elementLabel("Usuarios")
+            ->elementLabel("Users")
             ->dimensions(0, 250)
             ->responsive(true)
             ->groupByMonth(2018, true);
-            //==============================================
-            /*
-                SELECT FechaMov,mes, IF(alta IS NULL,0,alta) AS alta, IF(baja IS NULL,0,baja) AS baja
-                 FROM (
-                SELECT LEFT(FechaMov,7) AS FechaMov,
-                MONTH(FechaMov) AS mes,
-                COUNT(NroPlaza) AS alta,
-                (SELECT IF(COUNT(NroPlaza) IS NULL,0,COUNT(NroPlaza))  FROM historiamovimiento AS h WHERE  IdTipoBaja <>''  AND MONTH(FechaMov)=mes AND YEAR(FechaMov) =YEAR(CURDATE())  AND NroPlaza NOT LIKE '9______9%' GROUP BY MONTH(FechaMov)) AS baja
-                 FROM historiamovimiento AS h INNER JOIN persona AS p ON p.IdPersona=h.IdPersona
-                WHERE IdTipoMov <>'' AND YEAR(FechaMov) =YEAR(CURDATE()) AND NroPlaza NOT LIKE '9______9%' GROUP BY MONTH(FechaMov)
-                ) AS xs ;
-            */
-            $data= DB::table('ChartAreaAltasbajas')->get(); 
-            //===================================================
-
+        
 
         $countries = DB::table('users')->where('deleted_at', null)
             ->leftJoin('countries', 'countries.sortname', '=', 'users.country')
@@ -457,62 +443,59 @@ protected $countries = array(
             ->leftJoin('roles', 'role_users.role_id', '=', 'roles.id')
             ->select('roles.name')
             ->get();
-          
+        */
+         /*    
             $user_roles = Charts::database($roles, 'donut', 'morris')// pie google
             ->dimensions(0, 200)
             ->responsive(true)
             ->groupBy('name');
         */ 
-
+        
             $roles = DB::table('cuadronominativo as c') 
             ->select(    
-               DB::raw('COUNT(c.IdEstadoPlaza) AS cantidad'),
-               DB::raw('(SELECT descorta FROM estadoplaza WHERE IdEstadoPlaza=c.IdEstadoPlaza) AS nombre') ,'c.IdEstadoPlaza'
+               DB::raw('COUNT(IdEstadoPlaza) AS cantidad'),
+               DB::raw('(SELECT Descripcion FROM estadoplaza WHERE IdEstadoPlaza=c.IdEstadoPlaza) AS nombre')
             )
-            ->join('estadoplaza as e','e.IdEstadoPlaza','=','c.IdEstadoPlaza')
             ->where('NroPlaza','not like','9______9%')
-            ->where('c.IdEstadoPlaza','<>','0')
-            ->where('c.IdEstadoPlaza','<>','1')
+            ->where('IdEstadoPlaza','<>','0')
+            ->where('IdEstadoPlaza','<>','1')
             ->where('IdEstructura','like','%')            
-            ->groupBy('c.IdEstadoPlaza')  
+            ->groupBy('IdEstadoPlaza')  
             ->get();  
-            
-                $_vacLabel      ="";    $_vacValue      =0;    // 2    Vacantes 
-                $_RmjLabel      ="";    $_RmjValue      =0;    // 3    Reservado para Mandato judicial
-                $_RoaLabel      ="";    $_RoaValue      =0;    // 4    Rservado por otras acciones
-                $_RdespLabel    ="";    $_RdespValue    =0;    // 5    Reservado para desplazamiento
-                $_RrecaLabel    ="";    $_RrecaValue    =0;    // 6    Reservado para recategorizacion
-                $_RtransLabel   ="";    $_RtransValue   =0;    // 8    Reservado pra Transferencia
-                $_RserumLabel   ="";    $_RserumValue   =0;    // 9    Residentes y Serumistas
-                $_RmintraLabel  ="";    $_RmintraValue  =0;    // 10   Reservado por Mintra
-                $_VobservLabel  ="";    $_VobservValue  =0;    // 11   Vacante Observada
-                $_RpromComLabel ="";    $_RpromComValue =0;    // 12   Reservado para promocion complementaria
-                $_promcionLabel ="";    $_promcionValue =0;    // 13   Promocion
-                $_OtrosLabel    ="";    $_OtrosValue    =0;    // 20   otros 
-        
-            foreach($roles as $key) {            
-               
-               if($key->IdEstadoPlaza ==2) {$_vacLabel              = $key->nombre; $_vacValue      =$key->cantidad;}  
-                else if($key->IdEstadoPlaza ==3) {$_RmjLabel         = $key->nombre; $_RmjValue      =$key->cantidad;} 
-                else if($key->IdEstadoPlaza ==4) {$_RoaLabel         = $key->nombre; $_RoaValue      =$key->cantidad;} 
-                else if($key->IdEstadoPlaza ==5) {$_RdespLabel       = $key->nombre; $_RdespValue    =$key->cantidad;} 
-                else if($key->IdEstadoPlaza ==6) {$_RrecaLabel       = $key->nombre; $_RrecaValue    =$key->cantidad;} 
-                else if($key->IdEstadoPlaza ==8) {$_RtransLabel      = $key->nombre; $_RtransValue   =$key->cantidad;} 
-                else if($key->IdEstadoPlaza ==9) {$_RserumLabel      = $key->nombre; $_RserumValue   =$key->cantidad;} 
-                else if($key->IdEstadoPlaza ==10) {$_RmintraLabel    = $key->nombre; $_RmintraValue  =$key->cantidad;} 
-                else  if($key->IdEstadoPlaza ==11) {$_VobservLabel    = $key->nombre; $_VobservValue =$key->cantidad;} 
-                else if($key->IdEstadoPlaza ==12) {$_RpromComLabel   = $key->nombre; $_RpromComValue =$key->cantidad;}          
-                else if($key->IdEstadoPlaza ==13) {$_promcionLabel   = $key->nombre; $_promcionValue =$key->cantidad;} 
-                else if($key->IdEstadoPlaza ==20) {$_OtrosLabel      = $key->nombre; $_OtrosValue    =$key->cantidad;}                 
-            }        
+            $label="";
+            $valores="";
+            $i=0;
+            $a="";
+            $count=7;                  
+            foreach($roles as $key) //{
+                $i++;
+                  // if($count != $i){ 
+                        $label      =  $label." ". $key->nombre;
+                        $valores    =  $valores." ".$key->cantidad;
+                   // }else{
+                 //        $label     =  $label." ". $key->nombre;
+                 //       $valores    =  $valores." ".$key->cantidad;
+                 //   }
+       
 
-            $user_roles = Charts::create('donut', 'morris')// pie google       // donut      morris    line highcharts    area    morris
-            ->elementLabel('Cantidad')       
-            ->labels([$_vacLabel,$_RmjLabel,$_RoaLabel,$_RdespLabel,$_RrecaLabel,$_RtransLabel,$_RserumLabel,$_RmintraLabel,$_VobservLabel,$_RpromComLabel,$_promcionLabel,$_OtrosLabel])
-            ->values([$_vacValue,$_RmjValue,$_RoaValue,$_RdespValue,$_RrecaValue,$_RtransValue,$_RserumValue,$_RmintraValue,$_VobservValue,$_RpromComValue,$_promcionValue,$_OtrosValue]) // ->values([107,398,1763,48,39,84,80])
-            ->responsive(true)           
+           // }      
+
+            $user_roles = Charts::create('line', 'highcharts')// pie google       // donut      morris  
+            ->elementLabel('Cantidad')
+            ->labels([$label])
+            ->values([$valores]) // ->values([107,398,1763,48,39,84,80])
+            ->responsive(true)
             ->dimensions(400,250); 
-      
+                          
+        //==========================================
+       /* 
+            $line_chart =  Charts::database(User::all(), 'donut', 'morris')
+            ->elementLabel("Users")
+            ->dimensions(0, 150)
+            ->responsive(true)
+            ->groupByMonth( 2018, true);
+        */
+
         //==============================================     
             $datacs = DB::table('cuadronominativo as c') 
             ->select(
@@ -524,32 +507,25 @@ protected $countries = array(
             ->where('IdEstadoPlaza','<>','1')
             ->where('IdEstructura','like','%')            
             ->groupBy('sino')  
-            ->get();    
-
+            ->get(); 
+            //==============================================
             $conp=0;$sinp=0;
-            foreach ($datacs as $key) if($key->sino==0){$sinp=$key->cant;} else {$conp=$key->cant;}  
-           
-            $porc=Charts::create('bar', 'highcharts')    
-                    ->title(" ")        
+            foreach ($datacs as $key) if($key->sino==0){$sinp=$key->cant;} else {$conp=$key->cant;}
+            //==============================================
+            $porc=Charts::create('line', 'highcharts')            
                     ->elementLabel('Cantidad')
-                    ->labels(['Con Presupuesto','Sin Presupuesto'])
-                    ->values([$conp,$sinp])                    
-                    ->responsive(true)                    
+                    ->labels(['Plazas Con Presupuesto','Plazas Sin Presupuesto'])
+                    ->values([$conp,$sinp])
+                    ->responsive(true)
                     ->dimensions(400,250); 
-
-            $line_chart = Charts::create('line', 'highcharts')// pie google                    
+            // =============================================
+            $line_chart = Charts::create('bar', 'highcharts')// pie google                    
                     ->elementLabel('Cantidad')
                     ->labels(['Con Presupuesto','Sin Presupuesto'])
                     ->values([$conp,$sinp])
                     ->responsive(true)
-                    ->dimensions(400, 250);
-             /* 
-            $line_chart =  Charts::database(User::all(), 'donut', 'morris')
-            ->elementLabel("Users")
-            ->dimensions(0, 150)
-            ->responsive(true)
-            ->groupByMonth( 2018, true);
-            */
+                    ->dimensions(400, 255);
+                    
        
         //==============================================
          /* $poblacion = DB::table('cuadronominativo')      
@@ -582,8 +558,7 @@ protected $countries = array(
                 'year_visits'=>$year_visits,
                 'pobla'=>$poblacion,
                 'datacs'=>$datacs,
-                'porc'=>$porc,
-                'data'=>$data
+                'porc'=>$porc
                
             ] );
         else

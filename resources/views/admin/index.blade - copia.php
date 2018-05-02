@@ -15,13 +15,6 @@
     <meta name="_token" content="{{ csrf_token() }}">
     <link rel="stylesheet" href="{{ asset('assets/vendors/morrisjs/morris.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/pages/dashboard2.css') }}"/>
- 
-    <!-- Añadido por icorlando -->
-     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css">
-     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
-     <script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
-     <script src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
-    <!-- fin  -->
 @stop
 
 {{-- Page content --}}
@@ -56,40 +49,13 @@
                         <div class="panel panel-border main_chart">
                             <div class="panel-heading ">
                                 <h3 class="panel-title">
-                                    <i class="livicon" data-name="barchart" data-size="16" data-loop="true" data-c="#EF6F6C" data-hc="#EF6F6C"></i><!-- Estadísticas de usuarios--> Altas y bajas
+                                    <i class="livicon" data-name="barchart" data-size="16" data-loop="true" data-c="#EF6F6C" data-hc="#EF6F6C"></i> Estadísticas de usuarios
                                 </h3>
                             </div>
-                             <?php $chart_data="";?>
+                            <div class="panel-body">
+                                {!! $db_chart->html() !!}
 
-                                    @foreach($data as $key )
-                                        <?php { $chart_data .= "{ month:'".$key->FechaMov."', alta:".$key->alta.", baja:".$key->baja."}, "; } ?>                                    
-                                    @endforeach
-                                    <?php $chart_data = substr($chart_data, 0, -2); // echo $chart_data;   ?>
-                            <div class="panel-body nopadmar users">                               
-                              <!--  {!! $db_chart->html() !!} -->
-                               <div id="chart"></div>
-                                
                             </div>
-                            <script>                               
-                                function morrisArea(){                                   
-                                    Morris.Area({
-                                    element : 'chart',
-                                     data:[<?php echo $chart_data; ?>],
-                                     xkey:'month',
-                                     ykeys:['alta', 'baja'],
-                                     labels:['Altas', 'Bajas'],
-                                     parseTime:true,
-                                     hideHover:'auto',
-                                     pointFillColors:['#a5e4d5','#5fcab3'], //lineColors: 
-                                     lineColors:['#5fcab3','#a5e4d5','#dd7f7e'],  // fillOpacity:0.5,                                    
-                                     stacked:true,   //lineWidth:'2px',
-                                     resize: true,                                     
-                                     xLabelFormat : function (month) { return (month.getMonth()+1);}
-                                    });
-                                }
-                                morrisArea();
-
-                                </script>
                         </div>
                     </div>
 
@@ -122,9 +88,10 @@
 
                             </div>
                             <div class="panel-body nopadmar">
-                                <div id="bar_chart">
+                                <div id="bar_chart">     
+                                 {!! $porc->html() !!}
                                 <!-- {!! $line_chart->html() !!} -->
-                                  {!! $porc->html() !!}
+
                                 </div>                              
                                
                             </div>
@@ -195,7 +162,7 @@
                         <h4 class="panel-title">
                             <i class="livicon" data-name="eye-open" data-size="16" data-loop="true" data-c="#EF6F6C"
                                data-hc="#EF6F6C"></i>
-                            Usuarios Conectados
+                            Esta semana los visitantes
                         </h4>
 
                     </div>
@@ -254,9 +221,9 @@
     <script src="{{ asset('assets/vendors/moment/js/moment.min.js') }}" type="text/javascript"></script>
     <!-- Back to Top-->
     <script type="text/javascript" src="{{ asset('assets/vendors/countUp_js/js/countUp.js') }}"></script>
-    <script src="http://demo.lorvent.com/rare/default/vendors/raphael/js/raphael.min.js"></script>
+    {{--<script src="http://demo.lorvent.com/rare/default/vendors/raphael/js/raphael.min.js"></script>--}}
 
-     <script src="{{ asset('assets/vendors/morrisjs/morris.min.js') }}"></script>
+    <script src="{{ asset('assets/vendors/morrisjs/morris.min.js') }}"></script>
 
 
     <script>
@@ -302,7 +269,7 @@
             Morris.Bar({
                 element: 'bar_chart',
                 data: year_data.length ? year_data :   [ { label:"No Data", value:100 } ],
-                barColors: ['rgb(233, 30, 99)', 'rgb(0, 188, 212)', 'rgb(255, 152, 0)', 'rgb(0, 150, 136)', 'rgb(96, 125, 139)'], //['#418BCA', '#00bc8c'],
+                barColors: ['#418BCA', '#00bc8c'],
                 xkey: 'date',
                 ykeys: ['pageViews', 'visitors'],
                 labels: ['pageViews', 'visitors'],
@@ -313,10 +280,13 @@
                 behaveLikeLine: true,
                 gridLineColor: '#e0e0e0',
                 hideHover: 'auto'
+
             });
         }
         lineChart();
-        barChart();       
+        barChart();
+
+     
         $(".sidebar-toggle").on("click",function () {
             setTimeout(function () {
                 $('#visitors_chart').empty();
@@ -331,7 +301,7 @@
     {!! $db_chart->script() !!}
     {!! $geo->script() !!}
     {!! $user_roles->script() !!}
-   
+    {!! $line_chart->script() !!}
 
     {!! $porc->script() !!}
 

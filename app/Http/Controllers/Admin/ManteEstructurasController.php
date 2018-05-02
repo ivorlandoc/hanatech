@@ -29,6 +29,7 @@ use Illuminate\Database\Eloquent;
 class ManteEstructurasController extends Controller { 
 
     public function index(Request $request){
+      
         $idUserSession = Sentinel::getUser()->id;   //almacena id de sesion activa  
                
         $getDosDig=DB::table('estructura')->select('IdEstructura','Descripcion')->where(DB::raw('LENGTH(IdEstructura)'), '=', "2")->get();   

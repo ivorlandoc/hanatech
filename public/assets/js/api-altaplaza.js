@@ -192,6 +192,7 @@ function GetDatosPlazaForAlta(id){
    					$('#NroPlazaDescripcion').val(_NroPlaza+"[PLAZA VACANTE]");
    					$('#FormAltaPlaza').show();
    					$('#IdSpaceHead').html("");
+   					//$('#getselectChange').prop('disabled',false);   					
 		   		}else{
 		   			if(_IdPersona==""){   					   					
 		   					$('#NroPlazaDescripcion').val(_NroPlaza+"[PLAZA VACANTE]");
@@ -203,6 +204,7 @@ function GetDatosPlazaForAlta(id){
 		   					$('#FormAltaPlaza').hide();
 		   					$('#IdSpaceHead').html(HtmlPlaza); 
 		   				}
+		   			//	$('#getselectChange').prop('disabled',true);
 		   		}
 
    				$('#IdNivelNroPlaza').val(_IdNivelCargo);
