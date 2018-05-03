@@ -117,7 +117,7 @@
                                 <h4 class="panel-title">
                                     <i class="livicon" data-name="barchart" data-size="16" data-loop="true" data-c="#67C5DF"
                                        data-hc="#67C5DF"></i>
-                                    <!--Visitantes anuales--> Plazas Vacantes: [C-S] Presupuesto
+                                    <!--Visitantes anuales--> Plazas | Presupuesto
                                 </h4>
 
                             </div>

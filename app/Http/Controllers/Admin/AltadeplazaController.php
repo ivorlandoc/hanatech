@@ -193,7 +193,7 @@ public function ProcesaInsertAlta(Request $Request){
                                                         'created_at'    =>date('Y-m-d H:i:s')
                                                         ]);
                                         }else{
-                                             $aff=DB::table('cuadronominativo')->where('NroPlaza', $_NroPlaza)->where('IdCargo', $_IdCargo)->where('IdEstructura',$_IdEstructura)
+                                             $aff=DB::table('cuadronominativo')->where('NroPlaza', $_NroPlaza)->where('IdCargo', $_IdCargo) //->where('IdEstructura',$_IdEstructura)
                                             ->update([
                                                         'IdPersona'     =>$_IdPersona,
                                                         'IdEstadoPlaza' =>"1",

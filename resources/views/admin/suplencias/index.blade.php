@@ -97,28 +97,7 @@ Suplencias
                                     <br>
                                     <span>Loading</span>
                                 </div>     
-                                <!--                 
-                            <?php $i="";?>
-                                @foreach ($suplencia as $key)           
-                                <tr>
-                                    <td>{{ ++$i }}</td>
-                                    <td class="text-primary">{{ $key->NroPlaza}}</td>                
-                                    <td class="text-primary">{{ $key->suplente}} </td>
-
-                                    <td>{{ $key->Titular}} </td>
-                                    <td>{{ $key->tiposup}} </td>
-                                    <td>{{ $key->Finicio}} </td>
-                                    <td>{{ $key->Ftermino}} </td>
-                                    <td>{{ $key->Proceso}} </td>
-                                    <td>@if($key->Estado =="Inactivo") <p class="text-red">Inactivo</p> @else <p class="text-primary">Activo</p> @endif </td>                                
-                                    <td class="text-center">                  
-                                        <a class="btn btn-info" href="{{ route('suplencias.edit',$key->IdSuplencia) }}">Actualiza</a> 
-                                         {!! Form::open(['method' => 'DELETE','route' => ['suplencias.destroy', $key->IdSuplencia],'style'=>'display:inline']) !!}
-                                        {!! Form::submit('Eliminar', ['class' => 'btn btn-danger']) !!}
-                                        {!! Form::close() !!}             
-                                    </td>
-                                </tr>
-                                @endforeach-->
+                             
                             </tbody>
                     </table>
                    
@@ -142,7 +121,9 @@ Suplencias
     	<div class="modal-content"></div>
   </div>
 </div>
-<script type="text/javascript" src="{{ asset('assets/js/js-suplencias.js') }}">
+<script type="text/javascript" src="{{ asset('assets/js/js-suplencias.js') }}"> </script>
+
+
 <script>
 $(function () {
 	$('body').on('hidden.bs.modal', '.modal', function () {

@@ -139,6 +139,10 @@ Route::resource('cambio', 'CambiodenominacController');
  /*====================================Suplencias=============================*/
  //Route::get('suplencias', 'SuplenciaController@index'); 
  Route::post('suplencias/{id}', array('as' => 'get-datos-suplencia','uses' => 'SuplenciaController@getdatasuplencia'));
+ Route::post('suplencias/{id}/{ix}', array('as' => 'getdatheadTitular','uses' => 'SuplenciaController@GetDatosTitularHead'));
+ Route::post('suplencias/{id}/{ix}/{x}', array('as' => 'getdatheadSuplen','uses' => 'SuplenciaController@GetDatosSuplenteHead'));
+ Route::post('suplencias/{id}/{ix}/{x}/{i}', array('as' => 'savesuplencias','uses' => 'SuplenciaController@ProcesaSaveSuplencia'));
+
 
  Route::resource('suplencias','SuplenciaController');
 /*=========================Actualizar movimiento de plazas========================*/
