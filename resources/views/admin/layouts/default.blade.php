@@ -72,7 +72,7 @@
                     </a>
                     <ul class="dropdown-menu">
                         <!-- User image -->
-                        <li class="user-header bg-light-blue">
+                        <li class="user-header bg-light-blue">----
                             @if(Sentinel::getUser()->pic)
                                 <img src="{!! url('/').'/uploads/users/'.Sentinel::getUser()->pic !!}" alt="img" height="35px" width="35px"
                                      class="img-circle img-responsive pull-left"/>

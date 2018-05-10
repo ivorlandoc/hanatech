@@ -142,6 +142,7 @@ Route::resource('cambio', 'CambiodenominacController');
  Route::post('suplencias/{id}/{ix}', array('as' => 'getdatheadTitular','uses' => 'SuplenciaController@GetDatosTitularHead'));
  Route::post('suplencias/{id}/{ix}/{x}', array('as' => 'getdatheadSuplen','uses' => 'SuplenciaController@GetDatosSuplenteHead'));
  Route::post('suplencias/{id}/{ix}/{x}/{i}', array('as' => 'savesuplencias','uses' => 'SuplenciaController@ProcesaSaveSuplencia'));
+ Route::post('suplencias/{id}/{ix}/{x}/{i}/{z}', array('as' => 'deleteSuple','uses' => 'SuplenciaController@deleteSuplencia'));
 
 
  Route::resource('suplencias','SuplenciaController');
@@ -157,8 +158,15 @@ Route::get('activap','ActivarplazaController@index');
 Route::post('activap',array('as' =>'get-datos-activa','uses' => 'ActivarplazaController@Getdatosparaactivar')); 
 Route::post('activap/{id}',array('as' =>'save-datos-activa','uses' => 'ActivarplazaController@ProcesaActivaPlazas')); 
 Route::resource('activarp', 'ActivarplazaController');
-/*============================Permisos======================*/    
+  /*======================Consulta de plazas===================================*/
+//    Route::group(['prefix' => 'rpteplazas', 'namespace'=>'admin','middleware' => 'admin'], function () { 
+     //   Route::get('rpteplazas', 'RptePlazaController@index'); 
+Route::resource('rpteplazas', 'RptePlazaController');
+        Route::post('rpteplazas', array('as' =>'getResutListaIndex','uses' => 'RptePlazaController@getindex'));   
+        Route::post('rpteplazas/{id}', array('as' =>'getfichajob','uses' => 'RptePlazaController@GetFichaJobs'));        
+//   });
 
+/*============================Permisos======================*/ 
 Route::put('permisos', 'PermisosController@store')->name('admin.permisos.store');
 Route::delete('permisos/{id}', 'PermisosController@destroy')->name('admin.permisos.destroy');
 Route::resource('permisos','PermisosController');
@@ -175,13 +183,13 @@ route::get('mantestruct/{id}','ManteEstructurasController@create')->name("create
 Route::group(['prefix' => 'admin','namespace'=>'Admin', 'middleware' => 'admin', 'as' => 'admin.'], function () {
 # User Management
     Route::group([ 'prefix' => 'users'], function () {
-    Route::get('data', 'UsersController@data')->name('users.data');
-    Route::get('{user}/delete', 'UsersController@destroy')->name('users.delete');
-    Route::get('{user}/confirm-delete', 'UsersController@getModalDelete')->name('users.confirm-delete');
-    Route::get('{user}/restore', 'UsersController@getRestore')->name('restore.user');
-    Route::post('passwordreset', 'UsersController@passwordreset')->name('passwordreset');
+        Route::get('data', 'UsersController@data')->name('users.data');
+        Route::get('{user}/delete', 'UsersController@destroy')->name('users.delete');
+        Route::get('{user}/confirm-delete', 'UsersController@getModalDelete')->name('users.confirm-delete');
+        Route::get('{user}/restore', 'UsersController@getRestore')->name('restore.user');
+        Route::post('passwordreset', 'UsersController@passwordreset')->name('passwordreset');
 
-});
+    });
 Route::resource('users', 'UsersController');
 
     Route::get('deleted_users',['before' => 'Sentinel', 'uses' => 'UsersController@getDeletedUsers'])->name('deleted_users');
@@ -252,25 +260,21 @@ Route::resource('users', 'UsersController');
                 Route::get('admin/gesplazas/{id}', 'GestionarPlazasController@GeTHeadPlazaMov'); 
         });
         Route::resource('gesplazas', 'GestionarPlazasController');
-        /*======================Consulta de plazas===================================*/
-         Route::group(['prefix' => 'admin', 'namespace'=>'admin','middleware' => 'admin'], function () { 
-            Route::get('rpteplazas/{id}', 'RptePlazaController@index'); 
-        });
-        Route::resource('rpteplazas', 'RptePlazaController');
 
+  
 
-        /*========================================================*/ 
-         Route::group(['prefix' => 'altaplaza'], function () {
-                Route::get('admin/altaplaza/{id}', 'AltadeplazaController@index');   
-                Route::get('admin/altaplaza/{id}', 'AltadeplazaController@create');   
-        });
-        Route::resource('altaplaza', 'AltadeplazaController');
-        /* ==================temporal======================== */
-            Route::group(['prefix' => 'rptetempo'], function () {
-            Route::get('admin/rptetempo/{id}', 'RpteTempoController@index');                  
-        });
-        Route::resource('rptetempo', 'RpteTempoController');
-        /*==============hasta aquí el tempo, elimnar luego*/
+    /*========================================================*/ 
+     Route::group(['prefix' => 'altaplaza'], function () {
+            Route::get('admin/altaplaza/{id}', 'AltadeplazaController@index');   
+            Route::get('admin/altaplaza/{id}', 'AltadeplazaController@create');   
+    });
+    Route::resource('altaplaza', 'AltadeplazaController');
+    /* ==================temporal======================== */
+        Route::group(['prefix' => 'rptetempo'], function () {
+        Route::get('admin/rptetempo/{id}', 'RpteTempoController@index');                  
+    });
+    Route::resource('rptetempo', 'RpteTempoController');
+    /*==============hasta aquí el tempo, elimnar luego*/
 
 
 

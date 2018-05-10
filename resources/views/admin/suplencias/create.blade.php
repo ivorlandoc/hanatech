@@ -48,9 +48,10 @@ Suplencias
                     
                     </div>
                 </div>
-                <div id="IdMensajeAlert"></div>
+               
             <!-- =====================================  -->
                 <h3>Titular</h3>
+                 <div id="IdMensajeAlert"></div>
                  {{ Form::open(array('route' => ['getdatheadTitular','0','1'], 'method' => 'post', 'id' => 'frmsearchSupHead','name' => 'frmsearchSupHead'))}}
                     <input type="hidden" name="token" value="{{ csrf_token()}}"> 
                     <div class="form-group" style="margin-left: 20px"> 
@@ -66,16 +67,13 @@ Suplencias
                     </div>   
              {!!Form::close()!!} 
                     <!-- ========== Load dependencia ============ -->
-                    <div id="msjerror" style="margin-left: 20px"></div>
-                     
+                    <div id="msjerror" style="margin-left: 20px"></div>                     
                      <div class="form-group" style="margin-left: 20px" id="titularnom">   
                            <div class="loading">
                                 <i class="fa fa-refresh fa-spin fa-2x fa-tw"></i>
                                 <br>
                                 <span>Loading</span>
                             </div> 
-                            
-                        
                     </div>
 
                      <div class="form-group" style="margin-left:20px" id="titularcargo">   
@@ -144,7 +142,7 @@ Suplencias
                     <div class="btn-group btn-group-lg" style="margin-left:20px">
                         <button type="button" class="alert alert-success alert-dismissable margin5" onclick="SaveSuplenciaFrm()">Guardar Cambios</button>
                    
-                        <a href="{{ URL::to('admin/suplencias') }}" class="alert alert-info alert-dismissable margin5" >Retorna | Salir</a>
+                        <a href="{{ URL::to('admin/suplencias') }}" class="alert alert-info alert-dismissable margin5" >Retornar | Salir</a>
                     
                     </div>
             {!!Form::close()!!} 

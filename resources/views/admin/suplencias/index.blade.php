@@ -10,7 +10,9 @@ Suplencias
 @section('header_styles')
 <link rel="stylesheet" type="text/css" href="{{ asset('assets/vendors/datatables/css/dataTables.bootstrap.css') }}" />
 <link href="{{ asset('assets/css/pages/tables.css') }}" rel="stylesheet" type="text/css" />
+<link href="{{ asset('assets/vendors/sweetalert/css/sweetalert.css') }}" rel="stylesheet" type="text/css" />
  <link href="{{ asset('assets/css/loading.css') }}" rel="stylesheet" type="text/css" />
+
 @stop
 
 
@@ -41,7 +43,8 @@ Suplencias
             </div>
             <br />
             <div class="panel-body">
-            <!-- ========================== -->   
+            <!-- ========================== --> 
+            <div id="msjerror"></div>   
                     <div class="form-group">              
                         {{ Form::open(array('route' => ['get-datos-suplencia','0'], 'method' => 'post', 'id' => 'frmsearchSup','name' => 'frmsearchSup'))}}
                          <input type="hidden" name="token" value="{{ csrf_token()}}"> 
@@ -63,13 +66,16 @@ Suplencias
                         </div>
                         
                     </div>
-
+                    {{ Form::open(array('route' => ['deleteSuple','0','1','0','1','1'], 'method' => 'post', 'id' => 'frmdeletesup','name' => 'frmdeletesup'))}}
                     
-                  
-            
-       
-
+                    <input type="hidden" name="idUserSession" value="{{ $idUserSession }}"> 
                 <div class="form-group">  
+                            <div class="loading">
+                                <i class="fa fa-refresh fa-spin fa-2x fa-tw"></i>
+                                <br>
+                                <span>Loading</span>
+                            </div>
+
                     <table class="table dataTable no-footer dtr-inline small">
                         <thead>
                         <tr> 
@@ -88,7 +94,8 @@ Suplencias
                             <th>F.TERMINO</th>
                             <th>PROCESO</th>
                             <th>ESTADO</th>                   
-                            <th class="text-center">ACCIONES</th>
+                            <th class="text-center">ACCIONES  
+                            </th>
                         </tr>
                         </thead>
                             <tbody id="divshowSuplencias">  
@@ -102,6 +109,7 @@ Suplencias
                     </table>
                    
                 </div>
+                 {!!Form::close()!!} 
              <!-- ========================== -->   
             </div>
         </div>
@@ -123,7 +131,10 @@ Suplencias
 </div>
 <script type="text/javascript" src="{{ asset('assets/js/js-suplencias.js') }}"> </script>
 
-
+ <script src="{{ asset('assets/vendors/sweetalert/js/sweetalert.min.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('assets/vendors/sweetalert/js/sweetalert-dev.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('assets/js/pages/custom_sweetalert.js') }}" type="text/javascript"></script>
+    
 <script>
 $(function () {
 	$('body').on('hidden.bs.modal', '.modal', function () {

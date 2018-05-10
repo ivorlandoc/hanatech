@@ -58,7 +58,7 @@ class SuplenciaController extends Controller {
                 ->join('TipoSuplencias as ts','ts.IdTipoSuplencia','=','s.IdTipoSuplencia') 
                 ->where(DB::RAW('CONCAT(ApellidoPat," ",ApellidoMat," ",Nombres)'),'like',$string)
                 ->select(
-                    'IdSuplencia',
+                    DB::raw('convert(IdSuplencia, char(5)) as IdSuplencia'),                   
                     's.IdTipoSuplencia',
                     'ts.Descripcion AS tiposup',
                     's.IdPersona',
@@ -194,6 +194,39 @@ public function ProcesaSaveSuplencia(Request $request){
 
                                
             }           
+    }  
+
+    public function deleteSuplencia(Request $request){
+             $UserSession = Sentinel::findById($request->input("idUserSession"));
+                $ipAddress = '';               
+                if (isset($_SERVER['HTTP_X_FORWARDED_FOR']) && ('' !== trim($_SERVER['HTTP_X_FORWARDED_FOR']))) {
+                    $ipAddress = trim($_SERVER['HTTP_X_FORWARDED_FOR']);
+                } else {
+                    if (isset($_SERVER['REMOTE_ADDR']) && ('' !== trim($_SERVER['REMOTE_ADDR']))) {
+                        $ipAddress = trim($_SERVER['REMOTE_ADDR']);
+                    }
+                }               
+            if($request->ajax()){
+                $_id         = $request->input("id"); 
+              
+                    $Resp=DB::table("suplencias")
+                    ->where('IdSuplencia',$_id)
+                    ->update([
+                        'Estado'            =>'Inactivo',
+                        'IdUsuario'         =>$UserSession->email,
+                        'Ip'                =>$ipAddress,
+                        'created_at'        =>date('Y-m-d H:i:s'),
+                        'updated_at'        =>date('Y-m-d H:i:s')
+                        ]);                  
+                                     
+                if($Resp)                  
+                    return Response::json($Resp); 
+                    else                  
+                return Response::json($Resp);  
+
+                               
+            }           
     }   
+
 
 }

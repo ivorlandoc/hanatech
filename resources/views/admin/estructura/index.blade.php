@@ -32,7 +32,7 @@ Estructuras
         <li><a href="#"> Gestionar Estructura</a></li>
         <li class="active">Estructuras</li>
     </ol> 
-</section>
+</section> 
 
 <!-- Main content -->
 <section class="content paddingleft_right15">

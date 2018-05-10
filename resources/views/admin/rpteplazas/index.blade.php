@@ -59,10 +59,11 @@ Consulta - Plazas
                 </div>
 
 
-                <div class="panel-body">                   
- 
+                <div class="panel-body"  >                   
+                           <div id="msjerror"></div>
                         <!-- ================Tabs============= -->
                             <div class="nav-tabs-custom">
+
                                 <ul class="nav nav-tabs">
                                     <li class="active">
                                         <a href="#tab_1" data-toggle="tab">Titular</a>
@@ -76,31 +77,31 @@ Consulta - Plazas
                                         </a>
                                     </li>
                                 </ul>
-                                <div class="tab-content" id="slim2" style="height:730px; border:0px solid red" >
-                                    <div class="tab-pane active" id="tab_1">
-                                        
-
-                                            {!! Form::open(['route'=>'admin.rpteplazas.index','method'=>'GET','id'=>'movplazas']) !!}
+                                <div class="tab-content" id="slim2" >
+                                    <div class="tab-pane active" id="tab_1">                                        
+                                             {{ Form::open(array( 'route' => ['getResutListaIndex'], 'method' => 'post', 'id' => 'frmindex','name' => 'frmindex'))}} 
                                                 <input type="hidden" name="token" value="{{ csrf_token()}}">
                                                 <div class="form-group">                            
                                                     <div class="input-group select2-bootstrap-append">                          
                                                                 {!! Form::text('stri_search',null, ['class'=>'form-control','placeholder'=>'Buscar:: Dni | Apellidos |  Plaza','type'=>'search','id'=>'stri_search']) !!}                     
                                                                 <span class="input-group-btn">
-                                                                    <button class="btn btn-default" type="button" data-select2-open="single-append-text">
+                                                                    <button class="btn btn-default" type="button" onclick="GetListaIndex()" data-select2-open="single-append-text">
                                                                         <span class="glyphicon glyphicon-search"></span>
                                                                     </button>
                                                                 </span>
                                                     </div>
                                                 </div>
                                             {!!Form::close()!!}   
-                                       
 
+                                            {{ Form::open(array( 'route' => ['getfichajob','1'], 'method' => 'post', 'id' => 'frmfichajob','name' => 'frmfichajob'))}}    
+                                                <input type="text" name="txtdnificha" id="txtdnificha" value="">
+                                                <input type="text" name="txtplazaficha" id="txtplazaficha" value="">
+                                            {{ Form::close()}} 
                                                 <div class="table-responsive" >
                                                     <table  class="table dataTable no-footer dtr-inline">
                                                         <thead>
                                                             <tr class="filters">
-                                                                    <th>#</th>
-                                                                    <!--<th>CARGO</th> -->
+                                                                    <th>#</th>                                                                 
                                                                     <th># PLAZA</th>
                                                                     <th>NIVEL</th> 
                                                                     <th># Dni</th> 
@@ -110,47 +111,11 @@ Consulta - Plazas
                                                                     <th style="text-align: center;">BAJA</th>                      
                                                             </tr>
                                                         </thead>
-                                                        <tbody > 
-
-                                                         <?php $i=0; $plaz=""; $_dni=""; $html='<p class="text-danger">.text-danger</p>';?>  
-
-                                                            @foreach($DataM as $Data) 
-                                                            <?php $i++;                                                               
-                                                                $plaz=$Data->NroPlaza;
-                                                                $_dni=$Data->dni;
-                                                                ?>                                           
-                                                            <tr>
-                                                                <td>{{$i}}</td>                                                                
-                                                                <!-- <td>{{$Data->cargo}}</td>  -->
-                                                                <td><?php if($Data->NroPlaza =="") { ?> <p class="text-danger"><b>INACTIVO</b></p><?php } else { ?>  {{ $plaz }}<?php }?></td> 
-                                                                <td>{{$Data->IdNivel}}</td>                                                              
-                                                                 <td>{{$Data->dni}}</td>
-                                                                <td>{{$Data->nom}} </td>
-                                                                <td>{{$Data->sede}} - {{$Data->dependencia}}</td> 
-                                                                
-                                                                <td>
-                                                                    <a data-href="#responsive" href="#responsive" onclick=GetDetalleGeneralPlaza("{{$plaz}}","{{$_dni}}") class="btn btn-info btn-sm btn-responsive" role="button" data-toggle="modal" >
-                                                                            <span class="livicon" data-name="signal" data-size="14" data-loop="true" data-c="#fff" data-hc="white"></span>
-                                                                            <br/> Detalle
-                                                                        </a>
-
-                                                                </td>                                               
-                                                                <td>  
-                                                                    <a data-href="#responsive" href="#responsive" onclick=ShowHistoriaMov("{{$plaz}}","{{$_dni}}") class="btn btn-warning btn-sm btn-responsive" role="button" data-toggle="modal"><!-- -->
-                                                                            <span class="livicon" data-name="notebook" data-size="14" data-loop="true" data-c="#fff" data-hc="white"></span>
-                                                                            <br/> Movimientos
-                                                                        </a>
-                                                                </td>
-
-                                                                <td>  
-                                                                  
-                                                                   <div class="ui-group-buttons">                                                                      
-                                                                         <a href="{{ URL::to('admin/bajaplazas') }}?z={{$plaz}}" class="btn btn-danger btn-lg"> </i> Baja</a>
-                                                                    </div>
-                                                                </td>
-
-                                                            </tr>
-                                                            @endforeach   
+                                                        <tbody id="Divgetlistaindex"> 
+                                                             <div class="loading">                                                           
+                                                                <br>
+                                                                <span>Loading</span>
+                                                            </div>
                                                     </tbody>
                                                 </table>                                
                                         </div> 
@@ -175,22 +140,17 @@ Consulta - Plazas
                                                 </div>
                                             </div>
                                             <!--  ====================== -->
-                                                 <div class="table-responsive" >
-                                                    <table  class="table dataTable no-footer dtr-inline">
-                                                        <thead>   
-                                                            <div id="IdGetShowEstadoPlaza" >                                                                
-                                                               
-                                                            </div>
-                                                            <div id="IdGetShowEstadoPlazaDet" >                                                                
-                                                                 <div class="loading">
-                                                                   
-                                                                    <br>
-                                                                    <span>Loading</span>
-                                                                </div>
-                                                            </div>
-                                                        </thead>
-                                                    </table>
-                                                </div>
+                                                <!-- <div style="border:1px solid black">-->
+                                              
+                                                    <div id="IdGetShowEstadoPlaza" > </div>
+                                                    <div id="IdGetShowEstadoPlazaDet" >                                                                
+                                                         <div class="loading">                                                           
+                                                            <br>
+                                                            <span>Loading</span>
+                                                        </div>
+                                                    </div>
+                                                  
+                                               <!-- </div>-->
                                             <!-- ================== -->
                                         
                                     </div>
@@ -219,12 +179,12 @@ Consulta - Plazas
                                         <h5 class="modal-title"><div id="IdHeadDetMov"></div></h5>
                             </div>
                             <div class="modal-body">
+                                <div id="divmsjeerror"></div>
                                 <div class="row">
                                     <div class="table-responsive" >
-                                            <table  class="table dataTable no-footer dtr-inline">
-                                                <thead id="headTR">
-                                                   
-                                                </thead>
+                                        <div id="headficha"></div>
+                                            <table  class="table dataTable no-footer dtr-inline" style="border:0">
+                                                <!--<thead id="headTR"></thead>-->
                                                 <tbody id="IdShowDetailsMov">                                                
                                                         <div class="loading">
                                                             <i class="fa fa-refresh fa-spin fa-2x fa-tw"></i>

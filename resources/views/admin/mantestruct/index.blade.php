@@ -265,7 +265,7 @@ Banco de Estructuras
                                                             Dentro de éste nivel se creará la estructura.
                                                         </small>
                                                     </p>
-                                                </div>
+                                                </div> 
                                                 <div class="timeline-body">
                                                     <p> 
                                                        <div class="input-group select2-bootstrap-append">                                                                                                   
@@ -273,7 +273,7 @@ Banco de Estructuras
                                                             <span class="input-group-btn">
 
                                                                 <a data-href="#responsive-changeEs" href="#responsive-changeEs" >
-                                                                        <button class="btn btn-info" type="button" onclick="updatetxtoficinas('',4)" data-select2-open="single-append-text">Listo</button>
+                                                                         <button class="btn btn-info" type="button" onclick="updatetxtoficinas('',4)" data-select2-open="single-append-text">Listo</button>
                                                                         <button class="btn btn-warning" type="button" onclick="hidendepen4()" data-select2-open="single-append-text">Cancelar</button>
                                                                 </a>
 

@@ -10,25 +10,39 @@ use json;
 use Response;
 
 class RptePlazaController extends Controller { 
+public function index(Request $request){
+   return  view('admin.rpteplazas.index'); 
+}
+    public function getindex(Request $request){
 
-    public function index(Request $request){
-       $_string         = "";
-         if(empty($request->input("stri_search"))) {$_string='NOEXISTEREGISTRO';} else  {$_string=$request->input("stri_search");}
+       if($request->ajax()){
+       $_string  =  $request->input("stri_search");
             
-                $DataM = DB::select("SELECT h.IdPersona AS persona, 
-                (SELECT descripcion FROM estructura WHERE LEFT(IdEstructura,4)=LEFT((SELECT IdEstructura FROM estructura WHERE IdEstructura=h.IdEstructura),4) LIMIT 1) AS sede,
-                (SELECT descripcion FROM estructura WHERE IdEstructura=h.IdEstructura LIMIT 1) AS dependencia,
-                IdNivel, c.Descripcion AS cargo,IF(NroPlaza IS NULL, '',NroPlaza) AS NroPlaza,CONCAT(ApellidoPat, ' ', ApellidoMat,' ', Nombres ) AS nom,Dni as dni          
-                FROM  cuadronominativo AS h INNER JOIN cargo c ON c.IdCargo=h.IdCargo 
+                $data = DB::select("
+                  SELECT
+                    h.IdPersona AS persona, 
+                    IF((SELECT descripcion FROM estructura WHERE LENGTH(IdEstructura)=4 AND LEFT(IdEstructura,4)=LEFT((SELECT IdEstructura FROM estructura WHERE IdEstructura=h.IdEstructura),4) LIMIT 1) IS NULL,'-*-',(SELECT descripcion FROM estructura WHERE LENGTH(IdEstructura)=4 AND LEFT(IdEstructura,4)=LEFT((SELECT IdEstructura FROM estructura WHERE IdEstructura=h.IdEstructura),4) LIMIT 1)) AS sede,
+                    IF((SELECT descripcion FROM estructura WHERE IdEstructura=h.IdEstructura LIMIT 1) IS NULL,'-*-',(SELECT descripcion FROM estructura WHERE IdEstructura=h.IdEstructura LIMIT 1)) AS dependencia,
+                    if(IdNivel is null,'-*-',IdNivel) AS IdNivel,
+                     c.Descripcion AS cargo,
+                     IF(NroPlaza IS NULL, '',NroPlaza) AS NroPlaza,
+                     CONCAT(ApellidoPat, ' ', ApellidoMat,' ', Nombres ) AS nom,
+                     Dni as dni          
+                FROM 
+                  cuadronominativo AS h INNER JOIN cargo c
+                ON 
+                  c.IdCargo=h.IdCargo 
                 RIGHT JOIN persona AS p ON p.IdPersona =h.IdPersona                
-                HAVING (nom LIKE '$_string%' OR dni LIKE '$_string%' OR NroPlaza LIKE '$_string%') LIMIT 10");
+                HAVING (nom LIKE '$_string%' OR dni LIKE '$_string%' OR NroPlaza LIKE '$_string%') LIMIT 10
+                ");
 
-      return view('admin.rpteplazas.index',compact('DataM')); 
+          return  Response::json($data);   // view('admin.rpteplazas.index',compact('DataM')); 
+      }
     }
 
 
     public function GetHistoriaMov($id){  
-                $where_1  =   "";
+         /*       $where_1  =   "";
                 $where_2  = "";
                 $Plaza  =   "";
                 $dni    =   "";               
@@ -57,14 +71,62 @@ class RptePlazaController extends Controller {
               FechaMov,FechaDocRef AS fechaDoc,DocRef,FileAdjunto,Observacion
               FROM  historiamovimiento AS h INNER JOIN cargo c ON c.IdCargo=h.IdCargo ". $where_1.") xc INNER JOIN persona p ON xc.persona=p.IdPersona". $where_2);
                return  $DataM;
-
+*/
                 //return "Cadena-->".$id."--leng-->".strlen($id)."-Plaza->".$Plaza."-Dni->".$dni;//$DataM;            
     }
 
-     public function GetDetalleGeneralPlaza($id){ 
+     public function GetFichaJobs(Request $request){  // fichaTrabajador
+        if($request->ajax()){
+           $_plaza="";
+            $dni    =  $request->input("txtdnificha");
+            $plaza  =  $request->input("txtplazaficha");
+
+            if($plaza=="") {
+                $_plaza='';
+                } else{
+                   $_plaza=" HAVING NroPlaza='".$plaza."' ";
+                  
+                }
+
+        $data=DB::select("
+                  SELECT 
+                        IF((SELECT descripcion FROM estructura WHERE LENGTH(IdEstructura)=4 AND LEFT(IdEstructura,4)=LEFT((SELECT IdEstructura FROM estructura WHERE IdEstructura=c.IdEstructura),4) LIMIT 1) IS NULL,'-*-',(SELECT descripcion FROM estructura WHERE LENGTH(IdEstructura)=4 AND LEFT(IdEstructura,4)=LEFT((SELECT IdEstructura FROM estructura WHERE IdEstructura=c.IdEstructura),4) LIMIT 1)) AS organo,
+                        IF((SELECT descripcion FROM estructura WHERE LENGTH(IdEstructura)=6 AND LEFT(IdEstructura,6)=LEFT((SELECT IdEstructura FROM estructura WHERE IdEstructura=c.IdEstructura),6) LIMIT 1) IS NULL,'-*-',(SELECT descripcion FROM estructura WHERE LENGTH(IdEstructura)=6 AND LEFT(IdEstructura,6)=LEFT((SELECT IdEstructura FROM estructura WHERE IdEstructura=c.IdEstructura),6) LIMIT 1)) AS gerencia,
+                        IF((SELECT descripcion FROM estructura WHERE LENGTH(IdEstructura)=8 AND LEFT(IdEstructura,8)=LEFT((SELECT IdEstructura FROM estructura WHERE IdEstructura=c.IdEstructura),8) LIMIT 1) IS NULL,'-*-',(SELECT descripcion FROM estructura WHERE LENGTH(IdEstructura)=8 AND LEFT(IdEstructura,8)=LEFT((SELECT IdEstructura FROM estructura WHERE IdEstructura=c.IdEstructura),8) LIMIT 1)) AS dep2,
+                        IF((SELECT descripcion FROM estructura WHERE LENGTH(IdEstructura)=10 AND LEFT(IdEstructura,10)=LEFT((SELECT IdEstructura FROM estructura WHERE IdEstructura=c.IdEstructura),10) LIMIT 1) IS NULL,'-*-',(SELECT descripcion FROM estructura WHERE LENGTH(IdEstructura)=10 AND LEFT(IdEstructura,10)=LEFT((SELECT IdEstructura FROM estructura WHERE IdEstructura=c.IdEstructura),10) LIMIT 1)) AS ofi,
+                        IF((SELECT descripcion FROM estructura WHERE IdEstructura=c.IdEstructura LIMIT 1) IS NULL,'-*-',(SELECT descripcion FROM estructura WHERE IdEstructura=c.IdEstructura LIMIT 1)) AS dependencia,
+                     persona,
+                     dni,
+                     nom,
+                     regimen,
+                     FechaNac,
+                     fingreso,
+                     Genero,
+                     Direccion,
+                     IF(NroPlaza IS NULL,'-*-',NroPlaza) AS NroPlaza,
+                     IF(FechaInicio='1000-01-01' OR FechaInicio IS NULL,'-*-',FechaInicio) AS FechaInicio,
+                     IF(LEFT(c.IdCargo,2) IS NULL,'-*-', LEFT(c.IdCargo,2)) AS idNivel,
+                     IF((SELECT Descripcion FROM nivel WHERE IdNivel=LEFT(c.IdCargo,2)) IS NULL,'-*-',(SELECT Descripcion FROM nivel WHERE IdNivel=LEFT(c.IdCargo,2))) AS nivel,
+                     IF((SELECT Descripcion FROM cargo WHERE IdCargo=c.IdCargo) IS NULL,'-*-',(SELECT Descripcion FROM cargo WHERE IdCargo=c.IdCargo)) AS cargo,
+                     IF((SELECT DocRef FROM historiamovimiento WHERE NroPlaza=c.NroPlaza ORDER BY updated_at DESC LIMIT 1) IS NULL,'-*-',(SELECT DocRef FROM historiamovimiento WHERE NroPlaza=c.NroPlaza ORDER BY updated_at DESC LIMIT 1)) AS documento
+                  FROM (           
+                          SELECT 
+                          IdPersona AS persona,
+                          dni,
+                          CONCAT(ApellidoPat, ' ', ApellidoMat,' ', Nombres) AS nom,
+                          (SELECT Descripcion FROM regimen WHERE IdRegimen=p.IdRegimen) AS regimen,
+                          DATE_FORMAT(FechaNac, '%d/%m/%Y')  AS FechaNac,
+                          DATE_FORMAT(FechaIngreso, '%d/%m/%Y')  AS fingreso,
+                          Genero,Direccion          
+                          FROM  persona AS p WHERE dni='".$dni."'  
+                  ) as p LEFT JOIN cuadronominativo c 
+                  ON 
+                  p.persona=c.IdPersona $_plaza
+            ");
+/*
         if(strlen($id)==16) {  
               $Plaza  =   substr($id,0,8); 
-            $DataM = DB::select("SELECT persona,sede,organo,gerencia,dep2,IF(ofi ='SN','',ofi) AS ofi,IF(dependencia='SN','',dependencia) AS dependencia,tipo,IdNivel,nivel,cargo,NroPlaza,dni,CONCAT(ApellidoPat, ' ', ApellidoMat,' ', Nombres) AS nom,DATE_FORMAT(FechaNac, '%d/%m/%Y')  AS FechaNac,  DATE_FORMAT(FechaIngreso, '%d/%m/%Y')  AS fingreso,(SELECT Descripcion FROM regimen WHERE IdRegimen=p.IdRegimen) AS regimen,Direccion,Genero,documento FROM (
+            $DataM = DB::select("SELECT persona,sede,organo,gerencia,dep2,IF(ofi ='SN','',ofi) AS ofi,IF(dependencia='SN','',dependencia) AS dependencia,tipo,IdNivel,nivel,cargo,NroPlaza,dni,CONCAT(ApellidoPat, ' ', ApellidoMat,' ', Nombres) AS nom,DATE_FORMAT(FechaNac, '%d/%m/%Y')  AS FechaNac,  DATE_FORMAT(FechaIngreso, '%d/%m/%Y')  AS fingreso,(SELECT Descripcion FROM regimen WHERE IdRegimen=p.IdRegimen) AS regimen,Direccion,Genero,documento,FechaInicio FROM (
             SELECT IdPersona AS persona,
 
             (SELECT descripcion FROM estructura WHERE LENGTH(IdEstructura)=2 AND LEFT(IdEstructura,2)=LEFT((SELECT IdEstructura FROM estructura WHERE IdEstructura=cu.IdEstructura),2) LIMIT 1) AS sede,
@@ -77,14 +139,13 @@ class RptePlazaController extends Controller {
             IdNivel, c.Descripcion AS cargo,NroPlaza,
             (SELECT Descripcion FROM tipocargo WHERE IdTipo=c.IdTipo) AS tipo,
             (SELECT Descripcion FROM nivel WHERE IdNivel=c.IdNivel) AS nivel,
-            (SELECT DocRef FROM historiamovimiento WHERE NroPlaza= '$Plaza' ORDER BY updated_at DESC LIMIT 1) as documento
+            (SELECT DocRef FROM historiamovimiento WHERE NroPlaza= '$Plaza' ORDER BY updated_at DESC LIMIT 1) as documento, DATE_FORMAT(FechaInicio, '%d/%m/%Y') as FechaInicio
             FROM  cuadronominativo AS cu INNER JOIN cargo c ON c.IdCargo=cu.IdCargo
             WHERE NroPlaza= '$Plaza'
           ) xc INNER JOIN persona p ON xc.persona=p.IdPersona WHERE NroPlaza= '$Plaza'");  
         }else{
-          $DataM = DB::select("SELECT persona,sede,organo,gerencia,dep2,IF(ofi ='SN','',ofi) AS ofi,IF(dependencia='SN','',dependencia) AS dependencia,tipo,IdNivel,nivel,cargo,NroPlaza,dni,CONCAT(ApellidoPat, ' ', ApellidoMat,' ', Nombres) AS nom,DATE_FORMAT(FechaNac, '%d/%m/%Y')  AS FechaNac,  DATE_FORMAT(FechaIngreso, '%d/%m/%Y')  AS fingreso,(SELECT Descripcion FROM regimen WHERE IdRegimen=p.IdRegimen) AS regimen,Direccion,Genero  FROM (
+         $DataM = DB::select("SELECT persona,sede,organo,gerencia,dep2,IF(ofi ='SN','',ofi) AS ofi,IF(dependencia='SN','',dependencia) AS dependencia,tipo,IdNivel,nivel,FechaInicio,cargo,NroPlaza,dni,CONCAT(ApellidoPat, ' ', ApellidoMat,' ', Nombres) AS nom,DATE_FORMAT(FechaNac, '%d/%m/%Y')  AS FechaNac,  DATE_FORMAT(FechaIngreso, '%d/%m/%Y')  AS fingreso,(SELECT Descripcion FROM regimen WHERE IdRegimen=p.IdRegimen) AS regimen,Direccion,Genero  FROM (
             SELECT IdPersona AS persona,
-
             (SELECT descripcion FROM estructura WHERE LENGTH(IdEstructura)=2 AND LEFT(IdEstructura,2)=LEFT((SELECT IdEstructura FROM estructura WHERE IdEstructura=cu.IdEstructura),2) LIMIT 1) AS sede,
             (SELECT descripcion FROM estructura WHERE LENGTH(IdEstructura)=4 AND LEFT(IdEstructura,4)=LEFT((SELECT IdEstructura FROM estructura WHERE IdEstructura=cu.IdEstructura),4) LIMIT 1) AS organo,
             (SELECT descripcion FROM estructura WHERE LENGTH(IdEstructura)=6 AND LEFT(IdEstructura,6)=LEFT((SELECT IdEstructura FROM estructura WHERE IdEstructura=cu.IdEstructura),6) LIMIT 1) AS gerencia,
@@ -92,17 +153,22 @@ class RptePlazaController extends Controller {
             (SELECT descripcion FROM estructura WHERE LENGTH(IdEstructura)=10 AND LEFT(IdEstructura,10)=LEFT((SELECT IdEstructura FROM estructura WHERE IdEstructura=cu.IdEstructura),10) LIMIT 1) AS ofi,
 
               (SELECT descripcion FROM estructura WHERE IdEstructura=cu.IdEstructura LIMIT 1) AS dependencia,
-              '' as IdNivel, '' AS cargo,'' AS NroPlaza,
+              '' as IdNivel,
+              '' AS cargo,
+              '' AS NroPlaza,
               '' AS tipo,
-              '' AS nivel
+              '' AS nivel,
+              '' As FechaInicio
               FROM  historiamovimiento AS cu INNER JOIN cargo c ON c.IdCargo=cu.IdCargo                                      
               WHERE   cu.IdPersona= (SELECT IdPersona FROM persona WHERE dni='$id') 
             ) xc INNER JOIN persona p ON p.IdPersona = xc.Persona 
             WHERE dni= '$id'"); 
-        }
+        }*/
 
-                return $DataM;            
+               return  Response::json($data);  
+        }       
     }
+
 
         public function GetEstadoDePlazas($id){      
                 $DataM = DB::select(" SELECT  c.IdPersona, c.NroPlaza, c.IdEstructura,

@@ -82,11 +82,11 @@ public function excel(Request $request, $id) {
               IF(dni IS NULL,'--',dni) AS dni,
               CONCAT(IF(p.ApellidoPat IS NULL,'-',p.ApellidoPat),' ', IF(p.ApellidoMat IS NULL,'-',p.ApellidoMat),' ',IF(p.Nombres IS NULL,'-',p.Nombres)) AS Nombres,
               IF((SELECT sigla FROM regimen WHERE IdRegimen=p.IdRegimen) IS NULL,'---',(SELECT sigla FROM regimen WHERE IdRegimen=p.IdRegimen)) AS condicion,
-              IF(fechaingreso IS NULL,'--',DATE_FORMAT(fechaingreso,'%d/%m/%Y')) AS fi,
+               IF((FechaInicio IS NULL OR FechaInicio ='1000-01-01'),'--',FechaInicio) AS fi,
               car.CodigoAnt AS CodCargo,
               car.Descripcion AS cargo,car.IdNivel,
               IF(c.IdEstadoPlaza IS NULL,' ',(SELECT Descripcion FROM estadoplaza WHERE IdEstadoplaza=c.IdEstadoPlaza)) AS Estado,
-              IF(fechaCese='1000-01-01','',DATE_FORMAT(fechaCese,'%d/%m/%Y')) AS fcese,                      
+              IF(fechaCese='1000-01-01','',fechaCese) AS fcese,                      
               CodigoAntEst
               FROM cuadronominativo  c  LEFT JOIN persona p ON p.IdPersona=c.IdPersona
               INNER JOIN cargo car ON car.IdCargo=c.IdCargo  

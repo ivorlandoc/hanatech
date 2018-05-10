@@ -85,7 +85,17 @@ public function ProcesaBajaInsert(Request $Request){
                 }           
                 //str_pad($_IdPlaza,6,'0',STR_PAD_LEFT),
                 IF($_IdTipobaja!="13"){
-                 $aff=DB::table('cuadronominativo')->where('NroPlaza', $_NroPlaza)->where('IdPersona', $_IdPersona)->where('IdPlaza',$_IdPlaza)->update(['Idpersona' =>'', 'IdEstadoPlaza'=>'2','FechaCese'=>Carbon::parse($_FecMovBaj)->format('Y-m-d'),'Ip'=>$ipAddress,'IdUsuario'=>$UserSession->email]);                 
+                 $aff=DB::table('cuadronominativo')->where('NroPlaza', $_NroPlaza)->where('IdPersona', $_IdPersona)->where('IdPlaza',$_IdPlaza)->update(
+                  [
+                    'Idpersona' =>'',
+                    'IdEstadoPlaza'=>'2',
+                    'FechaInicio'=>'1000-01-01',
+                    'FechaCese'=>Carbon::parse($_FecMovBaj)->format('Y-m-d'),
+                    'created_at'    => date('Y-m-d H:i:s'),
+                    'updated_at'    => date('Y-m-d H:i:s'),
+                    'Ip'=>$ipAddress,
+                    'IdUsuario'=>$UserSession->email
+                  ]);                 
                }
                 $Resp = DB::table('historiamovimiento')->insert([
                     'IdPersona'     => $_IdPersona,

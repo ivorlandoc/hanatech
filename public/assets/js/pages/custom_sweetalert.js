@@ -22,6 +22,7 @@ $(document).ready(function() {
             swal("Deleted!", "Your imaginary file has been deleted.", "success");
         });
     });
+    
     $('#btn5').on('click',function(){
         swal({
             title: "Are you sure?",
@@ -41,6 +42,7 @@ $(document).ready(function() {
             }
         });
     });
+
     $('#btn6').on('click',function(){
         swal({   title: "Sweet!",   text: "Here's a custom image.",   imageUrl: "{{ asset('assets/images/13.jpg') }}" });
     });

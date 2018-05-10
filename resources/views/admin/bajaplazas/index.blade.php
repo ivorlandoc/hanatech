@@ -270,6 +270,23 @@ Baja de Plazas
 <script src="{{ asset('assets/vendors/clockface/js/clockface.js') }}" type="text/javascript"></script>
 <script src="{{ asset('assets/vendors/jasny-bootstrap/js/jasny-bootstrap.js') }}" type="text/javascript"></script>
 
+<script>    
+    /* ======= recibe las variables enviadas por la url====*/
+var paramstr = window.location.search.substr(1);
+var paramarr = paramstr.split ("&");
+var params = {};
+
+for ( var i = 0; i < paramarr.length; i++) {
+    var tmparr = paramarr[i].split("=");
+    params[tmparr[0]] = tmparr[1];
+}
+
+if (params['z']) {
+  $("#string_search").val(params['z']);
+  $("#getsubmnit").click(); 
+} 
+/* ===================fin================*/
+</script>
 
 <script src="{{ asset('assets/js/pages/datepicker.js') }}" type="text/javascript"></script>
 <script type="text/javascript" src="{{ asset('assets/vendors/modal/js/classie.js')}}"></script>
@@ -289,23 +306,6 @@ $(function () {
         $(this).removeData('bs.modal');
     });
 });
-
-/* ======= recibe las variables enviadas por la url====*/
-var paramstr = window.location.search.substr(1);
-var paramarr = paramstr.split ("&");
-var params = {};
-
-for ( var i = 0; i < paramarr.length; i++) {
-    var tmparr = paramarr[i].split("=");
-    params[tmparr[0]] = tmparr[1];
-}
-
-if (params['z']) {
-  $("#string_search").val(params['z']);
-  $("#getsubmnit").click(); 
-} 
-/* ===================fin================*/
-
 </script>
 
 
