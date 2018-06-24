@@ -143,6 +143,17 @@ $('#regimenId').change(function() {
 });
 
 
+function CheckboxVac(){
+	if($("#checkboxvac").prop('checked')) {	
+		$("#txtcheckbox").val("1");
+	}else{
+		$("#txtcheckbox").val("0");		
+	}
+
+}
+
+
+
 function getFecha(){
 
 var date = new Date();

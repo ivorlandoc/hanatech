@@ -24,6 +24,7 @@ Consulta - Plazas
 
 
 <link href="{{ asset('assets/css/loading.css') }}" rel="stylesheet" type="text/css" />
+<link href="{{ asset('assets/css/print.css') }}" rel="stylesheet" type="text/css" />
     <style>
         @media (min-width:320px) and (max-width:425px){
             .popover.left{
@@ -71,6 +72,7 @@ Consulta - Plazas
                         <!-- ================Tabs============= -->
                      {{ Form::open(array( 'route' => ['getdata-result'], 'method' => 'post', 'id' => 'frmexter','name' => 'frmexter'))}}  
                         <input type="hidden" name="token" value="{{ csrf_token()}}">
+                        <input type="hidden" name="iduser" id="iduser" value="{{ $User }}">
                         <div class="form-group">                            
                             <div class="input-group select2-bootstrap-append">  
                                     <span class="input-group-btn"> 
@@ -81,7 +83,7 @@ Consulta - Plazas
                                     </span>                                                          
                                     {!! Form::text('stri_search_ext',null, ['class'=>'form-control','placeholder'=>'Buscar:: Dni | Apellidos','type'=>'search','id'=>'stri_search_ext','style'=>'height:36px']) !!}                     
                                     <span class="input-group-btn">
-                                        <button class="btn btn-default" type="button" onclick="_getdataParaShow()" data-select2-open="single-append-text" style="height:36px">
+                                        <button class="btn btn-default" type="button" onclick="_getdataParaShow();GetDetalleMovientos();" data-select2-open="single-append-text" id="buttonclicksearch" style="height:36px">
                                             <span class="glyphicon glyphicon-search"></span>
                                         </button>
                                     </span>  
@@ -97,6 +99,11 @@ Consulta - Plazas
                         </div>
                          
                     {!!Form::close()!!}   
+
+
+                       {{ Form::open(array( 'route' => ['getdatallemovdet','1','1','1'], 'method' => 'post', 'id' => 'frmplazamovdet','name' => 'frmplazamovdet'))}} 
+                            <input type="hidden" name="txtplazamovdet" id="txtplazamovdet" value="">
+                        {{ Form::close()}}
                                        
                     <div id="msjerror"></div>
                         <div id="idalldatos"></div> 

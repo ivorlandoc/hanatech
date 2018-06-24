@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\Facade;
 use Illuminate\Database\Eloquent\Model;
 use DB;
+use Sentinel;
 USE json;
 use Response;
 use input;
@@ -16,7 +17,12 @@ use Maatwebsite\Excel\Facades\Excel;
 class ConsplzextController extends Controller {
 
      public function index(Request $request){
-            return view('reportes.externo.index'); 
+            $idUserSession = Sentinel::getUser()->id;   //almacena id de sesion activa  
+            $IdUser = Sentinel::findById(Sentinel::getUser()->id);
+            $User=$IdUser->email;
+            $pos = strpos($User, '@', 0);
+            $User = substr($User, 0,$pos);
+            return view('reportes.externo.index',compact('User')); 
     }
 
     public function getdatforConsultExter (Request $request){
@@ -42,7 +48,18 @@ class ConsplzextController extends Controller {
                         IF(p.Nombres IS NULL,'-',p.Nombres) AS Nombres,
                         (SELECT descripcion FROM estadoplaza WHERE IdEstadoPlaza=c.IdEstadoPlaza) AS estado,
                         IF(FechaCese='1000-01-01','',DATE_FORMAT(Fechacese,'%d/%m/%Y')) AS fcese,
-                        IF(Fechacese>=(SELECT fecha FROM periodopresupuestos WHERE estado='1' LIMIT 1),'SI','NO') AS sino
+                        IF(Fechacese>=(SELECT fecha FROM periodopresupuestos WHERE estado='1' LIMIT 1) AND IdEstadoPlaza <>'0' ,'SI','NO') AS sino,
+
+                        IF((SELECT IdPersona FROM suplencias WHERE Estado='Activo' AND NroPlaza=c.NroPlaza) IS NULL,'',(SELECT IdPersona FROM suplencias WHERE Estado='Activo' AND NroPlaza=c.NroPlaza)) AS idsuplente,
+                        (SELECT CONCAT(ApellidoPat,' ',ApellidoMat,' ',nombres) FROM persona WHERE IdPersona=idsuplente)AS nombresuplente,
+                        if((SELECT sigla FROM regimen WHERE IdRegimen=p.IdRegimen) is null,' ',(SELECT sigla FROM regimen WHERE IdRegimen=p.IdRegimen)) AS regimen,
+                        if(Especialidad is null,' ',Especialidad) as Especialidad,
+                        CONCAT(DATE_FORMAT(CURDATE(),'%d/%m/%Y'),' ', CURTIME()) AS fecha,
+                                            
+                        IF(SubIdEstadoPlaza IS NULL,'',SubIdEstadoPlaza) AS SubIdEstadoPlaza,
+                        IF((SELECT Descripcion FROM estadoPlaza WHERE IdEstadoPlaza=SubIdEstadoPlaza) IS NULL,' ',(SELECT Descripcion FROM estadoPlaza WHERE IdEstadoPlaza=SubIdEstadoPlaza)) AS desSubEstado,
+                        IF(Observ IS NULL,' ',Observ) AS Observ
+
                     FROM cuadronominativo  c  LEFT JOIN persona p ON p.IdPersona=c.IdPersona
                     INNER JOIN cargo car ON car.IdCargo=c.IdCargo   
                     INNER JOIN estructura e ON e.IdEstructura=c.IdEstructura
@@ -61,7 +78,10 @@ class ConsplzextController extends Controller {
                             IF(NroPlaza IS NULL,'No',NroPlaza) AS NroPlaza,
                             (SELECT Descripcion FROM cargo WHERE IdCargo=c.IdCargo)AS cargo,
                             (SELECT sigla FROM regimen WHERE IdRegimen=regimen) AS reg,
-                            (SELECT IdNivel FROM cargo WHERE IdCargo=c.IdCargo) AS nivel 
+                            (SELECT IdNivel FROM cargo WHERE IdCargo=c.IdCargo) AS nivel,
+                            (SELECT CONCAT('(',DATE_FORMAT(Finicio,'%d/%m/%y'),')/(',DATE_FORMAT(fTermino,'%d/%m/%y'),')') FROM suplencias WHERE Estado='Activo' AND NroPlaza=c.NroPlaza) AS Sup,
+                            IF((SELECT IdPersona FROM suplencias WHERE Estado='Activo' AND NroPlaza=c.NroPlaza) IS NULL,'',(SELECT IdPersona FROM suplencias WHERE Estado='Activo' AND NroPlaza=c.NroPlaza)) AS idsuplente,
+                            (SELECT CONCAT(ApellidoPat,' ',ApellidoMat,' ',nombres) FROM persona WHERE IdPersona=idsuplente)AS nombresuplente
                             FROM (
                                     SELECT 
                                         p.IdPersona AS perso,
@@ -84,7 +104,7 @@ class ConsplzextController extends Controller {
         }
     		      
     }
-
+/*
  public function GetEstadoDePlazasMov($id){ 
       $data = DB::select("SELECT 
         IdHistoria,
@@ -108,6 +128,6 @@ class ConsplzextController extends Controller {
         return Response::json($data);                 
         }
 
-
+*/
 
 }

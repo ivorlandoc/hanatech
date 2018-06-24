@@ -23,6 +23,7 @@ Gestionar Plazas
     <link href="{{ asset('assets/vendors/datetimepicker/css/bootstrap-datetimepicker.min.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('assets/vendors/clockface/css/clockface.css') }}" rel="stylesheet" type="text/css"/>-->
     <link href="{{ asset('assets/vendors/jasny-bootstrap/css/jasny-bootstrap.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('assets/vendors/sweetalert/css/sweetalert.css') }}" rel="stylesheet" type="text/css" />
 <!-- =================================================== -->
  <link rel="stylesheet" href="{{ asset('assets/css/pages/buttons.css') }}" />
     <!-- include the BotDetect layout stylesheet -->
@@ -150,7 +151,7 @@ Gestionar Plazas
                                 </div>
                                 <!-- ========== Load dependencia ============ --> 
                         
-                                <div class="form-group">
+                               <!-- <div class="form-group">
                                      <label for="formEmail">A:</label>   
                                     <input type="hidden" name="_ttoken" value="{{ csrf_token()}}">                        
                                     <select id="select_10" class="form-control select2" name="select_2dig" required="">
@@ -159,12 +160,15 @@ Gestionar Plazas
                                             <option value="{{ $key->IdEstructura }}">{{$key->IdEstructura}} | {{$key->Descripcion }}</option>
                                         @endforeach  
                                     </select>                                    
-                                </div>
+                                </div>-->
 
                                  <div class="form-group">   
-                                 <!-- <label for="formEmail"></label>                    -->                                                  
+                                  <label for="formEmail">A:</label>                                                    
                                     <select id="select_11" class="form-control select2" name="select_4dig" required="">
-                                        <option value="">Elegir</option>                                         
+                                        <option value="">Elegir</option>  
+                                        @foreach ($getDosDig as $key) 
+                                            <option value="{{ $key->IdEstructura }}">{{$key->IdEstructura}} | {{$key->Descripcion }}</option>
+                                        @endforeach                                      
                                     </select>
                                     
                                 </div>
@@ -255,7 +259,7 @@ Gestionar Plazas
                                     <div class="btn-group btn-group-lg">
                                         <button type="submit" class="alert alert-success alert-dismissable margin5" id="IdSaveMovimientosDePlazas">Guardar Cambios</button>
                                    
-                                        <a href="{{ URL::to('admin/gesplazas') }}" class="alert alert-info alert-dismissable margin5" >Retorna a buscar[Salir]</a>
+                                        <a href="{{ URL::to('admin/gesplazas') }}" class="alert alert-info alert-dismissable margin5" >Nuevo | Salir</a>
                                     
                                     </div>
                      
@@ -339,7 +343,7 @@ Gestionar Plazas
 <script src="{{ asset('assets/js/pages/datepicker.js') }}" type="text/javascript"></script>
 -->
 <script src="{{ asset('assets/vendors/jasny-bootstrap/js/jasny-bootstrap.js') }}" type="text/javascript"></script>
-
+<script type="text/javascript" src="{{ asset('assets/js/api-gesplazas.js') }}"> </script>
 
 
 <!-- ===================== -->
@@ -351,9 +355,10 @@ Gestionar Plazas
         <div class="modal-content"></div>
   </div>
 </div>
-
-<script type="text/javascript" src="{{ asset('assets/js/api-gesplazas.js') }}"> </script>
     
+<script src="{{ asset('assets/vendors/sweetalert/js/sweetalert.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('assets/vendors/sweetalert/js/sweetalert-dev.js') }}" type="text/javascript"></script>
+<script src="{{ asset('assets/js/pages/custom_sweetalert.js') }}" type="text/javascript"></script>
 
 <!--<script>
 $(function () {

@@ -74,7 +74,8 @@ function setDatosFormPersona(xdni){
 				$('#idgenero option[value='+dataSearch[i].Genero+']').attr('selected','selected');
 				$('#idcarrera option[value='+dataSearch[i].IdProfesion+']').attr('selected','selected');	
 				$('#IdRegimen option[value='+dataSearch[i].IdRegimen+']').attr('selected','selected');			
-       			$('#txtespecialidad').text(dataSearch[i].Especialidad);       			
+				$('#txtespecialidad option[value='+dataSearch[i].Especialidad+']').attr('selected','selected');
+       			//$('#txtespecialidad').text(dataSearch[i].Especialidad);       			
 				$('#countries option[value='+dataSearch[i].IdPais+']').attr('selected','selected');
 				//console.log("=1=Pais=>"+dataSearch[i].IdPais);	
 				$('#CierrameModalResult').click();
@@ -185,7 +186,7 @@ function GetDatosPlazaForAlta(id){
 				$('#NroPlazaA').val(_NroPlaza);
 
    				_IdNivelCargo	='NIVEL|CARGO: '+dataAlta[i].IdNivel+' | '+dataAlta[i].cargo;							
-   				_sede			=dataAlta[i].sede +' | '+dataAlta[i].organo+' | '+dataAlta[i].dep+' | '+dataAlta[i].dep2+ ' | '+dataAlta[i].descrip;   				
+   				_sede			=dataAlta[i].organo+' | '+dataAlta[i].dep+' | '+dataAlta[i].dep2+ ' | '+dataAlta[i].ofi+ ' | '+dataAlta[i].descrip;   				
    				//_dep		  	=dataAlta[i].dep+' | '+dataAlta[i].descrip;  
 
    				if($("#checkboxalta").prop('checked')) {		   									   					
@@ -209,7 +210,41 @@ function GetDatosPlazaForAlta(id){
 
    				$('#IdNivelNroPlaza').val(_IdNivelCargo);
    				$('#IdDepenorgano').val(_sede);
-   				//$('#IdDependenciaDes').val(_dep);				
+   				//$('#IdDependenciaDes').val(_dep);	
+   				/*===============================================*/
+   				var msjswal="";
+   				msjswal	= dataAlta[i].desSubEstado+"\n"+dataAlta[i].Observ;
+   				if(dataAlta[i].Observ.length<7 && dataAlta[i].SubIdEstadoPlaza==""){
+   				}else{    
+
+   					 swal({
+			            title: "Advertencia !",
+			            text: "La Plaza esta comprometida para:\n "+msjswal,
+			            type: "warning",
+			            showCancelButton: true,
+			            confirmButtonColor: "#DD6B55",
+			            confirmButtonText: "Si, Deseo continuar !",
+			            cancelButtonText: "No, Cancelar !",
+			            closeOnConfirm: true,
+			            closeOnCancel: true
+			        }, function (isConfirm) {
+			        	if (isConfirm) {
+			        		 $("#IdSaveAltaDePlazas" ).prop( "disabled",false);
+						    } else {			           
+			               	$("#IdSaveAltaDePlazas" ).prop( "disabled",true);
+			            }	   					
+	   					//swal("Advertencia !", "La Plaza esta comprometida para:\n "+msjswal, "error");
+   					});
+   				/*===============================================*/
+   				}	
+
+   				if(dataAlta[i].sino=="NO"){
+						swal("Advertencia !", "La Plaza no cuenta con presupuesto", "error");
+						$("#IdSaveAltaDePlazas" ).prop( "disabled",true);
+					}else{
+				 		$("#IdSaveAltaDePlazas" ).prop( "disabled",false);
+					}	
+
 			}
 
 		}else{
@@ -219,7 +254,7 @@ function GetDatosPlazaForAlta(id){
 	});	
 }
 
-
+/*
 function CheckboxAltaSup(){
 	if($("#checkboxalta").prop('checked')) {	
 		$("#flatcheckbox").val("1");
@@ -238,6 +273,7 @@ function CheckboxAltaSup(){
 	}
 
 }
+*/
 function getTipoDoc(idx){
 	$.get('../api/admin/tipodoc/getforalta/'+idx,function(data){
 	var html_select="";
@@ -332,10 +368,10 @@ function GetAllPlazasForAlta(idx){
 				xy++; 
 				NroPlaza=dataDa[i].NroPlaza;
 				if($("#idflat").val()=="0"){
-					tableHtml += '<tr><td>'+xy+'</td><td>'+dataDa[i].IdEstructura+'</td> <td><a href="#" onclick=setPrmFiltroDatos("'+NroPlaza+'")>'+dataDa[i].NroPlaza+'</a></td><td>'+dataDa[i].IdNivel+'</td><td>'+dataDa[i].cargo+'</td><td>'+dataDa[i].ApellidoPat+' '+dataDa[i].ApellidoMat+'  '+dataDa[i].Nombres+'</td></tr>';
+					tableHtml += '<tr><td>'+xy+'</td><td>'+dataDa[i].IdEstructura+' | '+dataDa[i].descripcion+'</td> <td><a href="#" onclick=setPrmFiltroDatos("'+NroPlaza+'")>'+dataDa[i].NroPlaza+'</a></td><td>'+dataDa[i].IdNivel+'</td><td>'+dataDa[i].cargo+'</td><td>'+dataDa[i].ApellidoPat+' '+dataDa[i].ApellidoMat+'  '+dataDa[i].Nombres+'</td></tr>';
 				}
 				if($("#idflat").val()=="1"){
-					tableHtml += '<tr><td>'+xy+'</td><td><a href="#" onclick=setPrmFiltroDatosEstru("'+dataDa[i].IdEstructura+'")>'+dataDa[i].IdEstructura+'</a></td><td>'+dataDa[i].NroPlaza+'</td><td>'+dataDa[i].IdNivel+'</td><td>'+dataDa[i].cargo+'</td><td>--</td></tr>';
+					tableHtml += '<tr><td>'+xy+'</td><td><a href="#" onclick=setPrmFiltroDatosEstru("'+dataDa[i].IdEstructura+'")>'+dataDa[i].IdEstructura+' | '+dataDa[i].descripcion+'</a></td><td>'+dataDa[i].NroPlaza+'</td><td>'+dataDa[i].IdNivel+'</td><td>'+dataDa[i].cargo+'</td><td>--</td></tr>';
 				}
 				$('#IdShowPlazasAlta').html(tableHtml);	
 			}

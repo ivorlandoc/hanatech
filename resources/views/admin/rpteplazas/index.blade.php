@@ -60,7 +60,7 @@ Consulta - Plazas
 
 
                 <div class="panel-body"  >                   
-                           <div id="msjerror"></div>
+                          
                         <!-- ================Tabs============= -->
                             <div class="nav-tabs-custom">
 
@@ -94,9 +94,15 @@ Consulta - Plazas
                                             {!!Form::close()!!}   
 
                                             {{ Form::open(array( 'route' => ['getfichajob','1'], 'method' => 'post', 'id' => 'frmfichajob','name' => 'frmfichajob'))}}    
-                                                <input type="text" name="txtdnificha" id="txtdnificha" value="">
-                                                <input type="text" name="txtplazaficha" id="txtplazaficha" value="">
+                                                <input type="hidden" name="txtdnificha" id="txtdnificha" value="">
+                                                <input type="hidden" name="txtplazaficha" id="txtplazaficha" value="">
                                             {{ Form::close()}} 
+
+                                             {{ Form::open(array( 'route' => ['getmovWindEmer','1','1','1','1'], 'method' => 'post', 'id' => 'frmmovwindowEmerg','name' => 'frmmovwindowEmerg'))}}    
+                                                <input type="hidden" name="txtdnifichamov" id="txtdnifichamov" value="">
+                                               <!-- <input type="text" name="txtplazafichamov" id="txtplazafichamov" value="">-->
+                                            {{ Form::close()}} 
+                                             <div id="msjerror"></div>
                                                 <div class="table-responsive" >
                                                     <table  class="table dataTable no-footer dtr-inline">
                                                         <thead>
@@ -125,24 +131,32 @@ Consulta - Plazas
                                     </div>
                                     <!-- /.tab-pane -->
                                     <div class="tab-pane" id="tab_2">                                     
-                                
+                                             {{ Form::open(array( 'route' => ['getDetallaMovimientos','1','1'], 'method' => 'post', 'id' => 'frmdetallamov','name' => 'frmdetallamov'))}} 
 
                                              <div class="form-group">                            
-                                                <div class="input-group select2-bootstrap-append">                          
+                                                <div class="input-group select2-bootstrap-append"> 
+
                                                      {!! Form::text('searchPlazaForRpte',null, ['class'=>'form-control','placeholder'=>'# de Plaza','type'=>'search','id'=>'searchPlazaForRpte']) !!} 
                                                             <input type="hidden" name="x_token" value="{{ csrf_token()}}">                   
                                                             <span class="input-group-btn">
-                                                                <button class="btn btn-default" type="button" data-select2-open="single-append-text">
+                                                                <button class="btn btn-default" type="button" data-select2-open="single-append-text" onclick="GetEstadoPlazahead()">
                                                                     <span class="glyphicon glyphicon-search"></span>
                                                                 </button>
-                                                            </span>
-                                                      {!!Form::close()!!} 
+                                                            </span>                                                      
                                                 </div>
                                             </div>
+                                            {!!Form::close()!!} 
+
+
+                                            {{ Form::open(array( 'route' => ['getdatallemovdet','1','1','1'], 'method' => 'post', 'id' => 'frmplazamovdet','name' => 'frmplazamovdet'))}} 
+                                                <input type="hidden" name="txtplazamovdet" id="txtplazamovdet" value="">
+                                            {{ Form::close()}}
                                             <!--  ====================== -->
                                                 <!-- <div style="border:1px solid black">-->
-                                              
+                                                    
+                                                    <div id="msjerrormov" > </div>
                                                     <div id="IdGetShowEstadoPlaza" > </div>
+                                                    <div id="msjerrormovdet" > </div>
                                                     <div id="IdGetShowEstadoPlazaDet" >                                                                
                                                          <div class="loading">                                                           
                                                             <br>

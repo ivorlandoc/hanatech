@@ -74,12 +74,12 @@ Route::group(['prefix' => 'admin', 'middleware' => 'admin', 'as' => 'admin.'], f
     Route::get('activity_log/data', 'JoshController@activityLogData')->name('activity_log.data');
 //    Route::get('/', 'JoshController@index')->name('index');
 });
-
+/*
 Route::group(['prefix' => 'servicio', 'namespace'=>'Servicio','middleware' => 'admin'], function () {
     Route::get('reservas', 'ReservaPlazaController@index');
     Route::get('reservas/bandeja', 'ReservaPlazaController@getshow');      
 });
-
+*/
 
 Route::group(['prefix' => 'reportes', 'namespace'=>'Reporte','middleware' => 'admin'], function () {
     /*==================================rpte de plazas activas, inactivas y vacantes, etc=============================================*/
@@ -90,86 +90,103 @@ Route::group(['prefix' => 'reportes', 'namespace'=>'Reporte','middleware' => 'ad
     Route::get('plazacargo', 'PlazasporcargoController@index'); 
     Route::post('plazacargo', array('as' => 'get-plaza-cargo','uses' => 'PlazasporcargoController@getallplazascargo'));
     /*==================================reportes=============================================*/
-    Route::get('reject', 'RptejectController@index'); 
-    Route::post('reject', array('as' => 'get-plaza-ejec','uses' => 'RptejectController@showejec'));
+    /*Route::get('reject', 'RptejectController@index'); 
+    Route::post('reject', array('as' => 'get-plaza-ejec','uses' => 'RptejectController@showejec'));*/
     /*==================================Altas y bajas=============================================*/
     Route::get('rbajas', 'RptealtabajasController@index'); 
     Route::post('rbajas', array('as' => 'get-rpte-altabaja','uses' => 'RptealtabajasController@getallrptealtabajas'));
     /*==================================Altas y bajas=============================================*/
     Route::get('externo', 'ConsplzextController@index'); 
     Route::post('externo', array('as' => 'getdata-result','uses' => 'ConsplzextController@getdatforConsultExter'));
-       /*==================================cap2=============================================*/
+    /*==================================cap2=============================================*/
     Route::get('cap2', 'Cap2Controller@index'); 
     Route::post('cap2', array('as' => 'getdata-result_cap2','uses' => 'Cap2Controller@getshowCap2'));
+    /*==================================proximos a cumplir 70 años=============================================*/
+    //Route::get('setenta', 'SetentaController@index'); 
+    Route::resource('setenta', 'SetentaController'); 
+   
 
 });
 
-Route::resource('reportes', 'PlazasporcargoController'); // add by iv.orlando.c 22.02.18
+//Route::resource('reportes', 'PlazasporcargoController'); // add by iv.orlando.c 22.02.18
+
 
 Route::group(['prefix' => 'admin', 'namespace'=>'Admin','middleware' => 'admin'], function () {
-/*==================================reservas=============================================*/
-Route::get('reserva', 'ReservaController@index');
-Route::post('reserva', array('as' => 'get-datos-parareserva','uses' => 'ReservaController@GetDatosRserva'));
-Route::post('reserva/{id}', array('as' => 'get-datos-procesareserva','uses' => 'ReservaController@Procesareservaplaza'));
-Route::post('reserva/{id}/{idx}', array('as' => 'procesa-ChangeEstado','uses' => 'ReservaController@ProcesaChangeEstado'));
-/*==================================Crea plazas=============================================*/
-Route::group([ 'prefix' => 'creaplaza'], function () {
-    Route::get('creaplaza', 'CrearplazaController@index');  
-    Route::post('creaplaza/{id}', array('as' => 'get-all-estruct','uses' => 'CrearplazaController@getStructuras'));
-    Route::post('creaplaza/{id}/{idx}', array('as' => 'set-save-contador_plaza','uses' => 'CrearplazaController@Procesacreaplaza'));
-});
-Route::resource('creaplaza', 'CrearplazaController');   
- /*==================================Recategorización de  plazas=============================================*/
-Route::get('integra', 'IntegrarPlazaController@index'); 
-Route::post('integra', array('as' => 'get-datos-paraintegra','uses' => 'IntegrarPlazaController@getdatosintegra'));
-Route::post('integra/{id}', array('as' => 'save-paraintegra-plazas','uses' => 'IntegrarPlazaController@Procesaintegraplaza'));
-/*============================Cambio de denominación==============================================================*/
-Route::group([ 'prefix' => 'cambio'], function () {
-    Route::get('cambio', 'CambiodenominacController@index'); 
-    Route::post('cambio', array('as' => 'get-datos-search','uses' => 'CambiodenominacController@SearchCargo'));
-    Route::post('cambio/{id}', array('as' => 'get-datos-saveChange','uses' => 'CambiodenominacController@SaveChangeCargo'));
- });
-Route::resource('cambio', 'CambiodenominacController');    
+    /*==================================reservas=============================================*/
+    Route::get('reserva', 'ReservaController@index');
+    Route::post('reserva', array('as' => 'get-datos-parareserva','uses' => 'ReservaController@GetDatosRserva'));
+    Route::post('reserva/{id}', array('as' => 'get-datos-procesareserva','uses' => 'ReservaController@Procesareservaplaza'));
+    Route::post('reserva/{id}/{idx}', array('as' => 'procesa-ChangeEstado','uses' => 'ReservaController@ProcesaChangeEstado'));
+    /*==================================Crea plazas=============================================*/
+    Route::group([ 'prefix' => 'creaplaza'], function () {
+        Route::get('creaplaza', 'CrearplazaController@index');  
+        Route::post('creaplaza/{id}', array('as' => 'get-all-estruct','uses' => 'CrearplazaController@getStructuras'));
+        Route::post('creaplaza/{id}/{idx}', array('as' => 'set-save-contador_plaza','uses' => 'CrearplazaController@Procesacreaplaza'));
+    });
+    Route::resource('creaplaza', 'CrearplazaController');   
+     /*==================================Recategorización de  plazas=============================================*/
+    Route::get('integra', 'IntegrarPlazaController@index'); 
+    Route::post('integra', array('as' => 'get-datos-paraintegra','uses' => 'IntegrarPlazaController@getdatosintegra'));
+    Route::post('integra/{id}', array('as' => 'save-paraintegra-plazas','uses' => 'IntegrarPlazaController@Procesaintegraplaza'));
+    /*============================Cambio de denominación==============================================================*/
+    Route::group([ 'prefix' => 'cambio'], function () {
+        Route::get('cambio', 'CambiodenominacController@index'); 
+        Route::post('cambio', array('as' => 'get-datos-search','uses' => 'CambiodenominacController@SearchCargo'));
+        Route::post('cambio/{id}', array('as' => 'get-datos-saveChange','uses' => 'CambiodenominacController@SaveChangeCargo'));
+     });
+    Route::resource('cambio', 'CambiodenominacController');    
   
-/*=========================Actualizar Periodos de PPTO========================*/  
- Route::put('periodop', 'periodopresupuestoController@store')->name('admin.periodop.store');
- Route::patch('periodop/{id}', 'periodopresupuestoController@update')->name('admin.periodop.update');
- Route::delete('periodop/{id}', 'periodopresupuestoController@destroy')->name('admin.periodop.destroy');
- Route::resource('periodop','periodopresupuestoController');
- /*====================================Suplencias=============================*/
- //Route::get('suplencias', 'SuplenciaController@index'); 
- Route::post('suplencias/{id}', array('as' => 'get-datos-suplencia','uses' => 'SuplenciaController@getdatasuplencia'));
- Route::post('suplencias/{id}/{ix}', array('as' => 'getdatheadTitular','uses' => 'SuplenciaController@GetDatosTitularHead'));
- Route::post('suplencias/{id}/{ix}/{x}', array('as' => 'getdatheadSuplen','uses' => 'SuplenciaController@GetDatosSuplenteHead'));
- Route::post('suplencias/{id}/{ix}/{x}/{i}', array('as' => 'savesuplencias','uses' => 'SuplenciaController@ProcesaSaveSuplencia'));
- Route::post('suplencias/{id}/{ix}/{x}/{i}/{z}', array('as' => 'deleteSuple','uses' => 'SuplenciaController@deleteSuplencia'));
+    /*=========================Actualizar Periodos de PPTO========================*/  
+     Route::put('periodop', 'periodopresupuestoController@store')->name('admin.periodop.store');
+     Route::patch('periodop/{id}', 'periodopresupuestoController@update')->name('admin.periodop.update');
+     Route::delete('periodop/{id}', 'periodopresupuestoController@destroy')->name('admin.periodop.destroy');
+     Route::resource('periodop','periodopresupuestoController');
+     /*====================================Suplencias=============================*/
+     //Route::get('suplencias', 'SuplenciaController@index'); 
+     Route::post('suplencias/{id}', array('as' => 'get-datos-suplencia','uses' => 'SuplenciaController@getdatasuplencia'));
+     Route::post('suplencias/{id}/{ix}', array('as' => 'getdatheadTitular','uses' => 'SuplenciaController@GetDatosTitularHead'));
+     Route::post('suplencias/{id}/{ix}/{x}', array('as' => 'getdatheadSuplen','uses' => 'SuplenciaController@GetDatosSuplenteHead'));
+     Route::post('suplencias/{id}/{ix}/{x}/{i}', array('as' => 'savesuplencias','uses' => 'SuplenciaController@ProcesaSaveSuplencia'));
+     Route::post('suplencias/{id}/{ix}/{x}/{i}/{z}', array('as' => 'deleteSuple','uses' => 'SuplenciaController@deleteSuplencia'));
+     Route::post('suplencias/{id}/{ix}/{x}/{i}/{z}/{a}', array('as' => 'processAltaSup','uses' => 'SuplenciaController@ProcesaAltaSuplente'));
 
 
- Route::resource('suplencias','SuplenciaController');
-/*=========================Actualizar movimiento de plazas========================*/
-Route::get('upmov', 'UpdateMovPlazasController@index'); 
-Route::post('upmov', array('as' =>'search_mov','uses' => 'UpdateMovPlazasController@_getalldatosMov')); 
-Route::post('upmov/{id}', array('as' =>'update-historia-mov','uses' => 'UpdateMovPlazasController@ProcesaUpdateMov')); 
-/*============================Show Nominativo======================*/
-Route::get('plazas','PlazasController@index'); 
-Route::get('plazas/{id}', 'PlazasController@excel')->name('plazas.excel');  
- /*============================Activar Plaza Sin Presupuesto======================*/
-Route::get('activap','ActivarplazaController@index'); 
-Route::post('activap',array('as' =>'get-datos-activa','uses' => 'ActivarplazaController@Getdatosparaactivar')); 
-Route::post('activap/{id}',array('as' =>'save-datos-activa','uses' => 'ActivarplazaController@ProcesaActivaPlazas')); 
-Route::resource('activarp', 'ActivarplazaController');
+     Route::resource('suplencias','SuplenciaController');
+    /*=========================Actualizar movimiento de plazas========================*/
+    Route::get('upmov', 'UpdateMovPlazasController@index'); 
+    Route::post('upmov', array('as' =>'search_mov','uses' => 'UpdateMovPlazasController@_getalldatosMov')); 
+    Route::post('upmov/{id}', array('as' =>'update-historia-mov','uses' => 'UpdateMovPlazasController@ProcesaUpdateMov')); 
+    /*============================Show Nominativo======================*/
+    Route::get('plazas','PlazasController@index'); 
+    Route::get('plazas/{id}', 'PlazasController@excel')->name('plazas.excel');  
+     /*============================Activar Plaza Sin Presupuesto======================*/
+    Route::get('activap','ActivarplazaController@index'); 
+    Route::post('activap',array('as' =>'get-datos-activa','uses' => 'ActivarplazaController@Getdatosparaactivar')); 
+    Route::post('activap/{id}',array('as' =>'save-datos-activa','uses' => 'ActivarplazaController@ProcesaActivaPlazas')); 
+    Route::resource('activarp', 'ActivarplazaController');
   /*======================Consulta de plazas===================================*/
-//    Route::group(['prefix' => 'rpteplazas', 'namespace'=>'admin','middleware' => 'admin'], function () { 
-     //   Route::get('rpteplazas', 'RptePlazaController@index'); 
-Route::resource('rpteplazas', 'RptePlazaController');
-        Route::post('rpteplazas', array('as' =>'getResutListaIndex','uses' => 'RptePlazaController@getindex'));   
-        Route::post('rpteplazas/{id}', array('as' =>'getfichajob','uses' => 'RptePlazaController@GetFichaJobs'));        
+    //    Route::group(['prefix' => 'rpteplazas', 'namespace'=>'admin','middleware' => 'admin'], function () { 
+         //   Route::get('rpteplazas', 'RptePlazaController@index'); 
+    Route::resource('rpteplazas', 'RptePlazaController');
+    Route::post('rpteplazas', array('as' =>'getResutListaIndex','uses' => 'RptePlazaController@getindex'));   
+    Route::post('rpteplazas/{id}', array('as' =>'getfichajob','uses' => 'RptePlazaController@GetFichaJobs'));        
+    Route::post('rpteplazas/{id}/{ix}', array('as' =>'getDetallaMovimientos','uses' => 'RptePlazaController@GetEstadoDePlazas'));  
+
+    Route::post('rpteplazas/{id}/{ix}/{i}', array('as' =>'getdatallemovdet','uses' => 'RptePlazaController@getDetalleMovimientos'));  
+    Route::post('rpteplazas/{id}/{ix}/{i}/{x}', array('as' =>'getmovWindEmer','uses' => 'RptePlazaController@getDetalleMovimientos'));  
+             
 //   });
 
-/*============================Permisos======================*/ 
-Route::put('permisos', 'PermisosController@store')->name('admin.permisos.store');
-Route::delete('permisos/{id}', 'PermisosController@destroy')->name('admin.permisos.destroy');
-Route::resource('permisos','PermisosController');
+    /*============================Permisos======================*/ 
+    Route::put('permisos', 'PermisosController@store')->name('admin.permisos.store');
+    Route::delete('permisos/{id}', 'PermisosController@destroy')->name('admin.permisos.destroy');
+    Route::resource('permisos','PermisosController');
+      /*==================================Actualziar datos de la persona"Especialidad"===============================*/
+    //Route::get('updatedatos', 'UpdatedatosController@index'); 
+    Route::resource('updatedatos', 'UpdatedatosController');
+    Route::post('updatedatos', array('as' => 'updatedatospersona','uses' => 'UpdatedatosController@Procesaupdatdatos'));
+   
+    
 
 });
 
@@ -270,10 +287,10 @@ Route::resource('users', 'UsersController');
     });
     Route::resource('altaplaza', 'AltadeplazaController');
     /* ==================temporal======================== */
-        Route::group(['prefix' => 'rptetempo'], function () {
+     /*   Route::group(['prefix' => 'rptetempo'], function () {
         Route::get('admin/rptetempo/{id}', 'RpteTempoController@index');                  
     });
-    Route::resource('rptetempo', 'RpteTempoController');
+    Route::resource('rptetempo', 'RpteTempoController');*/
     /*==============hasta aquí el tempo, elimnar luego*/
 
 

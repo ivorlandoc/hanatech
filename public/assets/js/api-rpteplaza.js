@@ -3,9 +3,9 @@ $(function(){
 $("#searchPlazaForRpte").keypress(function(e) {
 		var code = (e.keyCode ? e.keyCode : e.which);
         if(code == 13) {
-         var strin=$("#searchPlazaForRpte").val();
-          GetAllPlazas(strin);
-          GetAllPlazasMov(strin);
+        // var strin=$("#searchPlazaForRpte").val();
+          GetEstadoPlazahead();
+          //GetAllPlazasMov(strin);
           return false;
         }
       }); 	
@@ -25,10 +25,33 @@ $(document).ready(function(){
     $('#stri_search').keyup(function(){$(this).val($(this).val().toUpperCase());});    
 });
 
-function GetAllPlazas(id){
-	$.get('../api/admin/rpteplazas/getplaza/'+id,function(dataDet){
-		console.log("===>"+dataDet);
-		var tableHtml='';		
+// =====================================================================================
+function GetEstadoPlazahead(){
+	var formData = new FormData($("form[name='frmdetallamov']")[0]); 
+	$("#txtplazamovdet").val($('#searchPlazaForRpte').val());
+    $.ajax({  
+            type: "post",
+            headers: {'X-CSRF-TOKEN':$('#token').val()},
+            url:  $('#frmdetallamov').attr('action'),
+            dataType: 'json',
+            data: formData,
+            cache: false,
+            contentType: false,
+            processData: false,
+        success: function (data) {                      
+                GetEstadoPlazahead_rows(data);
+                GetDetalleMovientos();          
+        },
+        error: function (xhr, status, error) {
+            alert(xhr.responseText);
+        }
+    });
+
+}
+
+function GetEstadoPlazahead_rows(data) { 
+    	var xy=0;
+   		var tableHtml='';		
 		var htmlHead="";
 		var htmlNombre="";
 		var Tinesino="";
@@ -37,136 +60,186 @@ function GetAllPlazas(id){
     	var desc="";
     	var Tinesino="";
     	var htmlAlta="";
-       	var ErrorHtml='<tr><td colspan="2"><div class="alert alert-danger alert-dismissable margin5"><strong>Ups</strong> no existe registros!</div></td></tr>';
-       	if(dataDet.length!=0){        		
-       		$('#IdGetShowEstadoPlaza').html(""); // "{{ URL::to('admin/bajaplazas') }}?x={{$plaz}}"
-			for (var i=0; i < dataDet.length; i++) 	{	
-				if(dataDet[i].fcese!=""){ Tinesino= '<p class="btn btn-info start">'+dataDet[i].sino+'</p>';} else{ Tinesino=" ";}	
+		var htmlEsta="";
+ 		var link ="";
+    	var linkdni="";   
+    	var suplen="";
+    	var suplenPrint="";    	
 
-				url= "altaplaza?x="+dataDet[i].NroPlaza;	
+   //var tableHtmlhead="<table class='table dataTable no-footer dtr-inline'><tr><th>#</th> <th>#DNI</th> <th>APELLIDOS Y NOMBRES</th> <th>NIVEL</th> <th>CARGO</th><th>RÉGIMEN</th><th>#PLAZA</th></tr>";
+   
+    if(data.length!=0){
+    	 $('.loading').show();
+        $.each(data, function( key, value ) { xy++;
+        		$('#IdGetShowEstadoPlaza').html(""); 
 
+         if(value.fcese!=""){ Tinesino= '<p class="btn btn-info start">'+value.sino+'</p>';} else{ 
+              if(value.estado=="ACTIVA"){Tinesino="<p class='btn btn-info start'> SI </p>";} else{Tinesino=" ";}
+          }  
+          url= "altaplaza?x="+value.NroPlaza;	
+		  if(value.IdPersona=="") htmlAlta="<a href="+url+ ' class="btn btn-info">DAR DE ALTA</a>'; else htmlAlta="";
 
-				if(dataDet[i].IdPersona=="") htmlAlta="<a href="+url+ ' class="btn btn-info">DAR DE ALTA</a>'; else htmlAlta="";
-				
-				if(dataDet[i].fcese!=""){ Tinesino= '<p class="btn btn-info start">'+dataDet[i].sino+'</p>';} else{ 
-	              if(dataDet[i].estado=="ACTIVA"){Tinesino="<p class='btn btn-info start'> SI </p>";} else{Tinesino=" ";}
-	          	} 
+            htmlEsta="<p class='btn btn-info start'> "+value.NroPlaza+" | "+value.estado+"</p>" 
+            htmlNombre=value.ApellidoPat+'  '+value.ApellidoMat+' '+value.Nombres;
 
-				htmlEsta="<p class='btn btn-info start'> "+dataDet[i].NroPlaza+" | "+dataDet[i].estado+"</p>" 
-				htmlNombre=dataDet[i].ApellidoPat+'  '+dataDet[i].ApellidoMat+' '+dataDet[i].Nombres;
-				
-				if(dataDet[i].ofi=="SN"){ofi='';} else {ofi="<br>"+dataDet[i].ofi;}
-	            if(dataDet[i].descripcion=="SN"){desc='';} else {desc="<br>"+dataDet[i].descripcion;}
+            if(value.ofi=="SN"){ofi='';} else {ofi="<br>"+value.ofi;}
 
+            if(value.descripcion=="SN"){desc='';} else {desc="<br>"+value.descripcion;}
+
+             if(value.idsuplente!="") {suplenPrint=value.nombresuplente;}else{suplenPrint="";}
+             var msjcompr="";
+             if(value.SubIdEstadoPlaza!="") {msjcompr="<p class='btn btn-warning'>ESTA COMPROMETIDA PARA: "+value.desSubEstado+"</p>";}else{msjcompr="";}
+            tableHtml +='<div class="rounded"><table class="table dataTable small">'+
+                  '<tr><th width="23%"> PLAZA:</th>    <td>'+htmlEsta+' '+msjcompr+'<br><p class="text-danger"><b>'+value.Observ+'</p></td><td><p class="text-right">'+htmlAlta+'</p></td></tr> '+             
+                   '<tr><th>TITULAR:</th>              <td colspan="2">'+htmlNombre+'</td></tr> '+
+                   '<tr><th>SUPLENTE:</th>              <td colspan="2">'+suplenPrint+'</td></tr> '+
+                   '<tr><th>DEPENDENCIA</th>           <td colspan="2"><b>'+value.organo+'</b> <br> '+value.gerencia+' <br>'+value.dep2+' '+ofi+'  '+desc+'</td></tr>'+                            
+                   '<tr><th>NIVEL:</th>                <td colspan="2">'+value.IdNivel+'  <b>|</b>  '+value.Nivel+' &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>REGIMEN:&nbsp;&nbsp;</b>'+value.regimen+'</td></tr> '+         
+                   '<tr><th>CARGO:</th>                <td colspan="2">'+value.cargo+'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>ESPECIALIDAD:&nbsp;&nbsp;</b>'+value.Especialidad+'</td></tr> '+
+                   '<tr><th>F. DE CESE:</th>           <td colspan="2">'+value.fcese+' </td></tr> '+ 
+                   '<tr><th>CTA CON PRESUPUESTO?</th><td colspan="2">'+Tinesino+'</td></tr> '+ 
+                 
+                   '</table></div>';
+                   /*
 				tableHtml += '<table class="table dataTable no-footer dtr-inline">'+
 							 '<tr><th width="23%">PLAZA:</th>		<td>'+htmlEsta+'</td><td><p class="text-right">'+htmlAlta+'</p></td></tr> '+
 							 '<tr><th>TITULAR:</th>					<td colspan="2">'+htmlNombre+'</td></tr> '+						
-							 '<tr><th>DEPENDENCIA</th>           	<td colspan="2"><b>'+dataDet[i].organo+'</b> <br> '+dataDet[i].gerencia+' <br>'+dataDet[i].dep2+' '+ofi+'  '+desc+'</td></tr>'+
-							 '<tr><th>NIVEL:</th>					<td colspan="2">'+dataDet[i].IdNivel+'  <b>|</b>  '+dataDet[i].Nivel+' </p></td></tr> '+					
-							 '<tr><th>CARGO:</th>					<td colspan="2">'+dataDet[i].cargo+'</td></tr> '+
-							 '<tr><th>FECHA DE CESE:</th>			<td colspan="2">'+dataDet[i].fcese+'</td></tr> '+	
+							 '<tr><th>DEPENDENCIA</th>           	<td colspan="2"><b>'+value.organo+'</b> <br> '+value.gerencia+' <br>'+value.dep2+' '+ofi+'  '+desc+'</td></tr>'+
+							 '<tr><th>NIVEL:</th>					<td colspan="2">'+value.IdNivel+'  <b>|</b>  '+value.Nivel+' </p></td></tr> '+					
+							 '<tr><th>CARGO:</th>					<td colspan="2">'+value.cargo+'</td></tr> '+
+							 '<tr><th>FECHA DE CESE:</th>			<td colspan="2">'+value.fcese+'</td></tr> '+	
 							 '<tr><th>CUENTA CON PRESUPUESTO?</th>	<td colspan="2">'+Tinesino+' </td></tr> '+						 							
-							 '</tr></table>';
+							 '</tr></table>';*/
 				$('#IdGetShowEstadoPlaza').html(tableHtml);	
 
+        });         
+        $('.loading').hide();
+       }else{       	
+        $("#msjerrormov").html('<div class="alert alert-danger" role="alert"></span> No existe registros</div>').fadeIn().delay(3000).fadeOut('slow');
+        $('#IdGetShowEstadoPlaza').html("");
+    }
+   
+}
+// ========================================================================================
 
+function GetDetalleMovientos(){
+	var formData = new FormData($("form[name='frmplazamovdet']")[0]); 
+	$("#txtplazamovdet").val($('#searchPlazaForRpte').val());
+    $.ajax({  
+            type: "post",
+            headers: {'X-CSRF-TOKEN':$('#token').val()},
+            url:  $('#frmplazamovdet').attr('action'),
+            dataType: 'json',
+            data: formData,
+            cache: false,
+            contentType: false,
+            processData: false,
+        success: function (data) {
+        	GetDetalleMovientos_rows(data);
+        },
+        error: function (xhr, status, error) {
+            alert(xhr.responseText);
+        }
+    });
+
+}
+
+function GetDetalleMovientos_rows(data){
+var xy=0;
+    var tableHtml="";
+    var urlFicha="";
+    var urlMov="";
+    var plaza="";
+    var sdelete="";
+    	tableHtml  +='<table class="table dataTable no-footer dtr-inline"><tr> <th>#</th><th>PERSONA</th><th>TIPO.MOV.</th><th>DEPENDENCIA</th><th>CARGO</th> <th> DOC.REF.</th> <th>OBSERVACION</th> <th>F:&nbsp;MOV.&nbsp;&nbsp;|&nbsp;&nbsp;F:DOC.REF&nbsp;</th></tr>';    		   
+	    if(data.length!=0){
+	    	$('.loading').show();
+	        $.each(data, function( key, value ) {
+	        		xy++;
+					if(value.Persona=="") persona="---"; else persona=value.Persona;
+					if(value.FileAdjunto=="") url=value.DocRef; else url='<a href="../uploads/files/'+value.FileAdjunto+'" target="_blank">'+value.DocRef+'</a>';
+
+					tableHtml += '<tr>	<th>'+xy+'</th>'+
+										'<td>'+persona+'</td>'+
+								 		'<td>'+value.tipomov+'</td> '+							 		
+								 		'<td>'+value.organo+' | '+value.gerencia+' | '+value.dep2+' | '+value.ofi+'</td>'+	
+								 		'<td>'+value.cargo+'</td>'+											
+								 		'<td>'+url+'</td>'+							
+								 		'<td>'+value.Observacion+'</td>'+					
+								 		'<td>'+value.fm+' | '+value.fd+'</td>'+							 							
+								 '</tr>';
 				
-
-
-
-
-			}
-		}else{
-			$('#IdGetShowEstadoPlaza').html(ErrorHtml);
-		}
-		
-	});	
+							$('#IdGetShowEstadoPlazaDet').html(tableHtml);
+					
+	                     
+	        }); 			       	
+			$('.loading').hide(); 
+	       }else{
+	        $("#msjerrormovdet").html('<div class="alert alert-danger" role="alert"></span> No existe registros</div>').fadeIn().delay(3000).fadeOut('slow');
+	        $('#IdGetShowEstadoPlazaDet').html("");
+	    }
 }
-
-function GetAllPlazasMov(id){
-	$.get('../api/admin/rpteplazas/detplaza/'+id,function(dataDet){
-		var tableHtml='';
-       	var persona="";
-       	var url="";
-       	var xy=0;
-       	if(dataDet.length!=0){  
-       		$('.loading').show();
+// ========================================================================================
+function GetDetalleMovientosEmerg(xdni,xplaza){
+	var formData = new FormData($("form[name='frmmovwindowEmerg']")[0]); 
+	$("#txtdnifichamov").val(xdni);
+	formData.append('txtplazamovdet',xplaza); 
+	var xy=0;
+    var tableHtml="";
+    var urlFicha="";
+    var urlMov="";
+    var plaza="";
+    var sdelete="";
     
-       	tableHtml  +='<table class="table dataTable no-footer dtr-inline"><tr> <th>#</th><th>PERSONA</th><th>TIPO.MOV.</th><th>DEPENDENCIA</th><th>CARGO</th> <th> DOC.REF.</th> <th>OBSERVACION</th> <th>F:&nbsp;MOV.&nbsp;&nbsp;|&nbsp;&nbsp;F:DOC.REF&nbsp;</th><th>ACCIÓN</th></tr>';    		
-       		$('#IdGetShowEstadoPlazaDet').html("");
-			for (var i=0; i < dataDet.length; i++) 	{ xy++;
-				if(dataDet[i].Persona=="") persona="---"; else persona=dataDet[i].Persona;
-				if(dataDet[i].FileAdjunto=="") url=dataDet[i].DocRef; else url='<a href="../uploads/files/'+dataDet[i].FileAdjunto+'" target="_blank">'+dataDet[i].DocRef+'</a>';
+    $.ajax({  
+            type: "post",
+            headers: {'X-CSRF-TOKEN':$('#token').val()},
+            url:  $('#frmmovwindowEmerg').attr('action'),
+            dataType: 'json',
+            data: formData,
+            cache: false,
+            contentType: false,
+            processData: false,
+        success: function (data) {
+        		$('#headficha').html("");
+        		tableHtml  +='<table class="table dataTable no-footer dtr-inline"><tr> <th>#</th><th>PERSONA</th><th>TIPO.MOV.</th><th>DEPENDENCIA</th><th>CARGO</th> <th> DOC.REF.</th> <th>OBSERVACION</th> <th>F:&nbsp;MOV.&nbsp;&nbsp;|&nbsp;&nbsp;F:DOC.REF&nbsp;</th></tr>';    		   
+			    if(data.length!=0){
+			    	$('.loading').show();
+			        $.each(data, function( key, value ) {
+			        		xy++;
+							if(value.Persona=="") persona="---"; else persona=value.Persona;
+							if(value.FileAdjunto=="") url=value.DocRef; else url='<a href="../uploads/files/'+value.FileAdjunto+'" target="_blank">'+value.DocRef+'</a>';
 
-				tableHtml += '<tr>	<th>'+xy+'</th>'+
-									'<td>'+persona+'</td>'+
-							 		'<td>'+dataDet[i].tipomov+'</td> '+							 		
-							 		'<td>'+dataDet[i].organo+' | '+dataDet[i].gerencia+' | '+dataDet[i].dep2+' | '+dataDet[i].ofi+'</td>'+	
-							 		'<td>'+dataDet[i].cargo+'</td>'+											
-							 		'<td>'+url+'</td>'+							
-							 		'<td>'+dataDet[i].Observacion+'</td>'+					
-							 		'<td>'+dataDet[i].fm+' | '+dataDet[i].fd+'</td>'+							 							
-							 '</tr>';
-
-				//$('#IdGetShowEstadoPlazaDet').html(tableHtml);	
-			}
-			$('.loading').hide();
-		}else{
-			$('#IdGetShowEstadoPlazaDet').html('<div class="alert alert-danger" role="alert"></span> No existe registros</div>').fadeIn().delay(4000).fadeOut('slow');
-		}
-		tableHtml += '</table>';
-		$('#IdGetShowEstadoPlazaDet').html(tableHtml);
-		// $('#IdShowDetailsMov').html(tableHtml);
-
-	});	
-}
-
-
-function ShowHistoriaMov(id,iddni){	 // xxx 
-	console.log("Nro de Plaza=1==>"+id+"-->"+iddni);	
-	$.get('../api/admin/rpteplazas/list/'+id+iddni,function(dataDa){
-		$('#IdShowDetailsMov').html("");
-		var tableHtml 	="";
-		var htmlHead 	="";
-		//console.log("---->"+dataDa);
-		var url="";
-		
-       	var xy=0;   
-       	var ErrorHtml='<tr><td colspan="9"><div class="alert alert-danger alert-dismissable margin5"><strong>Ups</strong> no existe registros!</div></td></tr>';
-        var HtmlHeadTr='<tr class="filters"><th>#</th><th>DEPENDENCIA</th><th>NIVEL</th><th>CARGO</th><th>T.MOV</th><th>F.MOV</th> <th>F.DOC</th><th>DOC.DE&nbspREF.</th> <th>OBSERVACION</th><th>DOC.ADJ.</th></tr>';
-       		if(dataDa.length!=0){  
-       		 $('.loading').show();	
-       		$('#headTR').html(HtmlHeadTr);	       		
-			for (var i=0; i < dataDa.length; i++) 	{
-				xy++; 
-				//console.log("==sede=>"+dataDa[i].sede+' / '+dataDa[i].dependencia);
-						if(i=="0"){
-							 htmlHead ='<b>'+dataDa[0].dni +'  |  '+dataDa[0].nom+'  |  PLAZA N°['+dataDa[0].NroPlaza+']</b>';
-							 $('#IdHeadDetMov').html(htmlHead);
-						}
-				if(dataDa[i].FileAdjunto=="") url='---'; else url='<a href="../uploads/files/'+dataDa[i].FileAdjunto+'" target="_blank" class="btn btn-info btn-sm btn-responsive" role="button"><span class="livicon" data-name="notebook" data-size="14" data-loop="true" data-c="#fff" data-hc="white"></span><br/>Abrir</a>';
+							tableHtml += '<tr>	<th>'+xy+'</th>'+
+												'<td>'+persona+'</td>'+
+										 		'<td>'+value.tipomov+'</td> '+							 		
+										 		'<td>'+value.organo+' | '+value.gerencia+' | '+value.dep2+' | '+value.ofi+'</td>'+	
+										 		'<td>'+value.cargo+'</td>'+											
+										 		'<td>'+url+'</td>'+							
+										 		'<td>'+value.Observacion+'</td>'+					
+										 		'<td>'+value.fm+' | '+value.fd+'</td>'+							 							
+										 '</tr>';
 						
-				tableHtml += '<tr><td>'+xy+'</td>'+
-				'<td>'+dataDa[i].centro+' | <br> '+dataDa[i].dep+' | '+dataDa[i].dep2+' | '+' | '+dataDa[i].ofi+' | '+ dataDa[i].dependencia+'</td>'+
-				'<td>'+dataDa[i].IdNivel+'</td>'+
-				'<td>'+dataDa[i].cargo+'</td>'+
-				'<td>'+dataDa[i].TipoMov+'</td>'+
-				'<td>'+dataDa[i].FechaMov+'</td>'+
-				'<td>'+dataDa[i].fechaDoc+'</td>'+
-				'<td>'+dataDa[i].DocRef+'</td>'+
-				'<td>'+dataDa[i].Observacion+'</td>'+
-				'<td>'+url+'</td>'+
-				'</tr>';
-				$('#IdShowDetailsMov').html(tableHtml);	
-			}
-			$('.loading').hide();
-		}else{
-			$('#IdShowDetailsMov').html(ErrorHtml);
-		}
-		
-	});					
-	
+									$('#IdShowDetailsMov').html(tableHtml);
+							
+			                     
+			        }); 			       	
+					$('.loading').hide(); 
+			       }else{
+			        $("#divmsjeerror").html('<div class="alert alert-danger" role="alert"></span> No existe registros</div>').fadeIn().delay(3000).fadeOut('slow');
+			        $('#IdShowDetailsMov').html("");
+			    }
+
+        	
+        },
+        error: function (xhr, status, error) {
+            alert(xhr.responseText);
+        }
+    });
+
 }
+// ========================================================================================
+
 /*===================================================================*/
 function GetListaIndex(){
 	var formData = new FormData($("form[name='frmindex']")[0]);    
@@ -181,7 +254,7 @@ function GetListaIndex(){
             contentType: false,
             processData: false,
         success: function (data) {                      
-                getRowsListaIndex(data);
+                GetListaIndex_rows(data);
            
         },
         error: function (xhr, status, error) {
@@ -190,21 +263,27 @@ function GetListaIndex(){
     });
 }
 
-function getRowsListaIndex(data) { 
+function GetListaIndex_rows(data) { 
     var xy=0;
     var tableHtml="";
     var urlFicha="";
     var urlMov="";
     var plaza="";
     var sdelete="";
+    var url="";
+    var htmlbaja="";
     if(data.length!=0){
     	 $('.loading').show();
         $.each(data, function( key, value ) { xy++;
 
+        	url= "bajaplazas?z="+value.NroPlaza;	
+		  if(value.IdPersona!="") htmlbaja="<a href="+url+ ' class="btn btn-danger">Baja</a>'; else htmlbaja="";
+
+
 		if(value.NroPlaza=="") plaza="<p class='text-danger'><b>INACTIVO</b></p>"; else plaza=value.NroPlaza;
            urlFicha='<a data-href="#responsive" href="#responsive" onclick=FichaTrabajador("'+value.dni+'","'+value.NroPlaza+'") class="btn btn-info btn-responsive" role="button" data-toggle="modal" ><span class="livicon" data-name="signal" data-size="14" data-loop="true" data-c="#fff" data-hc="white"></span>Ficha  </a>';
-           urlMov='<a data-href="#responsive" href="#responsive" onclick=ShowHistoriaMov('+value.dni+'","'+value.NroPlaza+'") class="btn btn-warning btn-responsive" role="button" data-toggle="modal"><span class="livicon" data-name="notebook" data-size="14" data-loop="true" data-c="#fff" data-hc="white"></span>Movimientos</a>';
-           sdelete='<div class="ui-group-buttons"><a href="{{ URL::to(admin/bajaplazas) }}?z={{$plaz}}" class="btn btn-danger"> </i> Baja</a></div>';            
+           urlMov='<a data-href="#responsive" href="#responsive" onclick=GetDetalleMovientosEmerg("'+value.persona+'","'+value.NroPlaza+'") class="btn btn-warning btn-responsive" role="button" data-toggle="modal"><span class="livicon" data-name="notebook" data-size="14" data-loop="true" data-c="#fff" data-hc="white"></span>Movimientos</a>';
+           sdelete='<div class="ui-group-buttons">'+htmlbaja+'</div>';            
 
               tableHtml +=
                   '<tr>'+
@@ -228,17 +307,17 @@ function getRowsListaIndex(data) {
 		$('.loading').hide(); 
        }else{
         $("#msjerror").html('<div class="alert alert-danger" role="alert"></span> No existe registros</div>').fadeIn().delay(3000).fadeOut('slow');
+        $('#Divgetlistaindex').html("");
     }
    
 }
-
+// =====================================================================================
 function FichaTrabajador(dni,plaza){		
 	console.log("===>"+dni);
 	$("#txtdnificha").val(dni)
 	$("#txtplazaficha").val(plaza)
 
-	var formData = new FormData($("form[name='frmfichajob']")[0]);   
-	// formData.append('iddni',$("#txtdnificha").val()); 
+	var formData = new FormData($("form[name='frmfichajob']")[0]);   	
     $('.loading').show();
     $.ajax({  
             type: "post",
@@ -249,10 +328,8 @@ function FichaTrabajador(dni,plaza){
             cache: false,
             contentType: false,
             processData: false,
-        success: function (data) {    
-
-                dibujafichajob(data);
-
+        success: function (data) { 
+                FichaTrabajador_rows(data);
            $('.loading').hide(); 
         },
         error: function (xhr, status, error) {
@@ -261,20 +338,7 @@ function FichaTrabajador(dni,plaza){
     });
 }
 
-function doesFileExist(urlimg){
-    var xhr = new XMLHttpRequest();
-    var url=location.href+urlimg;
-    xhr.open('HEAD', url, false);
-    xhr.send();
-    if (xhr.status == "404") {
-        urlimg=location.href+"/../../uploads/img/no_avatar.jpg";        
-        return urlimg;
-    } else {
-        return url;
-    }
-}
-
-function dibujafichajob(data) { 
+function FichaTrabajador_rows(data) { 
     var xy=0;
     var tableHtml="";
     var htmltitle="";
@@ -315,63 +379,24 @@ function dibujafichajob(data) {
         });    
        }else{
         $("#divmsjeerror").html('<div class="alert alert-danger" role="alert"></span> No existe registros</div>').fadeIn().delay(3000).fadeOut('slow');
+
     }
    
 }
-
-
-function GetRpteGeneral(){
-	//reg = $("#idregimen").val();
-	est = $("#idestado").val();
-	$("#idtxtEstado").val(est);
-
-	console.log("===>"+est);
-	$.get('../api/reportes/rplazas/'+est,function(dataDet){
-		var tableHtml='';
-		var xy=0;       		
-       	var ErrorHtml='<div class="alert alert-danger alert-dismissable margin5"><strong>Ups</strong> no existe registros!</div>';
-       	tableHtml +='<table  class="table dataTable no-footer dtr-inline">'+
-                                        '<thead>'+
-                                            '<tr class="filters">'+
-                                                '<th>#</th>'+
-                                                '<th>ESTRUCTURA</th> '+
-                                                '<th>DEPENDENCIA</th>'+
-                                                '<th>#PLAZA</th>'+
-                                                '<th>CARGO</th>'+  
-                                                '<th>#DNI</th>'+
-                                                '<th>NOMBRES</th>'+                                                
-                                                '<th>ESTADO</th>'+
-                                                '<th>RÉGIMEN</th>'+                     
-                                            '</tr>'+
-                                        '</thead>'+
-                                        '<tbody>';
-       	if(dataDet.length!=0){    
-       	if(est=="1")	 htmlHead ='<div class="alert alert-danger alert-dismissable margin5"><strong>Para consultar las plazas activas se recomienda exportar a excel; considerando que la cantidad de registros es extenso.</div>'; else htmlHead='';
-       		$('#IdMsjeLimit').html(htmlHead).fadeIn().delay(4000).fadeOut('slow');;	
-
-			for (var i=0; i < dataDet.length; i++) 	{
-				xy++; 							
-				tableHtml += '<tr>'+
-							 '<td>'+xy+'</td>'+							
-							 '<td>'+dataDet[i].IdEstructura+'</td>'+					
-							 '<td>'+dataDet[i].Descripcion+' </td>'+						
-							 '<td>'+dataDet[i].NroPlaza+' </td> '+							
-							 '<td>'+dataDet[i].Cargo+' </td> '+					
-							 '<td>'+dataDet[i].dni+'</td> '+							 
-							 '<td>'+dataDet[i].nombres+'</td> '+	
-							 '<td>'+dataDet[i].EstadoPlaza+'</td> '+						
-							 '<td>'+dataDet[i].Regimen+'</td>'+
-							 '</tr>';
-				$('#IdShowRptePlazas').html(tableHtml);	
-			}
-		}else{
-			$('#IdShowRptePlazas').html(ErrorHtml);
-		}
-			tableHtml +=' </tbody></table>';
-			$('#IdShowRptePlazas').html(tableHtml);	
-	});	
-	
+//=====================================================================================
+function doesFileExist(urlimg){
+    var xhr = new XMLHttpRequest();
+    var url=location.href+urlimg;
+    xhr.open('HEAD', url, false);
+    xhr.send();
+    if (xhr.status == "404") {
+        urlimg=location.href+"/../../uploads/img/no_avatar.jpg";        
+        return urlimg;
+    } else {
+        return url;
+    }
 }
+// =========================================================================================
 
 // =================================================
 var paramstr = window.location.search.substr(1);

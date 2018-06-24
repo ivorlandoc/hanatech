@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\Facade;
 use Illuminate\Database\Eloquent\Model;
 use DB;
+use Sentinel;
 USE json;
 use Response;
 use input;
@@ -23,6 +24,8 @@ class RptealtabajasController extends Controller {
     }
 
  public function getallrptealtabajas(Request $request){ 
+      $IdUser = Sentinel::findById(Sentinel::getUser()->id);
+      $IdEstrUser=$IdUser->IdEstructura;
       if($request->ajax()) {                
                 $idAltaB       = $request->input("idbajaalta");
                 $idPeriodo     = $request->input("idperiodo");                
@@ -30,7 +33,7 @@ class RptealtabajasController extends Controller {
                   $idConcept     = $request->input("IdConceptoa"); 
                     $data=DB::select("
                       SELECT 
-                          IF(p.IdRegimen='9',(SELECT Descripcion FROM estructura WHERE IdEstructura=h.IdEstructura),(SELECT Descripcion FROM estructura WHERE LEFT(IdEstructura,4)=LEFT((SELECT IdEstructura FROM estructura WHERE IdEstructura=h.IdEstructura),4) LIMIT 1)) AS organo,
+                          (SELECT Descripcion FROM estructura WHERE IdEstructura=h.IdEstructura),(SELECT Descripcion FROM estructura WHERE LEFT(IdEstructura,4)=LEFT((SELECT IdEstructura FROM estructura WHERE IdEstructura=h.IdEstructura),4) LIMIT 1) AS organo,
                           h.IdPersona,
                           apellidoPat,
                           ApellidoMat,
@@ -46,12 +49,13 @@ class RptealtabajasController extends Controller {
                           FROM historiamovimiento AS h INNER JOIN persona AS p ON p.IdPersona=h.IdPersona
                           WHERE  
                           IdTipoMov <>'' AND if(LEFT('$idPeriodo',2)='--',FechaMov LIKE '%',MONTH(FechaMov)=LEFT('$idPeriodo',2)) AND YEAR(FechaMov) =RIGHT('$idPeriodo',4) AND IdTipoMov LIKE '$idConcept%'
+                          and IdEstructura LIKE '$IdEstrUser%' 
                         ");
                 }else {
                   $idConcept     = $request->input("IdConceptob"); 
                     $data=DB::select("
                       SELECT 
-                        IF(p.IdRegimen='9',(SELECT Descripcion FROM estructura WHERE IdEstructura=h.IdEstructura),(SELECT Descripcion FROM estructura WHERE LEFT(IdEstructura,4)=LEFT((SELECT IdEstructura FROM estructura WHERE IdEstructura=h.IdEstructura),4) LIMIT 1)) AS organo,
+                       (SELECT Descripcion FROM estructura WHERE IdEstructura=h.IdEstructura),(SELECT Descripcion FROM estructura WHERE LEFT(IdEstructura,4)=LEFT((SELECT IdEstructura FROM estructura WHERE IdEstructura=h.IdEstructura),4) LIMIT 1) AS organo,
                         h.IdPersona,
                         apellidoPat,
                         ApellidoMat,Nombres,
@@ -65,7 +69,7 @@ class RptealtabajasController extends Controller {
                         (SELECT Sigla FROM regimen WHERE IdRegimen=p.IdRegimen)AS regimen 
                       FROM historiamovimiento AS h INNER JOIN persona AS p ON p.IdPersona=h.IdPersona
                       WHERE  
-                      IdTipoBaja <>'' AND if (LEFT('$idPeriodo',2)='--',FechaMov LIKE '%',MONTH(FechaMov)=LEFT('$idPeriodo',2)) AND YEAR(FechaMov) =RIGHT('$idPeriodo',4) AND IdTipoBaja LIKE '$idConcept%'
+                      IdTipoBaja <>'' AND if (LEFT('$idPeriodo',2)='--',FechaMov like '%',MONTH(FechaMov)=LEFT('$idPeriodo',2)) AND YEAR(FechaMov) =RIGHT('$idPeriodo',4) AND IdTipoBaja like '$idConcept%'  and IdEstructura like '$IdEstrUser%' 
                   ");
                   }
                 return response()->json($data);

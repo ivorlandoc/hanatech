@@ -2,7 +2,7 @@
 
 {{-- Page title --}}
 @section('title')
-    User Account
+    User Account | Hanatech
     @parent
 @stop
 

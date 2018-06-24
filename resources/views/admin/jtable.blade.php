@@ -2,7 +2,7 @@
 
 {{-- Page title --}}
 @section('title')
-    JS Charts
+    JS Charts | Hanatech
     @parent
 @stop
 

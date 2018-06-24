@@ -2,7 +2,7 @@
 
 {{-- Page title --}}
 @section('title')
-Contacto
+Contacto | Hanatech
 @parent
 @stop
 
@@ -16,7 +16,7 @@ Contacto
 {{-- breadcrumb --}}
 @section('top')
     <div class="breadcum">
-        <div class="container">
+       <!-- <div class="container">
             <ol class="breadcrumb">
                 <li>
                     <a href="{{ route('home') }}"> <i class="livicon icon3 icon4" data-name="home" data-size="18" data-loop="true" data-c="#3d3d3d" data-hc="#3d3d3d"></i>Dashboard
@@ -30,7 +30,7 @@ Contacto
             <div class="pull-right">
                 <i class="livicon icon3" data-name="cellphone" data-size="20" data-loop="true" data-c="#3d3d3d" data-hc="#3d3d3d"></i> Contacto
             </div>
-        </div>
+        </div>-->
     </div>
 @stop
 
@@ -38,16 +38,17 @@ Contacto
 {{-- Page content --}}
 @section('content')
     <!-- Map Section Start -->
-   <div class="">
+   <!--<div class="">
         <div id="map" style="width:100%; height:400px;"></div>
-    </div>
+    </div>-->
     <!-- //map Section End -->
     <!-- Container Section Start -->
+   
     <div class="container">
         <div class="row">
             <!-- Contact form Section Start -->
-            <div class="col-md-6">
-                <h2>Formulario de Contacto</h2>
+            <div class="col-md-6"> 
+                <h2>Contacto</h2>
                 <!-- Notifications -->
                 <div id="notific">
                 @include('notifications')
@@ -55,24 +56,31 @@ Contacto
                 <form class="contact" id="contact" action="{{route('contact')}}" method="POST">
                     <input type="hidden" name="_token" value="{{ csrf_token() }}" />
                     <div class="form-group">
-                        <input type="text" name="contact-name" class="form-control input-lg" placeholder="Tu Nombre" required>
+                        <input type="text" name="contact-name" class="form-control input-lg" placeholder="Apellidos y Nombres*" required style="height:55px">
                     </div>
                     <div class="form-group">
-                        <input type="email" name="contact-email" class="form-control input-lg" placeholder="Tu email" required>
+                        <input type="email" name="contact-email" class="form-control input-lg" placeholder="Email*" required style="height:55px">
+                    </div>
+                     <div class="form-group">
+                        <input type="text" name="contact-asunto" class="form-control input-lg" placeholder="Asunto*" required style="height:55px">
                     </div>
                     <div class="form-group">
-                        <textarea name="contact-msg" class="form-control input-lg no-resize resize_vertical" rows="5" placeholder="Tu comentario" required></textarea>
+                        <textarea name="contact-msg" class="form-control input-lg no-resize resize_vertical" rows="5" placeholder="Mensaje" required></textarea>
                     </div>
-                    <div class="input-group">
-                        <button class="btn btn-primary" type="submit">Enviar</button>
-                        <button class="btn btn-danger" type="reset">Reset</button>
+                    <div class="login button">
+                        <button class="btn btn-success btn-lg btn-block" type="submit">Enviar</button>
+                        
                     </div>
                 </form>
             </div>
             <!-- //Conatc Form Section End -->
+            <div class="col-md-6" >
+                
+            </div>
             
         </div>
     </div>
+
     
 @stop
 

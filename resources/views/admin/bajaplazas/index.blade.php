@@ -26,6 +26,12 @@ Baja de Plazas
 <link rel="stylesheet" href="{{ asset('assets/vendors/Buttons/css/buttons.css') }}" />
 <link rel="stylesheet" href="{{ asset('assets/css/pages/buttons.css') }}" />
 <link rel="stylesheet" href="{{ asset('assets/css/pages/advbuttons.css') }}" />
+
+<!-- ========================-->
+<!-- <link href="{{ asset('assets/vendors/modal/css/component.css') }}" rel="stylesheet"/>
+ <link href="{{ asset('assets/css/pages/advmodals.css') }}" rel="stylesheet"/>
+<link rel="stylesheet" type="text/css" href="{{ asset('assets/vendors/awesomeBootstrapCheckbox/awesome-bootstrap-checkbox.css') }}"/>
+<link href="{{ asset('assets/vendors/sweetalert/css/sweetalert.css') }}" rel="stylesheet" type="text/css" />-->
 <style type="text/css"> input {text-transform:uppercase;></style>
 
 @stop
@@ -213,7 +219,7 @@ Baja de Plazas
                                
                                 <div class="btn-group btn-group-lg">   
                                     <button type="submit" class="alert alert-success alert-dismissable margin5" id="IdSavebajaPlaza">Guardar Baja</button> 
-                                    <a href="{{ URL::to('admin/bajaplazas') }}" class="alert alert-info alert-dismissable margin5"> Retorna a buscar[Salir]</a>
+                                    <a href="{{ URL::to('admin/bajaplazas') }}" class="alert alert-info alert-dismissable margin5"> Nuevo | Salir</a>
                                 </div>
                                  <div id="Idmessage"></div> 
                            </form>                                
@@ -269,6 +275,10 @@ Baja de Plazas
 <script src="{{ asset('assets/vendors/datetimepicker/js/bootstrap-datetimepicker.min.js') }}" type="text/javascript"></script>
 <script src="{{ asset('assets/vendors/clockface/js/clockface.js') }}" type="text/javascript"></script>
 <script src="{{ asset('assets/vendors/jasny-bootstrap/js/jasny-bootstrap.js') }}" type="text/javascript"></script>
+<!--
+<script src="{{ asset('assets/vendors/sweetalert/js/sweetalert.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('assets/vendors/sweetalert/js/sweetalert-dev.js') }}" type="text/javascript"></script>
+<script src="{{ asset('assets/js/pages/custom_sweetalert.js') }}" type="text/javascript"></script>-->
 
 <script>    
     /* ======= recibe las variables enviadas por la url====*/

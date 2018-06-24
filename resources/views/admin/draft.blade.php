@@ -2,7 +2,7 @@
 
 {{-- Page title --}}
 @section('title')
-Mail Box
+Mail Box | Hanatech
 @parent
 @stop
 

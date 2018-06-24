@@ -36,8 +36,9 @@ class AltadeplazaController extends JoshController {
 		    $groups = Sentinel::getRoleRepository()->all();
         	$countries = $this->countries;
             $data=DB::table('estructura')->select('IdEstructura','Descripcion')->where(DB::raw('LENGTH(IdEstructura)'), '=', "4")
-            ->where('IdEstructura', 'like', $IdEstrUser."%")->get();            
-        return view('admin.altaplaza.index', compact('groups', 'countries', 'idUserSession','data'));
+            ->where('IdEstructura', 'like', $IdEstrUser."%")->get();   
+            $dataEsp=DB::table('especialidad')->select('IdEspecialidad','Descripcion')->orderBy('IdEspecialidad')->get();         
+        return view('admin.altaplaza.index', compact('groups', 'countries', 'idUserSession','data','dataEsp'));
     }
      public function getEstructura($id){       
        //$data=DB::table('estructura')->select('IdEstructura','Descripcion')->where('IdEstructura', 'like', "__00000000")->get();    
@@ -48,7 +49,7 @@ class AltadeplazaController extends JoshController {
 
     public function getPlaza($id){   
         $data = DB::select("
-            SELECT CONVERT(IdPlaza, CHAR(6)) AS IdPlaza,
+             SELECT CONVERT(IdPlaza, CHAR(6)) AS IdPlaza,
             IdPersona,
             IdEstructura,
                 (SELECT Descripcion FROM estructura WHERE LEFT(IdEstructura,2)=LEFT((SELECT IdEstructura FROM estructura WHERE IdEstructura=c.IdEstructura),2) LIMIT 1) AS sede,
@@ -59,9 +60,13 @@ class AltadeplazaController extends JoshController {
                 (SELECT Descripcion FROM estructura WHERE IdEstructura=c.IdEstructura ) AS descrip,
                 c.IdCargo,
                 NroPlaza, 
+                IF(Fechacese>=(SELECT fecha FROM periodopresupuestos WHERE estado='1' LIMIT 1) AND IdEstadoPlaza ='2' ,'SI','NO') AS sino,
                 IF(ca.IdTipo='1','ADMINISTRATIVO','ASISTENCIAL') AS tipo, 
                 IdNivel,
-                ca.Descripcion AS cargo 
+                ca.Descripcion AS cargo,
+                IF(SubIdEstadoPlaza IS NULL,'',SubIdEstadoPlaza) AS SubIdEstadoPlaza,
+                IF((SELECT Descripcion FROM estadoPlaza WHERE IdEstadoPlaza=SubIdEstadoPlaza) IS NULL,' ',(SELECT Descripcion FROM estadoPlaza WHERE IdEstadoPlaza=SubIdEstadoPlaza)) AS desSubEstado,
+                IF(Observ IS NULL,' ',Observ) AS Observ
                 FROM cuadronominativo AS c 
                 INNER JOIN cargo ca ON ca.IdCargo=c.IdCargo 
                 WHERE NroPlaza='$id'"
@@ -95,7 +100,7 @@ public function ProcesaInsertAlta(Request $Request){
             if($Request->ajax()){           
                 //=======Datos para insert persona====================
                 
-                $_CheckboxFlat      = $Request->input("flatcheckbox");
+               // $_CheckboxFlat      = $Request->input("flatcheckbox");
               //  $_IdPersona         = $__IdPersona;  
                 $_IdTipoDoc         = $Request->input("IdTipoDocument");
                 $_Nrodni            = $Request->input("nrodocumento");
@@ -133,9 +138,9 @@ public function ProcesaInsertAlta(Request $Request){
                 if($CheckDni!=""){
                     $Resp=DB::table('persona')->where('Dni', $_Nrodni)->update([
                         'IdTipoDocumento'   =>$_IdTipoDoc, 
-                        'ApellidoPat'       =>$_ApellidoPat,
-                        'ApellidoMat'       =>$_ApellidoMat, 
-                        'Nombres'           =>$_Nombres,
+                        'ApellidoPat'       =>strtoupper($_ApellidoPat),
+                        'ApellidoMat'       =>strtoupper($_ApellidoMat), 
+                        'Nombres'           =>strtoupper($_Nombres),
                         'FechaNac'          =>Carbon::parse($_FechaNac)->format('Y-m-d H:i:s'), 
                        //'FechaIngreso'      =>Carbon::parse($_FechaAlta)->format('Y-m-d H:i:s'), 
                         'IdRegimen'         =>$_Regimen, 
@@ -157,17 +162,17 @@ public function ProcesaInsertAlta(Request $Request){
                         'IdPersona'         => $IdPersona,
                         'IdTipoDocumento'   => $_IdTipoDoc,
                         'Dni'               => $_Nrodni,
-                        'ApellidoPat'       => $_ApellidoPat,
-                        'ApellidoMat'       => $_ApellidoMat,
-                        'Nombres'           => $_Nombres,
+                        'ApellidoPat'       => strtoupper($_ApellidoPat),
+                        'ApellidoMat'       => strtoupper($_ApellidoMat),
+                        'Nombres'           => strtoupper($_Nombres),
                         'FechaNac'          => Carbon::parse($_FechaNac)->format('Y-m-d H:i:s'),
                         'FechaIngreso'      => Carbon::parse($_FechaAlta)->format('Y-m-d H:i:s'),                    
                         'IdRegimen'         => $_Regimen,
                         'Genero'            => $_Genero,                   
                         'IdProfesion'       => $_Carreraprof,
-                        'Especialidad'      => $_Especialidad,
+                        'Especialidad'      => strtoupper($_Especialidad),
                         'IdPais'            => $_IdPais,
-                        'Direccion'         => $_Direccion,
+                        'Direccion'         => strtoupper($_Direccion),
                         'Residentado'       => $_idresid,
                         'IdUsuario'         => $UserSession->email,
                         'updated_at'        =>date('Y-m-d H:i:s'),
@@ -176,10 +181,11 @@ public function ProcesaInsertAlta(Request $Request){
                         $_IdPersona=$IdPersona;
                 }                              
                 // ===Asignamos la persona a la plaza en elnominativo========== 
-                if($_CheckboxFlat=="0"){
+               // if($_CheckboxFlat=="0"){
                         if($Resp==1){
                                 if($_IdPersona!=""){
-                                        if($_TipoAlta=="24"){
+                                        // TEMPORAL
+                                        if($_TipoAlta=="24"){ 
                                             $aff=DB::table('cuadronominativo')->where('NroPlaza', $_NroPlaza)->where('IdCargo', $_IdCargo)
                                             ->update([
                                                         'IdPersona'     =>$_IdPersona,
@@ -187,23 +193,34 @@ public function ProcesaInsertAlta(Request $Request){
                                                         'IdEstadoPlaza' =>"1",
                                                         'FechaInicio'   =>Carbon::parse($_FechaAlta)->format('Y-m-d'),
                                                         'FechaCese'     =>"1000-01-01",
-                                                        'Flat'          =>'(NULL)',
+                                                        'Edan'              =>"-",
+                                                        'SubIdEstadoPlaza'  =>'',
+                                                        'Observ'            =>'',
+                                                        'Flat'              =>'(NULL)',
                                                         'IdUsuario'     =>$UserSession->email,
                                                         'Ip'            =>$ipAddress,
                                                         'updated_at'    =>date('Y-m-d H:i:s'),
                                                         'created_at'    =>date('Y-m-d H:i:s')
                                                         ]);
-                                        }else{
-                                             $aff=DB::table('cuadronominativo')->where('NroPlaza', $_NroPlaza)->where('IdCargo', $_IdCargo) //->where('IdEstructura',$_IdEstructura)
+                                        }else{ // hasta aqui
+                                            $edan="";
+                                            if($_TipoAlta=="12"){$edan="E";} 
+                                            else if($_TipoAlta=="13"){$edan="A";}
+                                            else if($_TipoAlta=="14"){$edan="D";}
+                                            else{$edan="-";}
+                                             $aff=DB::table('cuadronominativo')->where('NroPlaza', $_NroPlaza)->where('IdCargo', $_IdCargo) //->where('IdEstructura',$_IdEstructura)                                            
                                             ->update([
-                                                        'IdPersona'     =>$_IdPersona,
-                                                        'IdEstadoPlaza' =>"1",
-                                                        'FechaInicio'   =>Carbon::parse($_FechaAlta)->format('Y-m-d'),
-                                                        'FechaCese'     =>"1000-01-01",
-                                                        'IdUsuario'     =>$UserSession->email,
-                                                        'Ip'            =>$ipAddress,
-                                                        'updated_at'    =>date('Y-m-d H:i:s'),
-                                                        'created_at'    =>date('Y-m-d H:i:s')
+                                                        'IdPersona'         =>$_IdPersona,
+                                                        'IdEstadoPlaza'     =>"1",
+                                                        'FechaInicio'       =>Carbon::parse($_FechaAlta)->format('Y-m-d'),
+                                                        'FechaCese'         =>"1000-01-01",
+                                                        'Edan'              =>$edan,
+                                                        'SubIdEstadoPlaza'  =>'',
+                                                        'Observ'            =>'',
+                                                        'IdUsuario'         =>$UserSession->email,
+                                                        'Ip'                =>$ipAddress,
+                                                        'updated_at'        =>date('Y-m-d H:i:s'),
+                                                        'created_at'        =>date('Y-m-d H:i:s')
                                                         ]);
                                         }
                                     }
@@ -230,7 +247,7 @@ public function ProcesaInsertAlta(Request $Request){
                                             'IdTipoBaja'    => "",
                                             'FechaDocRef'   => Carbon::parse($_FechaAlta)->format('Y-m-d H:i:s'),
                                             'FechaMov'      => date('Y-m-d H:i:s'),
-                                            'DocRef'        => $_ObserAlta,
+                                            'DocRef'        => strtoupper($_ObserAlta),
                                             'FileAdjunto'   => $name,
                                             'Observacion'   => "",
                                             'IdUsuario'     => $UserSession->email,
@@ -240,7 +257,7 @@ public function ProcesaInsertAlta(Request $Request){
                                         ]);
                                 //}
                         }
-                }
+               // }
 
                 if($Resp)                  
                     return Response::json($Resp); // redirect()->route('admin.gesplazas.index')->with('success','La operación se realizó con éxito!');  

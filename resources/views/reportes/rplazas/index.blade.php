@@ -80,7 +80,7 @@ Reporte  - Plazas
                           </div>
 
                          <div class="form-group">                                   
-                                <select id="idestado" class="form-control select2" name="idestado" onchange="ajaxloadplazas()">
+                                <select id="idestado" class="form-control select2" name="idestado">
                                     <option value="">Elige el  Critério</option>
                                     @foreach($dataE as $key) 
                                         <option value="{{ $key->IdEstadoPlaza }}">{{ $key->IdEstadoPlaza }} | {{ $key->Descripcion }}</option>
@@ -88,9 +88,18 @@ Reporte  - Plazas
                                 </select>
                                 
                           </div>
+                           <div class="form-group">                                   
+                                <select id="Subidestado" class="form-control select2" name="Subidestado" onchange="ajaxloadplazas()">
+                                    <option value="">Elige el  Critério</option>
+                                    @foreach($dataSub as $keys) 
+                                        <option value="{{ $keys->IdEstadoPlaza }}">{{ $keys->IdEstadoPlaza }} | {{ $keys->Descripcion }}</option>
+                                    @endforeach
+                                </select>
+                                
+                          </div>
                                    
                           <div class="form-group">
-                              <a href="{{route('reportes.rplazas.index',1)}}" class="btn btn-sm btn-primary">Exportar a Excel[En Desarrollo]</a>   
+                              <a href="{{route('reportes.rplazas.index',1)}}" class="btn btn-sm btn-primary">Exportar a Excel[Cuadro Plazas Vacantes]</a>   
                           </div> 
 
                            {{ Form::close()}}

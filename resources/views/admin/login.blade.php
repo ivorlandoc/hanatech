@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>Login</title>
+    <title>Login | Hanatech</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- global level css -->
     <link href="{{ asset('assets/css/bootstrap.min.css') }}" rel="stylesheet" />
@@ -37,7 +37,9 @@
                                     
                                     <!-- CSRF Token -->
                                     <!-- <h3>Inicio de sesión</h3>-->
-                                     <h3>SIGE-RH</h3>
+                                    <h3>SIGE-RH</h3>
+                                    <!-- <h3>Hanatech</h3>-->
+                                    
 
                                     <input type="hidden" name="_token" value="{{ csrf_token() }}" />
                                 <div class="form-group {{ $errors->first('email', 'has-error') }}">
@@ -67,7 +69,7 @@
                                     </label>
                                 </div>
                                 <p class="login button">
-                                    <input type="submit" value="Entrar" class="btn btn-primary" /> <!-- class="btn btn-info" -->
+                                    <input type="submit" value="Entrar" class="btn btn-success" /> <!-- class="btn btn-info" -->
                                 </p>
                                <!-- <p class="change_link">
                                     <a href="#toforgot">

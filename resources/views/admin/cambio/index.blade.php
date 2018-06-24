@@ -119,7 +119,7 @@ Cambio de Denominación
                                         <select id="_selectCargo" class="form-control select2" name="_selectCargo">
                                             <option value="">Elegir el Cargo</option>
                                             @foreach($data as $key) 
-                                                <option value="{{ $key->IdCargo }}">{{ $key->IdCargo }} | {{ $key->Descripcion }}</option>
+                                                <option value="{{ $key->IdCargo }}"> {{ $key->Descripcion }}</option>
                                             @endforeach
                                         </select>  
                                     </div>
@@ -161,7 +161,7 @@ Cambio de Denominación
                                 <div class="input-group select2-bootstrap-append"> 
                                     <div class="btn-group btn-group-lg">
                                         <button type="button" class="alert alert-success alert-dismissable margin5" id="saveintegrarplaza" onclick="SaveChangeDonominacion()">Guardar los Cambios</button>
-                                        <a href="{{ URL::to('admin/cambio') }}" class="alert alert-info alert-dismissable margin5" id="SalirChange" >[Salir]</a>
+                                        <a href="{{ URL::to('admin/cambio') }}" class="alert alert-info alert-dismissable margin5" id="SalirChange" >Nuevo | Salir</a>
                                     </div> 
                                 </div>
 

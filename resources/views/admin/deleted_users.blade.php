@@ -2,7 +2,7 @@
 
 {{-- Page title --}}
 @section('title')
-Usuarios Eliminados
+Usuarios Eliminados | Hanatech
 @parent
 @stop
 

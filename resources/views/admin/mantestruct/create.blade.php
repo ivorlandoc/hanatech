@@ -107,16 +107,20 @@ Población
                       
                            <input type="hidden" name="idUserSession" value="{{ $idUserSession }}">                            
                                      <input type="hidden" name="token" value="{{ csrf_token()}}">
-                                    <div class="form-group">                                
+                                   <!-- <div class="form-group">                                
                                         <select id="sel1" name="sel1" class="form-control">
-                                            <option value="">Elegir</option>
+                                            <option value="">Elegir ---</option>
                                            
                                         </select>
-                                    </div>
+                                    </div>-->
 
                                     <div class="form-group">                                    
                                         <select id="sel2" name="sel2" class="form-control">
                                             <option value="">Elegir</option>
+                                             @foreach ($getDosDig as $getAll) 
+                                            <option value="{{ $getAll->IdEstructura }}">{{ $getAll->IdEstructura }} | {{ $getAll->Descripcion }}</option>
+                                            @endforeach 
+
                                         </select>
                                     </div>
 
@@ -146,7 +150,7 @@ Población
                                     </div>
 
 
-                                    <div id="groupChanger" style="display:none;">
+                                    <div id="groupChanger" style="display:block;">
                                         <div class="form-group"> 
                                             <input type="text" name="txtreferencia" id="txtreferencia" class="form-control" placeholder="Ingrese el doc. de referencia">
                                         </div>

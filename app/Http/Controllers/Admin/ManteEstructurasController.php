@@ -47,10 +47,9 @@ public function GetSelect($id){
         } elseif (strlen($id)=="4") { 
              $data=DB::table('estructura')->select('IdEstructura','Descripcion')->where(DB::raw('LENGTH(IdEstructura)'), '=', "6")->where('IdEstructura', 'like', $id.'%')->get();
          }elseif (strlen($id)=="6") {           
-            $data=DB::table('estructura')->select('IdEstructura','Descripcion')->where(DB::raw('LENGTH(IdEstructura)'), '=', "8")->where('IdEstructura', 'like', $id.'%')->get();//->groupBy('NewCodigo')->get();
+            $data=DB::table('estructura')->select('IdEstructura','Descripcion')->where(DB::raw('LENGTH(IdEstructura)'), '=', "8")->where('IdEstructura', 'like', $id.'%')->get();           
         } elseif (strlen($id)=="8" ) {
           $data=DB::table('estructura')->select('IdEstructura','Descripcion')->where(DB::raw('LENGTH(IdEstructura)'), '=', "10")->where('IdEstructura', 'like', $id.'%')->get();
-               
          } elseif (strlen($id)=="10" ) {     
           $data=DB::table('estructura')->select('IdEstructura','Descripcion')->where(DB::raw('LENGTH(IdEstructura)'), '=', "12")->where('IdEstructura', 'like', $id.'%')->get();       
          }   
@@ -122,7 +121,7 @@ function updateOficinaEstruct(Request $Request){
                 $GetCod     =DB::table('estructura')->where(DB::raw('LENGTH(IdEstructura)'), '=', "8")->where('IdEstructura','like',"$_idest".'%')->select(DB::raw('IF(LPAD(MAX(IdEstructura)+1,8,"0") IS NULL,CONCAT("'.$_idest.'","01"),LPAD(MAX(IdEstructura)+1,8,"0")) AS idmax'))->get('idmax');
                 $maxCod="";
                 foreach ($GetCod as $key) $maxCod  =$key->idmax; 
-                showdetalleestructura($Request,3);
+               // showdetalleestructura($Request,3);
               }
 
               if($_flat==4){ // add estructura de 4 digitos
@@ -147,7 +146,7 @@ function updateOficinaEstruct(Request $Request){
               if($_flat==1 || $_flat==2 || $_flat==3 || $_flat==4 || $_flat==5 ){
                 $aff = DB::table('estructura')->insert([
                                     'IdEstructura'  => $maxCod,
-                                    'Descripcion'   => $Nombre,  
+                                    'Descripcion'   => strtoupper($Nombre),  
                                     'Flag'          => "w",                                                        
                                     'IdUsuario'     => $UserSession->email,
                                     'Ip'            => $ipAddress,
@@ -197,22 +196,39 @@ function addNewEstructura(Request $Request){
       }
 */
 
-public function create(){ 
-    $idUserSession = Sentinel::getUser()->id;   //almacena id de sesion activa  
-  return view('admin.mantestruct.create',compact('idUserSession'));
+public function create(Request $Request){ 
+
+  $idUserSession = Sentinel::getUser()->id;   //almacena id de sesion activa
+
+  $IdUser = Sentinel::findById(Sentinel::getUser()->id);
+  $IdEstrUser=$IdUser->IdEstructura."%";
+
+    $getDosDig=DB::table('estructura')->select('IdEstructura','Descripcion')->where(DB::raw('LENGTH(IdEstructura)'), '=', "4")->where('IdEstructura', 'like', $IdEstrUser)->get();  
+  return view('admin.mantestruct.create',compact('getDosDig','idUserSession'));
 }
 
   function getresult_change(Request $Request,$id){
      if($Request->ajax()){   
-          $data=DB::select("SELECT Dni, CONCAT(ApellidoPat,' ', ApellidoMat,' ',Nombres) AS nombres,CONVERT(IdPlaza,CHAR(6)) AS IdPlaza, IdEstructura,IdNivel,cu.IdCargo,car.Descripcion as cargo, cu.IdPersona,
-                      (SELECT Descripcion FROM estructura WHERE LEFT(IdEstructura,4)=LEFT(cu.IdEstructura,4) LIMIT 1) AS organo,
-                      (SELECT Descripcion FROM estructura WHERE LEFT(IdEstructura,6)=LEFT(cu.IdEstructura,6) LIMIT 1) AS dep,
-                      (SELECT Descripcion FROM estructura WHERE LEFT(IdEstructura,8)=LEFT(cu.IdEstructura,8) LIMIT 1) AS centro,
-                      (SELECT Descripcion FROM estructura WHERE LEFT(IdEstructura,10)=LEFT(cu.IdEstructura,10) LIMIT 1) AS oficina,
-                      (SELECT Descripcion FROM estructura WHERE IdEstructura=cu.IdEstructura limit 1) AS descrip
+          $data=DB::select("
+                  SELECT 
+                        Dni,
+                        CONCAT(ApellidoPat,' ', ApellidoMat,' ',Nombres) AS nombres,
+                        CONVERT(IdPlaza,CHAR(6)) AS IdPlaza,
+                        IdEstructura,
+                        IdNivel,
+                        cu.IdCargo,
+                        car.Descripcion AS cargo, 
+                        cu.IdPersona,
+                        (SELECT Descripcion FROM estructura WHERE LEFT(IdEstructura,4)=LEFT((SELECT IdEstructura FROM estructura WHERE IdEstructura=cu.IdEstructura),4) LIMIT 1) AS organo,
+                        (SELECT Descripcion FROM estructura WHERE LEFT(IdEstructura,6)=LEFT((SELECT IdEstructura FROM estructura WHERE IdEstructura=cu.IdEstructura),6) LIMIT 1) AS dep,
+                        (SELECT Descripcion FROM estructura WHERE LEFT(IdEstructura,8)=LEFT((SELECT IdEstructura FROM estructura WHERE IdEstructura=cu.IdEstructura),8) LIMIT 1) AS centro,
+                        (SELECT Descripcion FROM estructura WHERE LEFT(IdEstructura,10)=LEFT((SELECT IdEstructura FROM estructura WHERE IdEstructura=cu.IdEstructura),10) LIMIT 1) AS oficina,
+                        (SELECT Descripcion FROM estructura WHERE LEFT(IdEstructura,12)=LEFT((SELECT IdEstructura FROM estructura WHERE IdEstructura=cu.IdEstructura),10) LIMIT 1) AS descrip
                       FROM persona AS p LEFT JOIN  cuadronominativo AS cu ON p.IdPersona=cu.IdPersona
                       INNER JOIN cargo AS car ON car.IdCargo=cu.IdCargo
-                       WHERE (Dni LIKE '$id%' OR CONCAT(ApellidoPat,' ', ApellidoMat,' ',Nombres) LIKE '$id%') AND IdEstadoPlaza='1' limit 20");
+                      WHERE IdEstadoPlaza='1'
+                      HAVING Dni like '$id%' or nombres lIKE '$id%'  limit 20"
+                    );
         }                            
          return Response::json($data); 
       }

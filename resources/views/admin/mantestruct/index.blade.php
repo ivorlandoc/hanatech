@@ -36,7 +36,7 @@ Banco de Estructuras
     </ol>
 </section>
 
-<!-- Main content -->
+<!-- Main content --> 
 <section class="content paddingleft_right15">
     <div class="row">
         <div class="panel panel-primary "> 
@@ -78,7 +78,7 @@ Banco de Estructuras
                                        <span class="input-group-btn"><!-- onclick=viewEstructuraEnPdf() -->
                                                 <a href="javascript:void(0)" data-toggle="modal" onclick="showdepen()">
                                                     <button class="btn btn-default" type="button" data-select2-open="single-append-text" >
-                                                        &nbsp<span class="glyphicon glyphicon-add"></span>&nbsp<b>+</b>
+                                                        &nbsp<span class="glyphicon glyphicon-plus"></span>
                                                     </button>
                                                 </a>
                                         </span>
@@ -134,7 +134,7 @@ Banco de Estructuras
                                              <span class="input-group-btn"><!-- onclick=viewEstructuraEnPdf() -->
                                                     <a href="javascript:void(0)" data-toggle="modal" onclick="showdepen2()">
                                                         <button class="btn btn-default" type="button" data-select2-open="single-append-text" >
-                                                            &nbsp<span class="glyphicon glyphicon-add"></span>&nbsp<b>+</b>
+                                                            &nbsp<span class="glyphicon glyphicon-plus"></span>
                                                         </button>
                                                     </a>
                                             </span>
@@ -190,7 +190,7 @@ Banco de Estructuras
                                      <span class="input-group-btn"><!-- onclick=viewEstructuraEnPdf() -->
                                             <a href="javascript:void(0)" data-toggle="modal" onclick="showdepen3()">
                                                 <button class="btn btn-default" type="button" data-select2-open="single-append-text">
-                                                    &nbsp<span class="glyphicon glyphicon-add"></span>&nbsp<b>+</b>
+                                                    &nbsp<span class="glyphicon glyphicon-plus"></span>
                                                 </button>
                                             </a>
                                     </span>
@@ -244,7 +244,7 @@ Banco de Estructuras
                                         <span class="input-group-btn"><!-- onclick=viewEstructuraEnPdf() -->
                                             <a href="javascript:void(0)" data-toggle="modal" onclick="showdepen4()">
                                                 <button class="btn btn-default" type="button" data-select2-open="single-append-text">
-                                                    &nbsp<span class="glyphicon glyphicon-add"></span>&nbsp<b>+</b>
+                                                    &nbsp<span class="glyphicon glyphicon-plus"></span>
                                                 </button>
                                             </a>
                                         </span>
@@ -298,7 +298,7 @@ Banco de Estructuras
                                         <span class="input-group-btn"><!-- onclick=viewEstructuraEnPdf() -->
                                             <a href="javascript:void(0)" data-toggle="modal" onclick="showdepen5()">
                                                 <button class="btn btn-default" type="button" data-select2-open="single-append-text">
-                                                    &nbsp<span class="glyphicon glyphicon-add"></span>&nbsp<b>+</b>
+                                                    &nbsp<span class="glyphicon glyphicon-plus"></span>
                                                 </button>
                                             </a>
                                         </span>

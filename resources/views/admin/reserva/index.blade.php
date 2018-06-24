@@ -20,6 +20,8 @@ Reserva de Plazas
  <link href="{{ asset('assets/css/loading.css') }}" rel="stylesheet" type="text/css" />
 
 <link href="{{ asset('assets/css/pages/timeline.css') }}" rel="stylesheet" />
+
+<link href="{{ asset('assets/vendors/sweetalert/css/sweetalert.css') }}" rel="stylesheet" type="text/css" />
 <style type="text/css"> input {text-transform:uppercase;></style>
 @stop
 
@@ -79,8 +81,10 @@ Reserva de Plazas
                        
                             <input type="hidden" name="idUserSession" value="{{ $idUserSession }}">                        
                             <div id="ShowDataHead" style="display:none;"> 
+                                <div class="form-group" id="IdSpaceHead">  
 
-                                <div class="form-group" id="IdSpaceHead">                                
+
+
                                     <div class="loading">
                                         <i class="fa fa-refresh fa-spin fa-2x fa-tw"></i>
                                         <br>
@@ -103,73 +107,76 @@ Reserva de Plazas
 
                                                     </span>
                                               </div>
-
                                     </div>  
 
-                                    <div class="form-group">                                            
-                                            <label for="formEmail">DEPENDENCIA</label>                                 
-                                           <div id="IdDivDependencia"></div>
-                                    </div>
 
-                                    <div class="form-group">
-                                            <label for="formEmail">NIVEL</label>                                 
-                                           <div id="IdDivNivel"></div>
-                                    </div>
 
-                                    <div class="form-group">
-                                            <label for="formEmail">CARGO</label>  
-                                             <input type="hidden" class="form-control" id="txtidcargo" name="txtidcargo" value="">                               
-                                           <div id="IdDivCargo"></div>
-                                    </div>
+                                        <div class="form-group">                                            
+                                                <label for="formEmail">DEPENDENCIA</label>                                 
+                                               <div id="IdDivDependencia"></div>
+                                        </div>
 
-                                </div>
-
-                               
-                                <div class="form-group">                                 
-                                        <select id="IdTipoMotivoreser" class="form-control select2" name="IdTipoMotivoreser" >
-                                            <option value="">Tipo de Reserva</option>                                                                                        
-                                             @foreach($alltipo as $keys) 
-                                                <option value="{{ $keys->IdEstadoPlaza }}">{{ $keys->IdEstadoPlaza }} | {{ $keys->Descripcion }}</option>
-                                                @endforeach
-                                        </select>
-
-                                </div>
-                                <div class="form-group">                                      
                                         <div class="form-group">
-                                            <input type="date" id="datetime1" name="fechaRserv" class="form-control" pattern="(0[1-9]|1[0-9]|2[0-9]|3[01])/(0[1-9]|1[012])/[0-9]{4}">
+                                                <label for="formEmail">NIVEL</label>                                 
+                                               <div id="IdDivNivel"></div>
                                         </div>
-                                </div>
 
-                                <div class="form-group">                                                                      
-                                   <input type="text" class="form-control" id="DocRefRser" name="DocRefRser" value="" required="" placeholder="Doc .de Referencia">
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="formPassword">Adjuntar Documento.</label>
-                                    <div class="fileinput fileinput-new input-group" data-provides="fileinput">
-                                            <div class="form-control" data-trigger="fileinput">
-                                                <i class="glyphicon glyphicon-file fileinput-exists"></i>
-                                                <span class="fileinput-filename"></span>
-                                            </div>
-                                                    <span class="input-group-addon btn btn-default btn-file">
-                                                        <span class="fileinput-new">Selecione Archivo</span>
-                                                        <span class="fileinput-exists">Cambiar</span>
-                                                        <input type="file" name="FileAdjuntoReserva" id="FileAdjuntoReserva" readonly="" accept="*.pdf"></span>
-                                            <a href="#" class="input-group-addon btn btn-default fileinput-exists" data-dismiss="fileinput">Eliminar</a>
+                                        <div class="form-group">
+                                                <label for="formEmail">CARGO</label>  
+                                                 <input type="hidden" class="form-control" id="txtidcargo" name="txtidcargo" value="">                               
+                                               <div id="IdDivCargo"></div>
                                         </div>
-                                </div>  
 
-                                 <div class="form-group" id ="idbotones">
-                                    <textarea id="obserRser" name="obserRser" rows="3" class="form-control resize_vertical " placeholder="Observación"></textarea>                           
                                 </div>
 
-                                <div class="btn-group btn-group-lg">
-                                    <button type="button" class="alert alert-success alert-dismissable margin5" onclick="SaveProcesaRserva()">Reservar Plaza </button>
-                               
-                                    <a href="{{ URL::to('admin/reserva') }}" class="alert alert-info alert-dismissable margin5" id="IdSalir" >[Salir]</a>
-                                
-                                </div> 
-                                
+                                    <div id="idbodyreserva">   
+                                        <div class="form-group">                                 
+                                                <select id="IdTipoMotivoreser" class="form-control select2" name="IdTipoMotivoreser" >
+                                                    <option value="">Tipo de Reserva</option>                                                                                        
+                                                     @foreach($alltipo as $keys) 
+                                                        <option value="{{ $keys->IdEstadoPlaza }}">{{ $keys->IdEstadoPlaza }} | {{ $keys->Descripcion }}</option>
+                                                        @endforeach
+                                                </select>
+
+                                        </div>
+                                        <div class="form-group">                                      
+                                                <div class="form-group">
+                                                    <input type="date" id="datetime1" name="fechaRserv" class="form-control" pattern="(0[1-9]|1[0-9]|2[0-9]|3[01])/(0[1-9]|1[012])/[0-9]{4}">
+                                                </div>
+                                        </div>
+
+                                        <div class="form-group">                                                                      
+                                           <input type="text" class="form-control" id="DocRefRser" name="DocRefRser" value="" required="" placeholder="Doc .de Referencia">
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="formPassword">Adjuntar Documento.</label>
+                                            <div class="fileinput fileinput-new input-group" data-provides="fileinput">
+                                                    <div class="form-control" data-trigger="fileinput">
+                                                        <i class="glyphicon glyphicon-file fileinput-exists"></i>
+                                                        <span class="fileinput-filename"></span>
+                                                    </div>
+                                                            <span class="input-group-addon btn btn-default btn-file">
+                                                                <span class="fileinput-new">Selecione Archivo</span>
+                                                                <span class="fileinput-exists">Cambiar</span>
+                                                                <input type="file" name="FileAdjuntoReserva" id="FileAdjuntoReserva" readonly="" accept="*.pdf"></span>
+                                                    <a href="#" class="input-group-addon btn btn-default fileinput-exists" data-dismiss="fileinput">Eliminar</a>
+                                                </div>
+                                        </div>  
+
+                                         <div class="form-group" id ="idbotones">
+                                            <textarea id="obserRser" name="obserRser" rows="3" class="form-control resize_vertical " placeholder="Observación"></textarea>                           
+                                        </div>
+
+                                        <div class="btn-group btn-group-lg">
+                                            <button type="button" class="alert alert-success alert-dismissable margin5" onclick="SaveProcesaRserva()">Reservar Plaza </button>
+                                       
+                                            <a href="{{ URL::to('admin/reserva') }}" class="alert alert-info alert-dismissable margin5" id="IdSalir" >Nuevo | Salir</a>
+                                        
+                                        </div> 
+                                    </div>
+
+                                        
                             </div>
                             <div id="IdMensajeAlert"></div>
                         {{ Form::close()}}                
@@ -258,7 +265,7 @@ Reserva de Plazas
                                     </div>
                                 </div>
                             <div class="modal-footer">
-                                <button type="button" data-dismiss="modal" class="btn btn-default" id="CierrameModalResult">Ciérrame!</button>
+                                <button type="button" data-dismiss="modal" class="btn btn-default" id="CierrameModalResult" onclick="ajaxloadsearch()">Ciérrame!</button>
                            
                             </div>
                         </div>
@@ -276,6 +283,13 @@ Reserva de Plazas
 
 <script src="{{ asset('assets/vendors/jasny-bootstrap/js/jasny-bootstrap.js') }}" type="text/javascript"></script>
 <script type="text/javascript" src="{{ asset('assets/js/js-reserva-plaza.js') }}"> </script>
+
+
+
+<script src="{{ asset('assets/vendors/sweetalert/js/sweetalert.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('assets/vendors/sweetalert/js/sweetalert-dev.js') }}" type="text/javascript"></script>
+<script src="{{ asset('assets/js/pages/custom_sweetalert.js') }}" type="text/javascript"></script>
+
 
 <div class="modal fade" id="delete_confirm" tabindex="-1" role="dialog" aria-labelledby="user_delete_confirm_title" aria-hidden="true">
     <div class="modal-dialog">

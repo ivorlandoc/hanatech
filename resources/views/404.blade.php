@@ -3,7 +3,7 @@
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>404 page | Welcome to Josh Frontend</title>
+     <title>404 page | Hanatech</title>
     <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
     <!-- global level css-->
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/bootstrap.min.css') }}">
@@ -22,8 +22,8 @@
         <div class="number">4</div>
     </div>
     <div class="hgroup">
-        <h1>Page Not Found</h1>
-        <h2>It seems that page you are looking for no longer exists.</h2>
+         <h1>Página no encontrada</h1>
+        <h2>Parece que la página que estás buscando ya no existe</h2>
         <a href="{{ route('home') }}">
             <button type="button" class="btn btn-primary button-alignment">Home</button>
         </a>

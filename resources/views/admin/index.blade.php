@@ -2,7 +2,7 @@
 
 {{-- Page title --}}
 @section('title')
-    Home
+    Home | Hanatech
     @parent
 @stop
 

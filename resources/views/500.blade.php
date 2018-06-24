@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>500 Internal Error | Welcome to Josh Frontend</title>
+    <title>500 Internal Error | Hanatech</title>
     <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
     <!-- global level js -->
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/bootstrap.min.css') }}">
@@ -20,8 +20,8 @@
                         500
                     </h1>
                     <h3>
-                        Thats an error.
-                        <br>There was an error. Please Try again later. Thats all we know
+                        Esto es un error.
+                        <br>Hubo un error. Por favor, inténtelo de nuevo más tarde. Eso es todo lo que sabemos
                     </h3>
                         <a href="{{ route('home') }}" class="btn btn-primary">Home</a>
                     <br>

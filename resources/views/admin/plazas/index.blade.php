@@ -26,12 +26,12 @@ Consulta de Plazas
 {{-- Page content --}}
 @section('content')
 <section class="content-header">
-    <h1>Consulta de Plazas</h1>
+    <h1>Consulta de Plazas</h1> 
     <ol class="breadcrumb">
         <li>
             <a href="{{ route('admin.dashboard') }}">
                 <i class="livicon" data-name="home" data-size="14" data-color="#000"></i>
-                Dashboard
+                Dashboard 
             </a>
         </li>
         <li><a href="#"> Consulta de Plazas</a></li>
@@ -53,7 +53,7 @@ Consulta de Plazas
            <div class="panel panel-info">
                 <div class="panel-heading">
                     <h3 class="panel-title">
-                        <i class="livicon" data-name="search" data-size="16" data-loop="true" data-c="#fff" data-hc="white"></i> Consulta de Plazas 
+                        <i class="livicon" data-name="search" data-size="16" data-loop="true" data-c="#fff" data-hc="white"></i> Cuadro Nominativo de Plazas 
                     </h3>
                     <span class="pull-right clickable">
                             <i class="glyphicon glyphicon-chevron-up"></i>
@@ -63,8 +63,7 @@ Consulta de Plazas
                 
 
                 <form method="GET" name="frmexportex" id='frmexportex'  action="{{ route('plazas.excel','1') }}" > 
-                            <div class="form-group">
-                               
+                            <div class="form-group">                               
                                         <!--
                                         <label>
                                           <input type="checkbox" name="regimenId" id="regimenId" class="polaris"  /> 
@@ -74,31 +73,34 @@ Consulta de Plazas
                              </div>
                               <div class="form-group">     
                                      <label> Dependencia</label>
-                                        <select id="select_4" class="form-control select2" name="select_10dig"  > <!-- onchange="GetIdSelectFour()"  -->
-                                        <option value="%">Todos</option>                                        
-                                           @foreach ($getDosDig as $getAll) 
-                                               <option value="{{ $getAll->IdEstructura }}">{{ $getAll->IdEstructura }} - {{ $getAll->Descripcion }}</option>
+                                        <select id="select_4" class="form-control select2" name="select_10dig"  > <!-- onchange="GetIdSelectFour()"  -->                                          
+                                            <?php $i=0;?>                                      
+                                           @foreach ($getDosDig as $getAll)                                                 
+                                                 <?php $i++;?>
+                                                 <option value="{{ $getAll->IdEstructura }}">{{ $getAll->IdEstructura }} - {{ $getAll->Descripcion }}</option>                                               
                                             @endforeach 
+                                            <?php if($i>=2){?>  <option value="">Todos</option> <?php }?>
                                         </select>  
                              </div>     
  
-                              <div class="form-group">  
-                              <label> Nivel</label>    
+                                <div class="form-group">  
+                                    <label> Nivel</label>    
                                         <select id="select_e" class="form-control select2" name="select_e"  > <!-- onchange="GetIdSelectFour()"  -->
                                         <option value="%">Todos</option>                                       
                                             @foreach ($nivel as $key) 
                                                <option value="{{ $key->id }}">{{ $key->nom }}</option>
                                             @endforeach 
-                                        </select> 
-                                   
+                                        </select>                                    
                                 </div>
-                                 <div class="form-group">
-                                    
+                                <div class="form-group">                                 
+                                    <input type="checkbox"  id="checkboxvac" name="checkboxvac" onclick="CheckboxVac()" class="flat-red" />Vacantes
+                                    <input type="hidden"  id="txtcheckbox" name="txtcheckbox" />
+                                </div>
+
+                                <div class="form-group">                                    
                                          <button  type="submit" class="btn btn-sm btn-primary">
                                             <span class="glyphicon glyphicon-hand-right"> Exportar Nominativo a Excel</span>
-                                         </button>                               
-                                   
-
+                                         </button>
                                 </div>
                             </div>
 

@@ -2,7 +2,7 @@
 
 {{-- Page title --}}
 @section('title')
-    Charts
+    Charts | Hanatech
     @parent
 @stop
 

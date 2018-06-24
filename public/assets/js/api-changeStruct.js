@@ -30,12 +30,11 @@ function serach_ (){
 	        ShowDetaSearchChangeStruct(_string);  
 }
 function ShowDetaSearchChangeStruct(id){	
-	//console.log('ID==>'+id);
 	$.get('../../api/admin/mantestruct/list/'+id,function(datap){
-		var tableHtml='';
-		var ErrorHtml='<div class="alert alert-danger alert-dismissable margin5"><strong>Ups</strong> no existe registros!</div>';
+		var tableHtml='';		
        	var xy=0;    
-		if(datap.length!=0){   		
+		if(datap.length!=0){   	
+				$('#IdSearchChangeEstru').html("");	
 				for (var i=0; i < datap.length; i++){			
 					xy++;						
 					tableHtml += '<tr>'+
@@ -48,7 +47,7 @@ function ShowDetaSearchChangeStruct(id){
 					$('#IdSearchChangeEstru').html(tableHtml);	
 				}	
 		}else{
-			$('#DivContentSearchStruct').html(ErrorHtml);
+			$('#IdSearchChangeEstru').html('<td colspan="5"><div class="alert alert-danger" role="alert"></span> </strong>No existe registros</div></td>').fadeIn().delay(4000).fadeOut('slow');
 		}					
 		});						
 }
@@ -179,7 +178,7 @@ function setFlagFive(){
 
 
 function getResultChangeDatos(id){
-alert(id)	;
+
 	$.get('../../api/admin/mantestruct/list2/'+id,function(datap){
 		console.log("===>"+datap);
 		var tableHtml='';

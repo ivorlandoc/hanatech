@@ -26,7 +26,7 @@ class ReservaController extends Controller {
 
     public function index(Request $request){
         $idUserSession = Sentinel::getUser()->id;   //almacena id de sesion activa    SELECT IdEstadoPlaza,Descripcion FROM estadoplaza ORDER BY 1   
-        $allEsta=DB::table('estadoplaza')->select('IdEstadoPlaza','Descripcion')->orderBy('IdEstadoPlaza')->Get();
+        $allEsta=DB::table('estadoplaza')->where('Flat', '1')->select('IdEstadoPlaza','Descripcion')->orderBy('IdEstadoPlaza')->Get();
         $alltipo=DB::table('estadoplaza')->where('Flat', '2')->select('IdEstadoPlaza','Descripcion')->orderBy('Comentario')->Get();
         return view('admin.reserva.index', compact('idUserSession','alltipo','allEsta'));
     }
@@ -42,7 +42,7 @@ class ReservaController extends Controller {
                           (SELECT descripcion FROM estructura WHERE LEFT(IdEstructura,10)=LEFT((SELECT IdEstructura FROM estructura WHERE IdEstructura=cu.IdEstructura),10) LIMIT 1) AS servicio,
                           (SELECT descripcion FROM estructura WHERE IdEstructura=cu.IdEstructura LIMIT 1) AS dependencia,
                           (SELECT  Descripcion FROM estadoplaza WHERE IdEstadoPlaza=cu.IdEstadoPlaza)AS estado,
-                          IdNivel, c.Descripcion AS cargo,NroPlaza,c.IdCargo,IdEstructura
+                          IdNivel, c.Descripcion AS cargo,NroPlaza,c.IdCargo,IdEstructura,IdEstadoPlaza
                           FROM  cuadronominativo AS cu INNER JOIN cargo c ON c.IdCargo=cu.IdCargo
                           WHERE NroPlaza= '$plz' and IdPersona='' -- and IdEstadoPlaza='2'");
                 return response()->json($data);
@@ -78,11 +78,13 @@ public function Procesareservaplaza(Request $request,$id){
                 if($_NroPlaza!=""){
                         $aff=DB::table('cuadronominativo')->where('NroPlaza', $_NroPlaza)->where('IdCargo', $_IdCargo)
                         ->update([                                           
-                                    'IdEstadoPlaza' =>$_tiporeserva,
-                                    'IdUsuario'     =>$UserSession->email,
-                                    'Ip'            =>$ipAddress,
-                                    'updated_at'    =>date('Y-m-d H:i:s'),
-                                    'created_at'    =>date('Y-m-d H:i:s')
+                                    'IdEstadoPlaza'     =>'2',
+                                    'SubIdEstadoPlaza'  =>$_tiporeserva,
+                                    'Observ'            =>strtoupper($_obserreser),
+                                    'IdUsuario'         =>$UserSession->email,
+                                    'Ip'                =>$ipAddress,
+                                    'updated_at'        =>date('Y-m-d H:i:s'),
+                                    'created_at'        =>date('Y-m-d H:i:s')
                                     ]);
                     }
 
@@ -116,9 +118,9 @@ public function Procesareservaplaza(Request $request,$id){
                             'IdEstadoPlaza' => $_tiporeserva,
                             'FechaDocRef'   => Carbon::parse($_fechareserv)->format('Y-m-d H:i:s'),
                             'FechaMov'      => date('Y-m-d H:i:s'),
-                            'DocRef'        => $_DocRefere,
+                            'DocRef'        => strtoupper($_DocRefere),
                             'FileAdjunto'   => $name,
-                            'Observacion'   => $DesTipo.' | '.$_obserreser,
+                            'Observacion'   => strtoupper($DesTipo.' | '.$_obserreser),
                             'IdUsuario'     => $UserSession->email,
                             'Ip'            => $ipAddress,
                             'created_at'    => date('Y-m-d H:i:s'),

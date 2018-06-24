@@ -90,6 +90,7 @@ public function ProcesaBajaInsert(Request $Request){
                     'Idpersona' =>'',
                     'IdEstadoPlaza'=>'2',
                     'FechaInicio'=>'1000-01-01',
+                    'Edan'       =>'-',
                     'FechaCese'=>Carbon::parse($_FecMovBaj)->format('Y-m-d'),
                     'created_at'    => date('Y-m-d H:i:s'),
                     'updated_at'    => date('Y-m-d H:i:s'),
@@ -163,7 +164,7 @@ public function ProcesaBajaInsert(Request $Request){
                   }else{
                     $GetTipoB = DB::select("SELECT IdTipobaja,Descripcion FROM tipobaja WHERE Nivel not like 'E%' ORDER BY 2");
                 }
-			return $GetTipoB;
+			     return $GetTipoB;
 			//return response()->json($GetTipoB);
    		}
 

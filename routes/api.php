@@ -35,10 +35,10 @@ Route::group(['middleware' =>['api', 'cors'],'namespace'=>'Admin','prefix' => 'a
 		route::post('/bajaplazas/ProcesaBajaInsert','BajaPlazasController@ProcesaBajaInsert');
 		
 		
-		Route::get('/rpteplazas/list/{id}', 'RptePlazaController@GetHistoriaMov'); 
+		//Route::get('/rpteplazas/list/{id}', 'RptePlazaController@GetHistoriaMov'); 
 		//Route::get('/rpteplazas/det/{id}', 'RptePlazaController@GetDetalleGeneralPlaza'); 
-		Route::get('/rpteplazas/getplaza/{id}', 'RptePlazaController@GetEstadoDePlazas'); 
-		Route::get('/rpteplazas/detplaza/{id}', 'RptePlazaController@GetEstadoDePlazasMov'); 
+		//Route::get('/rpteplazas/getplaza/{id}', 'RptePlazaController@GetEstadoDePlazas'); 
+		//Route::get('/rpteplazas/detplaza/{id}', 'RptePlazaController@getDetalleMovimientos'); 
 
 		Route::get('/altaplaza/{id}', 'AltadeplazaController@getPlaza'); 
 		Route::get('/tipodoc/getforalta/{id}', 'TipodocumentoController@getListaForAlta'); 

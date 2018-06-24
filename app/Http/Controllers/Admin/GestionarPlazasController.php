@@ -16,24 +16,36 @@ class GestionarPlazasController extends Controller {
     public function index(Request $request){ 
       $idUserSession = Sentinel::getUser()->id;   //almacena id de sesion activa      
      // $getDosDig=DB::table('estructura')->select('IdEstructura','Descripcion')->where('IdEstructura', 'like', "__00000000")->get();
-      $getDosDig=DB::table('estructura')->select('IdEstructura','Descripcion')->where(DB::raw('LENGTH(IdEstructura)'), '=', "2")->get();
+      $getDosDig=DB::table('estructura')->select('IdEstructura','Descripcion')->where(DB::raw('LENGTH(IdEstructura)'), '=', "4")->get();
       return view('admin.gesplazas.index',compact('getDosDig', 'idUserSession')); 
 
   }
 
       public function GeTHeadPlazaMov($id){
-                $GetHeadPlazaHow = DB::select("SELECT CONVERT(IdPlaza,CHAR) AS IdPlaza,IF(p.IdPersona IS NULL,'',p.IdPersona) AS IdPersona,c.IdEstructura,c.IdCargo,NroPlaza,
-                (SELECT Descripcion FROM estructura WHERE LEFT(IdEstructura,4)=LEFT((SELECT IdEstructura FROM estructura WHERE IdEstructura=c.IdEstructura),4) LIMIT 1) AS desc0,
-                (SELECT Descripcion FROM estructura WHERE LEFT(IdEstructura,6)=LEFT((SELECT IdEstructura FROM estructura WHERE IdEstructura=c.IdEstructura),6) LIMIT 1) AS desc1,
-                (SELECT Descripcion FROM estructura WHERE LEFT(IdEstructura,8)=LEFT((SELECT IdEstructura FROM estructura WHERE IdEstructura=c.IdEstructura),8) LIMIT 1) AS desc2,
-                (SELECT Descripcion FROM estructura WHERE LEFT(IdEstructura,10)=LEFT((SELECT IdEstructura FROM estructura WHERE IdEstructura=c.IdEstructura),10) LIMIT 1) AS dep2,        
-                            e.Descripcion,IF(CONCAT(ApellidoPat,' ', ApellidoMat,' ',Nombres) IS NULL,'',CONCAT(ApellidoPat,' ', ApellidoMat,' ',Nombres))AS nombres,
-                            ca.Descripcion AS cargo,IdNivel
-                            FROM cuadronominativo AS c
+                $GetHeadPlazaHow = DB::select("
+                    SELECT 
+                        CONVERT(IdPlaza,CHAR) AS IdPlaza,
+                        IF(p.IdPersona IS NULL,'',p.IdPersona) AS IdPersona,
+                        c.IdEstructura,
+                        c.IdCargo,
+                        NroPlaza,
+                        (SELECT Descripcion FROM estructura WHERE LEFT(IdEstructura,4)=LEFT((SELECT IdEstructura FROM estructura WHERE IdEstructura=c.IdEstructura),4) LIMIT 1) AS desc0,
+                        (SELECT Descripcion FROM estructura WHERE LEFT(IdEstructura,6)=LEFT((SELECT IdEstructura FROM estructura WHERE IdEstructura=c.IdEstructura),6) LIMIT 1) AS desc1,
+                        (SELECT Descripcion FROM estructura WHERE LEFT(IdEstructura,8)=LEFT((SELECT IdEstructura FROM estructura WHERE IdEstructura=c.IdEstructura),8) LIMIT 1) AS desc2,
+                        (SELECT Descripcion FROM estructura WHERE LEFT(IdEstructura,10)=LEFT((SELECT IdEstructura FROM estructura WHERE IdEstructura=c.IdEstructura),10) LIMIT 1) AS dep2,        
+                        e.Descripcion,
+                        IF(CONCAT(ApellidoPat,' ', ApellidoMat,' ',Nombres) IS NULL,' ',CONCAT(ApellidoPat,' ', ApellidoMat,' ',Nombres))AS nombres,
+                        ca.Descripcion AS cargo,
+                        IdNivel,IdEstadoPlaza,
+                        IF(SubIdEstadoPlaza IS NULL,'',SubIdEstadoPlaza) AS SubIdEstadoPlaza,
+                        IF((SELECT Descripcion FROM estadoPlaza WHERE IdEstadoPlaza=SubIdEstadoPlaza) IS NULL,' ',(SELECT Descripcion FROM estadoPlaza WHERE IdEstadoPlaza=SubIdEstadoPlaza)) AS desSubEstado,
+                        IF(Observ IS NULL,' ',Observ) AS Observ
+                        FROM cuadronominativo AS c
                             INNER JOIN estructura AS e ON e.IdEstructura=c.IdEstructura 
                             LEFT JOIN persona AS p ON p.IdPersona = c.IdPersona
                             INNER JOIN cargo AS ca ON ca.IdCargo=c.IdCargo
-                            WHERE NroPlaza='$id'");
+                            WHERE NroPlaza='$id'
+                    ");
                 return $GetHeadPlazaHow;
         }
 
@@ -78,15 +90,17 @@ class GestionarPlazasController extends Controller {
                     $name = $fileName.'.'.$file->getClientOriginalExtension();
                     $file->move($path, $name);
                 }
-            if($_IdTipoMov==6 && $_IdPersona==""){ // Unicamente cuando es transferencia, la plaza debe estar vacante. Se actualiza la dependencia en el nominativo y se add al movimiento
+            if(($_IdTipoMov==6 || $_IdTipoMov==28) && $_IdPersona==""){ // Unicamente cuando es transferencia, la plaza debe estar vacante. Se actualiza la dependencia en el nominativo y se add al movimiento
                 $aff=DB::table('cuadronominativo')->where('IdPlaza',$_IdPlaza)->update(['IdEstructura' =>$_IdEstrDestino,'IdUsuario' =>$UserSession->email,'Ip' =>$ipAddress]);
            }elseif($_IdTipoMov==1 || $_IdTipoMov==2) { // Desplazamientos y/o Rotaciones Permanentes, se actualiza la dependencia en el nominativo y se add al movimiento
                 $aff=DB::table('cuadronominativo')->where('IdPersona', $_IdPersona)->where('IdPlaza',$_IdPlaza)->update(['IdEstructura' =>$_IdEstrDestino,'IdUsuario' =>$UserSession->email,'Ip' =>$ipAddress]);
            }elseif($_IdTipoMov==3 && $_IdPersona!="") { // Para Permutas: debe existir la persona en la plaza. Se actualiza la dependencia en el nominativo y se add a la movimiento
             $aff=DB::table('cuadronominativo')->where('IdPersona', $_IdPersona)->where('IdPlaza',$_IdPlaza)->update(['IdEstructura' =>$_IdEstrDestino,'IdUsuario' =>$UserSession->email,'Ip' =>$ipAddress]);
+           }elseif($_IdTipoMov==28) { // Unicamente para actualizar la dependencia, tambien se agrega al movimiento
+            $aff=DB::table('cuadronominativo')->where('IdPersona', $_IdPersona)->where('IdPlaza',$_IdPlaza)->update(['IdEstructura' =>$_IdEstrDestino,'IdUsuario' =>$UserSession->email,'Ip' =>$ipAddress]);
            }else{ // Desplazamientos y/o Rotaciones Temporales, se mantiene la dependencia de origen en el nominativo, y se add al movimiento.
                 $aff=DB::table('cuadronominativo')->where('IdPersona', $_IdPersona)->where('IdPlaza',$_IdPlaza)->update(['IdEstructura' =>$_IdEstrOrigen,'IdUsuario' =>$UserSession->email,'Ip' =>$ipAddress]);
-                $_IdEstrDestino=$_IdEstrOrigen;
+              //  $_IdEstrDestino=$_IdEstrOrigen;
            }
 
             if($_IdTipoMov==21 || $_IdTipoMov==23 || $_IdTipoMov==10 ) $_IdEstrDestino=$_IdEstrOrigen;

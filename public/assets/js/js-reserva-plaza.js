@@ -43,7 +43,7 @@ function getAllRows(data) {
 //  alert(data.length);
   if(data.length!=0){    
     $('#ShowDataHead').show();
-      $.each(data, function( key, value ) {      
+      $.each(data, function( key, value ) {    
       $('#IdDivDependencia').html(value.organo+' | ' +value.gerencia+' | '+value.dep +' | '+value.servicio+' | '+value.dependencia);
       $('#IdDivNivel').html(value.IdNivel);
       $('#IdDivCargo').html(value.cargo); 
@@ -54,6 +54,13 @@ function getAllRows(data) {
       $('#txtestructura').val(value.IdEstructura);
       $('#nroplazarEst').val(value.NroPlaza); 
       $('#Idhead').html("<b>CAMBIANDO DE ESTADO A LA PLAZA ["+value.NroPlaza+"]</b>"); 
+
+      if(value.IdEstadoPlaza=="0"){
+        swal("Advertencia !", "La Plaza esta inactiva, no es posible reservar.\n Puede activar la plaza en la parte superior derecha", "error");
+        $("#idbodyreserva").hide();
+      }else{
+         $("#idbodyreserva").show();
+      }
 
       });       
   }else{

@@ -141,8 +141,10 @@ function ShowFormChange(idx){
        		var _IdEstructura='';
        		var _IdCargo	='';
        		var _NroPlaza	='';       		
-       		if(dataPlzM.length!=0){  		
+       		if(dataPlzM.length!=0){ 
+
 			for (var i=0; i < dataPlzM.length; i++) 	{
+
 				$('#IdShowHideGesPlazas').show();	
 				xy++; 
 				plaza 			=	dataPlzM[i].NroPlaza+' / '+dataPlzM[i].IdNivel+' / '+dataPlzM[i].cargo;
@@ -155,6 +157,14 @@ function ShowFormChange(idx){
        		 	_IdCargo		=dataPlzM[i].IdCargo;
        			_NroPlaza		=dataPlzM[i].NroPlaza;
 
+       			if(dataPlzM[i].IdEstadoPlaza=="0"){
+       				swal("Advertencia !", "La Plaza esta inactiva\n no es posible realizar acción alguna. ", "error");
+       				$("#IdShowHideGesPlazas").hide();
+       				$("#DesingFormGestPlz").hide();
+       			}else{
+       				$("#IdShowHideGesPlazas").show();
+       				$("#DesingFormGestPlz").show();
+       			
 				$('#txtnombresG').html(html_name_);					
 				$('#txtIdPlazaG').html(plaza);
 				$('#txtIdEstructuraG').html(Dep);	
@@ -166,7 +176,38 @@ function ShowFormChange(idx){
 				$('#IdEstructuraG').val(_IdEstructura);
 				$('#IdCargoG').val(_IdCargo);
 				$('#NroPlazaG').val(_NroPlaza);		
-				$('#IdShowHideGesPlazas');//.fadeOut(7000);							
+				$('#IdShowHideGesPlazas');//.fadeOut(7000);	
+				/*===========================================================================*/
+
+					var msjswal="";
+	   				msjswal	= dataPlzM[i].desSubEstado+"\n"+dataPlzM[i].Observ;
+	   				if(dataPlzM[i].Observ.length<7 && dataPlzM[i].SubIdEstadoPlaza==""){
+	   				}else{    
+
+	   					 swal({
+				            title: "Advertencia !",
+				            text: "La Plaza esta comprometida para:\n "+msjswal,
+				            type: "warning",
+				            showCancelButton: true,
+				            confirmButtonColor: "#DD6B55",
+				            confirmButtonText: "Si, Deseo continuar !",
+				            cancelButtonText: "No, Cancelar !",
+				            closeOnConfirm: true,
+				            closeOnCancel: true
+				        }, function (isConfirm) {
+				        	if (isConfirm) {
+				        		 $("#IdSaveMovimientosDePlazas" ).prop( "disabled",false);
+							    } else {			           
+				               	$("#IdSaveMovimientosDePlazas" ).prop( "disabled",true);
+				            }	   					
+		   					//swal("Advertencia !", "La Plaza esta comprometida para:\n "+msjswal, "error");
+	   					});			
+
+					}
+				/*===========================================================================*/
+				}
+
+
 			}
 
 		}else{
@@ -264,7 +305,7 @@ function GetTipoMov(idx){
 			       		if(dataTipM.length!=0){  		
 						for (var i=0; i < dataTipM.length; i++) 	{
 								xy++; 	
-							if($('#IdPersonaG').val()!="" && xy===7){								
+							if($('#IdPersonaG').val()!="" && xy===7 ){								
 									//html_ = '<option value="">----</option>';								
 							}else{
 								html_ += '<option value="'+dataTipM[i].IdTipoMov+'">'+dataTipM[i].IdTipoMov+' | '+dataTipM[i].Descripcion+'</option>';
@@ -276,7 +317,7 @@ function GetTipoMov(idx){
 						$('#IdTipoMovimiento').html("No existe registros");
 					}
 		}else{
-			html_ += '<option value="6">TRANFERENCIAS</option>';
+			html_ += '<option value="6">TRANFERENCIAS</option><option value="28">ACTUALIZACION DE DEPENDENCIA</option>';
 			$('#IdTipoMovimiento').html(html_);
 		}
 	});	

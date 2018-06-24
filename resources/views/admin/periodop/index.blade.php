@@ -61,7 +61,7 @@ Periodos
                     <th>Fecha</th>
                     <th>Descripcion</th>
                     <th>Estado</th>
-                    <th width="280px;" class="text-center">Acción</th>
+                    <th width="25%" class="text-center">Acción</th>
                 </tr><?php $esta="";?>
             @foreach ($periodo as $key) 
             <?php if($key->Estado=="1") $esta="<p class='text-success'>Activo</p>"; else $esta="<p class='text-danger'>Inactivo</p>";?>
@@ -74,12 +74,13 @@ Periodos
                     <?php } else{ ?> <p class='text-danger'><b>Inactivo</b></p> <?php }?>
                 </td>
                 <td class="text-center">
-                   <!-- <a class="btn btn-info" href="{{ route('periodop.show',$key->id) }}">Show</a>-->
-                    <a class="btn btn-info" href="{{ route('periodop.edit',$key->id) }}">Actualizar</a>
+                   <!-- <a class="btn btn-info" href="{{ route('periodop.show',$key->id) }}">Show</a>--> 
+                    <a class="btn btn-info" href="{{ route('periodop.edit',$key->id) }}"></span>Editar</a>
                     {!! Form::open(['method' => 'DELETE','route' => ['periodop.destroy', $key->id],'style'=>'display:inline']) !!}
                     {!! Form::submit('Eliminar', ['class' => 'btn btn-danger']) !!}
                     {!! Form::close() !!}
                 </td>
+
             </tr>
             @endforeach
             </table>

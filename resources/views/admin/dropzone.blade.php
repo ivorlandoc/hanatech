@@ -2,7 +2,7 @@
 
 {{-- Page title --}}
 @section('title')
-    Drop Zone
+    Drop Zone | Hanatech
     @parent
 @stop
 

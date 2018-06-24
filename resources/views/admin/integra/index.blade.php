@@ -146,7 +146,7 @@ Recategorización de Plazas
                                <div class="input-group select2-bootstrap-append"> 
                                     <div class="btn-group btn-group-lg">
                                         <button type="button" class="alert alert-success alert-dismissable margin5" id="saveintegrarplaza" onclick="saveintegracionplaza()">Recategorizar Plaza</button>
-                                        <a href="{{ URL::to('admin/integra') }}" class="alert alert-info alert-dismissable margin5" id="SalirIntegra" >[Salir]</a>
+                                        <a href="{{ URL::to('admin/integra') }}" class="alert alert-info alert-dismissable margin5" id="SalirIntegra" >Nuevo | Salir</a>
                                     </div> 
                                 </div>
 

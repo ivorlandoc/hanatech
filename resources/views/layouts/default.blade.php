@@ -12,8 +12,8 @@
     <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
     <![endif]-->
     <title>
-    	@section('title')
-        | Bienvenido | EsSalud
+        @section('title')
+        | Welcome a Hanatech
         @show
     </title>
     <!--global css starts-->
@@ -43,23 +43,18 @@
                         <a href="#"> <i class="livicon" data-name="google-plus" data-size="18" data-loop="true" data-c="#fff" data-hc="#757b87"></i>
                         </a>
                     </li>
-                    <li>
-                        <a href="#"> <i class="livicon" data-name="linkedin" data-size="18" data-loop="true" data-c="#fff" data-hc="#757b87"></i>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#"> <i class="livicon" data-name="rss" data-size="18" data-loop="true" data-c="#fff" data-hc="#757b87"></i>
-                        </a>
-                    </li>
+                  
                     <li class="pull-right">
                         <ul class="list-inline icon-position">
                             <li>
                                 <a href="mailto:"><i class="livicon" data-name="mail" data-size="18" data-loop="true" data-c="#fff" data-hc="#fff"></i></a>
-                                <label class="hidden-xs"><a href="mailto:" class="text-white">admin@admin.com.pe</a></label>
+                                <label class="hidden-xs"><a href="mailto:" class="text-white">contacto@hanatech.com</a></label>
                             </li>
+
+
                             <li>
-                                <a href="tel:"><i class="livicon" data-name="phone" data-size="18" data-loop="true" data-c="#fff" data-hc="#fff"></i></a>
-                                <label class="hidden-xs"><a href="tel:" class="text-white">(703) 817-0210</a></label>
+                                <a href="tel:"><i class="livicon" data-name="cellphone" data-size="18" data-loop="true" data-c="#fff" data-hc="#fff"></i></a>
+                                <label class="hidden-xs"><a href="tel:" class="text-white">(+51) 140 123 458</a></label>
                             </li>
                         </ul>
                     </li>
@@ -69,99 +64,39 @@
         <!-- //Icon Section End -->
         <!-- Nav bar Start -->
         <nav class="navbar navbar-default container">
-            <div class="navbar-header">
+            <div class="navbar-header">               
                 <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#collapse">
                     <span><a href="#"><i class="livicon" data-name="responsive-menu" data-size="25" data-loop="true" data-c="#757b87" data-hc="#ccc"></i>
                     </a></span>
+
                 </button>
-                <a class="navbar-brand" href="{{ route('home') }}">
-                    <img src="{{ asset('assets/images/logo3.png') }}" alt="logo" class="logo_position">
+                <a class="navbar-brand" href="{{ route('home') }}"><img src="{{ asset('assets/images/logo3.png') }}" alt="logo" class="logo_position">
+
                 </a>
             </div>
+            
+
             <div class="collapse navbar-collapse" id="collapse">
                 <ul class="nav navbar-nav navbar-right">
-                    <li {!! (Request::is('/') ? 'class="active"' : '') !!}><a href="{{ route('home') }}"> Home</a>
-                    </li>
-                   <!-- <li class="dropdown {!! (Request::is('typography') || Request::is('advancedfeatures') || Request::is('grid') ? 'active' : '') !!}">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"> Features</a>
-                        <ul class="dropdown-menu" role="menu">
-                            <li><a href="{{ URL::to('typography') }}">Typography</a>
-                            </li>
-                            <li><a href="{{ URL::to('advancedfeatures') }}">Advanced Features</a>
-                            </li>
-                            <li><a href="{{ URL::to('grid') }}">Grid System</a>
-                            </li>
-                        </ul>
-                    </li>
+                    <li {!! (Request::is('/') ? 'class="active"' : '') !!}><a href="{{ route('home') }}"> Home</a></li> 
+                    <li {!! (Request::is('portfolio') || Request::is('portfolioitem/*') ? 'class="active"' : '') !!}><a href="{{ URL::to('portfolio') }}"> tour</a></li>
+                    <li {!! (Request::is('aboutus') || Request::is('portfolioitem/*') ? 'class="active"' : '') !!}><a href="{{ URL::to('aboutus') }}"> Documentación</a></li>
+                    <li ><a href="http://infinitecperu.com/admin/" target="_blanck"> Pruébalo Gratis</a></li>
+                    <li {!! (Request::is('contact') ? 'class="active"' : '') !!}><a href="{{ URL::to('contact') }}">Contacto</a></li>
                     <!--
-                   <li class="dropdown {!! (Request::is('aboutus') || Request::is('timeline') || Request::is('faq') || Request::is('blank_page')  ? 'active' : '') !!}"><a href="#" class="dropdown-toggle" data-toggle="dropdown"> Pages</a>
-                        <ul class="dropdown-menu" role="menu">
-                            <li><a href="{{ URL::to('aboutus') }}">About Us</a>
-                            </li>
-                            <li><a href="{{ URL::to('timeline') }}">Timeline</a></li>
-                            <li><a href="{{ URL::to('price') }}">Price</a>
-                            </li>
-                            <li><a href="{{ URL::to('404') }}">404 Error</a>
-                            </li>
-                            <li><a href="{{ URL::to('500') }}">500 Error</a>
-                            </li>
-                            <li><a href="{{ URL::to('faq') }}">FAQ</a>
-                            </li>
-                            <li><a href="{{ URL::to('blank_page') }}">Blank</a>
-                            </li>
-                        </ul>
-                    </li>
-                    -->
-                   
-                   <!-- <li class="dropdown {!! (Request::is('products') || Request::is('single_product') || Request::is('compareproducts') || Request::is('category')  ? 'active' : '') !!}"><a href="#" class="dropdown-toggle" data-toggle="dropdown"> Shop</a>
-                        <ul class="dropdown-menu" role="menu">
-                            <li><a href="{{ URL::to('products') }}">Products</a>
-                            </li>
-                            <li><a href="{{ URL::to('single_product') }}">Single Product</a>
-                            </li>
-                            <li><a href="{{ URL::to('compareproducts') }}">Compare Products</a>
-                            </li>
-                            <li><a href="{{ URL::to('category') }}">Categories</a></li>
-                        </ul>
-                    </li>
-                -->
-                    <!--<li class="dropdown {!! (Request::is('portfolio') || Request::is('portfolioitem') ? 'active' : '') !!}"><a href="#" class="dropdown-toggle" data-toggle="dropdown"> Portfolio</a>
-                        <ul class="dropdown-menu" role="menu">
-                            <li><a href="{{ URL::to('portfolio') }}">Portfolio</a>
-                            </li>
-                            <li><a href="{{ URL::to('portfolioitem') }}">Portfolio Item</a>
-                            </li>
-                        </ul>
-                    </li>-->
-
-                   <!-- <li class="dropdown {!! (Request::is('news') || Request::is('news_item') ? 'active' : '') !!}"><a href="#" class="dropdown-toggle" data-toggle="dropdown"> News</a>
-                        <ul class="dropdown-menu" role="menu">
-                            <li><a href="{{ URL::to('news') }}">News</a>
-                            </li>
-                            <li><a href="{{ URL::to('news_item') }}">News Item</a>
-                            </li>
-                        </ul>
-                    </li>-->
-                    <!--
-                    <li {!! (Request::is('blog') || Request::is('blogitem/*') ? 'class="active"' : '') !!}><a href="{{ URL::to('blog') }}"> Blog</a>
-                    </li>-->
-
-
-                    <li {!! (Request::is('contact') ? 'class="active"' : '') !!}><a href="{{ URL::to('contact') }}">Contacto</a>
-                    </li>
-
                     {{--based on anyone login or not display menu items--}}
                     @if(Sentinel::guest())
                         <li><a href="{{ URL::to('login') }}">Login</a>
                         </li>
-                        <li><a href="{{ URL::to('register') }}">Registro</a>
+                        <li><a href="{{ URL::to('register') }}">Register</a>
                         </li>
                     @else
-                        <li {{ (Request::is('my-account') ? 'class=active' : '') }}><a href="{{ URL::to('my-account') }}">Mi Cuenta</a>
+                        <li {{ (Request::is('my-account') ? 'class=active' : '') }}><a href="{{ URL::to('my-account') }}">My Account</a>
                         </li>
-                        <li><a href="{{ URL::to('logout') }}">Salir</a>
+                        <li><a href="{{ URL::to('logout') }}">Logout</a>
                         </li>
                     @endif
+                -->
                 </ul>
             </div>
         </nav>
@@ -180,45 +115,17 @@
         <div class="container footer-text">
             <!-- About Us Section Start -->
             <div class="col-sm-4">
-                <h4>Sobre Nosotros</h4>
+                <h4>HanaTech</h4>
                 <p>
-                    Somos una empresa con  alta solvencia técnica en el rubro tecnológico.
+                    Hanatech es una solución integral para gestiónar y llevar el control del Cuadro de Asignación de Persona-CAP en su institución.
+                    Diseño sofisticado y escalable para las áreas productivas y servicios. Gestión integrada y eficiente, de rápida implementación.<br>
+                    Operaciones en redes locales y/o en la nube.                
+                  
+                  
                 </p>
-               
-                <!-- <hr id="hr_border">-->
-                
-            </div>
-            <!-- //About us Section End -->
-            <!-- Contact Section Start -->
-            <div class="col-sm-4">
-                <h4>Contáctanos</h4>
-                <ul class="list-unstyled">
-                    <li>Av.Arenales,Jesus María-Lima</li>                   
-                    <li><i class="livicon icon4 icon3" data-name="cellphone" data-size="18" data-loop="true" data-c="#ccc" data-hc="#ccc"></i>Phone:9140 123 4588</li>
-                    <li><i class="livicon icon4 icon3" data-name="printer" data-size="18" data-loop="true" data-c="#ccc" data-hc="#ccc"></i> Fax:400 423 1456</li>
-                    <li><i class="livicon icon3" data-name="mail-alt" data-size="20" data-loop="true" data-c="#ccc" data-hc="#ccc"></i> Email:<span class="text-success" style="cursor: pointer;">
-                        info@admin.com</span>
-                    </li>
-                    <li><i class="livicon icon4 icon3" data-name="skype" data-size="18" data-loop="true" data-c="#ccc" data-hc="#ccc"></i> Skype:
-                        <span class="text-success"  style="cursor: pointer;">Joshadmin</span>
-                    </li>
-                </ul>
-                <!-- <hr id="hr_border">-->
-
-               <!--<div class="news menu">
-                    <h4>News letter</h4>
-                    <p>subscribe to our newsletter and stay up to date with the latest news and deals</p>
-                    <div class="form-group">
-                        <input type="text" class="form-control" placeholder="yourmail@mail.com" aria-describedby="basic-addon2">
-                        <a href="#" class="btn btn-primary text-white" role="button">Subscribe</a>
-                    </div>
-                </div>-->
-            </div>
-            <!-- //Contact Section End -->
-            <!-- Recent post Section Start -->
-            <div class="col-sm-4">
+                <hr id="hr_border2">
                 <h4 class="menu">Síguenos</h4>
-                <ul class="list-unstyled">                    
+                <ul class="list-inline">
                     <li>
                         <a href="#"> <i class="livicon" data-name="facebook" data-size="18" data-loop="true" data-c="#ccc" data-hc="#ccc"></i>
                         </a>
@@ -228,74 +135,50 @@
                         </a>
                     </li>
                     <li>
-                        <a href="#"> <i class="livicon" data-name="google-plus" data-size="18" data-loop="true" data-c="#ccc" data-hc="#ccc"> </i>
+                        <a href="#"> <i class="livicon" data-name="google-plus" data-size="18" data-loop="true" data-c="#ccc" data-hc="#ccc"></i>
                         </a>
                     </li>
-                    <li>
-                        <a href="#"> <i class="livicon" data-name="linkedin" data-size="18" data-loop="true" data-c="#ccc" data-hc="#ccc"></i>
-                        </a>
+                  
+                </ul>
+            </div>
+            <!-- //About us Section End -->
+            <!-- Contact Section Start -->
+            <div class="col-sm-4">
+                <h4>Ubícanos en:</h4>
+                <ul class="list-unstyled">
+                    <li>Av. Arenales 2614-Lince</li>
+                    <li>Lima, Peru.</li>
+                    <li><i class="livicon icon4 icon3" data-name="cellphone" data-size="18" data-loop="true" data-c="#ccc" data-hc="#ccc"></i>Telef:(+51) 140 123 458</li>
+                    <li><i class="livicon icon4 icon3" data-name="whatsapp" data-size="18" data-loop="true" data-c="#ccc" data-hc="#ccc"></i> (+51) 140 123 458</li>
+                    <li><i class="livicon icon3" data-name="mail-alt" data-size="20" data-loop="true" data-c="#ccc" data-hc="#ccc"></i> Email:<span class="text-success" style="cursor: pointer;">
+                        contacto@hanatech.com</span>
                     </li>
                    
                 </ul>
-                <!-- <hr id="hr_border">-->
-
-                <!-- <h4>Recent Posts</h4>
-                <div class="media">
-                    <div class="media-left media-top">
-                        <a href="#">
-                            <img class="media-object img-circle" src="{{ asset('assets/images/image_14.jpg') }}" alt="image">
-                        </a>
-                    </div>
+                <hr id="hr_border">
+              
+            </div>
+            <!-- //Contact Section End -->
+            <!-- Recent post Section Start -->
+            <div class="col-sm-4">
+                <h4>Servicios</h4>
+                <div class="media">                   
                     <div class="media-body">
-                        <p class="media-heading">Lorem Ipsum is simply dummy text of the printing and type setting industry dummy.
-                        </p>
-                        <p class="pull-right"><i>Sam Bellows</i></p>
+                        <p class="media-heading">Plataforma en la nube de HanaTech</p>
+                        <p class="media-heading">Centro de formación Educación</p>
+                       
                     </div>
                 </div>
-                <div class="media">
-                    <div class="media-left media-top">
-                        <a href="#">
-                            <img class="media-object img-circle" src="{{ asset('assets/images/image_15.jpg') }}" alt="image">
-                        </a>
-                    </div>
-                    <div class="media-body">
-                        <p class="media-heading">Lorem Ipsum is simply dummy text of the printing and type setting industry dummy.
-                        </p>
-                        <p class="pull-right"><i>Emilly Barbosa Cunha</i></p>
-                    </div>
-                </div>
-                <div class="media">
-                    <div class="media-left media-top">
-                        <a href="#">
-                            <img class="media-object img-circle" src="{{ asset('assets/images/image_13.jpg') }}" alt="image">
-                        </a>
-                    </div>
-                    <div class="media-body">
-                        <p class="media-heading">Lorem Ipsum is simply dummy text of the printing and type setting industry dummy.
-                        </p>
-                        <p class="pull-right"><i>Sinikka Oramo</i></p>
-                    </div>
-                </div>
-                <div class="media">
-                    <div class="media-left media-top">
-                        <a href="#">
-                            <img class="media-object img-circle" src="{{ asset('assets/images/c1.jpg') }}" alt="image">
-                        </a>
-                    </div>
-                    <div class="media-body">
-                        <p class="media-heading">Lorem Ipsum is simply dummy text of the printing and type setting industry dummy.
-                        </p>
-                        <p class="pull-right"><i>Samsa Parras</i></p>
-                    </div>
-                </div>
-            </div>-->
+             
+              
+            </div>
             <!-- //Recent Post Section End -->
         </div>
     </footer>
     <!-- //Footer Section End -->
     <div class="copyright">
         <div class="container">
-        <p>Copyright &copy; Orlando Iparraguirre, 2017</p>
+        <p>Copyright &copy;Hanatech, 2017</p>
         </div>
     </div>
     <a id="back-to-top" href="#" class="btn btn-primary btn-lg back-to-top" role="button" title="Return to top" data-toggle="tooltip" data-placement="left">

@@ -2,7 +2,7 @@
 
 {{-- Page title --}}
 @section('title')
-Forward
+Forward | Hanatech
 @parent
 @stop
 

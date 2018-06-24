@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>
         @section('title')
-            | SGRH | Essalud
+            | Hanatech
         @show
     </title>
     <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
@@ -27,7 +27,7 @@
     @yield('header_styles')
             <!--end of page level css-->
 
-<body class="skin-josh">
+<body class="skin-josh"> 
 <header class="header">
     <a href="{{ route('admin.dashboard') }}" class="logo">
       <h1>EsSalud</h1> <!--<img src="{{ asset('assets/img/logo3.png') }}" alt="logo">-->
@@ -72,7 +72,7 @@
                     </a>
                     <ul class="dropdown-menu">
                         <!-- User image -->
-                        <li class="user-header bg-light-blue">----
+                        <li class="user-header bg-light-blue">
                             @if(Sentinel::getUser()->pic)
                                 <img src="{!! url('/').'/uploads/users/'.Sentinel::getUser()->pic !!}" alt="img" height="35px" width="35px"
                                      class="img-circle img-responsive pull-left"/>
@@ -141,7 +141,7 @@
             <div class="page-sidebar  sidebar-nav">
                 <div class="nav_icons">
                     <ul class="sidebar_threeicons">
-                        @if(Sentinel::getUser()->permissions === 1 || Sentinel::getUser()->permissions === 4)
+                        @if(Sentinel::getUser()->permissions =="1")
                         <li>
                             <a href="{{ URL::to('admin/plazas') }}">
                                 <i class="livicon" data-name="table" title="Plazas" data-loop="true"
@@ -161,13 +161,13 @@
                             </a>
                         </li>
                         <li>
-                            <a href="{{ URL::to('admin/rptetempo') }}">
+                            <a href="{{ URL::to('admin/gesplazas') }}">
                                 <i class="livicon" data-name="user" title="Rpte Temp" data-loop="true"
                                    data-color="#6CC66C" data-hc="#6CC66C" data-s="25"></i>
                             </a>
                         </li>
-                         @endif 
-                         @if(Sentinel::getUser()->permissions === 2)
+                         @else 
+                        
                         <li>
                             <a href="{{ URL::to('reportes/externo') }}">
                                 <i class="livicon" data-name="table" title="Consulta de Plazas" data-loop="true"

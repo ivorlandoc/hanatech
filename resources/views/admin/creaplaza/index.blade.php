@@ -161,7 +161,7 @@ Alta de Plazas
                                <div class="input-group select2-bootstrap-append"> 
                                     <div class="btn-group btn-group-lg">
                                         <button type="button" class="alert alert-success alert-dismissable margin5" id="savecreaContador" onclick="SaveContador()">Crear Plaza</button>
-                                        <a href="{{ URL::to('admin/creaplaza') }}" class="alert alert-info alert-dismissable margin5" id="SalirCrea" >Nuevo [Salir]</a>
+                                        <a href="{{ URL::to('admin/creaplaza') }}" class="alert alert-info alert-dismissable margin5" id="SalirCrea" >Nuevo | Salir</a>
                                         
                                             <span id="getnroplazas727" style="display::none; font-weight:bold;font-size:20px;text-align:right;"></span>
                                             <span id="getnroplazascas" style="display::none; font-weight:bold;font-size:20px;text-align:right;"></span>

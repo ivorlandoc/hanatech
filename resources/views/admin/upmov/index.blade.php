@@ -205,7 +205,7 @@ Actualizando Movimientos de Plazas
                                 <div class="btn-group btn-group-lg">
                                     <button type="submit" class="alert alert-success alert-dismissable margin5" id="saveupdatemov">Guardar Cambios</button>
                                
-                                    <a href="{{ URL::to('admin/upmov') }}" class="alert alert-info alert-dismissable margin5" >Retorna a buscar[Salir]</a>
+                                    <a href="{{ URL::to('admin/upmov') }}" class="alert alert-info alert-dismissable margin5" >Nuevo | Salir</a>
                                 
                                 </div>
                      

@@ -57,8 +57,13 @@ $("#IdSavebajaPlaza").click(function (e) {
             success: function(data){                
                 if(data===true) {     
                 //alert("-2->"+data);     
-                       $("#Idmessage").html('<div class="alert alert-success alert-dismissable margin5"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button> <strong>Éxito:</strong>La Operación se realizó con éxito</div>').fadeIn().delay(4000).fadeOut('slow');;                    
-                       $("#frmsaveBaja")[0].reset();                                
+                       $("#Idmessage").html('<div class="alert alert-success alert-dismissable margin5"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button> <strong>Éxito:</strong>La Operación se realizó con éxito</div>').fadeIn().delay(4000).fadeOut('slow');                    
+                       $("#frmsaveBaja")[0].reset();   
+                       //alert(_NroPlaza);     
+                       /*===============================================*/
+                      //  swal("Advertencia !", "La Plaza dado de baja\n "+_NroPlaza, "error");
+                        /*===============================================*/
+                        $("#txtIdPlaza").val(_NroPlaza);
                     } else {
                        $("#Idmessage").html('<div class="alert alert-danger alert-dismissable margin5"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button> <strong>Error: </strong>La Operación no se realizó!</div>').fadeIn().delay(4000).fadeOut('slow');
                     }
@@ -67,6 +72,8 @@ $("#IdSavebajaPlaza").click(function (e) {
     } else { $("#Idmessage").html('<div class="alert alert-danger alert-dismissable margin5"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button> <strong>Error: </strong>'+messages+' !</div>').fadeIn().delay(4000).fadeOut('slow'); }
     
     
+
+
   });
 
 

@@ -32,6 +32,7 @@ Alta de Plazas
  <link href="{{ asset('assets/vendors/modal/css/component.css') }}" rel="stylesheet"/>
  <link href="{{ asset('assets/css/pages/advmodals.css') }}" rel="stylesheet"/>
 <link rel="stylesheet" type="text/css" href="{{ asset('assets/vendors/awesomeBootstrapCheckbox/awesome-bootstrap-checkbox.css') }}"/>
+<link href="{{ asset('assets/vendors/sweetalert/css/sweetalert.css') }}" rel="stylesheet" type="text/css" />
 <style type="text/css"> input {text-transform:uppercase;></style>
 @stop
 
@@ -72,13 +73,8 @@ Alta de Plazas
 
                 <div class="panel-body">
                         <div class="form-group">                            
-                            <div class="input-group select2-bootstrap-append">                                      
-                                    <span class="input-group-btn"> 
-                                         <button class="btn btn-default" type="button" data-select2-open="single-append-text" >
-                                            <input type="checkbox"  id="checkboxalta" onclick="CheckboxAltaSup()" />Suplencia <!-- class="flat-red"-->
-                                        </button>                                      
-                                    </span>
-
+                            <div class="input-group select2-bootstrap-append">                                     
+                                  
                                  {!! Form::text('search_plaza',null, ['class'=>'form-control','placeholder'=>'# de Plaza','type'=>'search','id'=>'search_plaza','style'=>'height:36px']) !!}  
                                         <input type="hidden" name="token" value="{{ csrf_token()}}">   
 
@@ -114,7 +110,7 @@ Alta de Plazas
                               <input type="hidden" class="form-control"  id="IdCargoA"    name="IdCargoA"      value="">
                               <input type="hidden" class="form-control" id="NroPlazaA" name="NroPlazaA" value=""> 
                               <input type="hidden" class="form-control" id="idflat" name="idflat" value="">   
-                              <input type="hidden" name="flatcheckbox" id='flatcheckbox' value="0">                                   
+                             
                            <!-- <div id ="IdshowExample"> Aqui mostra el return</div>-->
                               <div id="IdMsjeErrorAltaPlaza"></div>
                         <!-- ========== Load dependencia ============ -->
@@ -222,7 +218,16 @@ Alta de Plazas
                                 
                                 <div class="form-group">
                                     <!--<label for="formPassword">Especialdiad</label>-->
-                                    <input type="text" class="form-control" id="txtespecialidad" name="txtespecialidad" placeholder="Especialdiad">
+                                    <!--<input type="text" class="form-control" id="txtespecialidad" name="txtespecialidad" placeholder="Especialdiad">-->
+
+                                    <select id="txtespecialidad" class="form-control select2 small" name="txtespecialidad" style="height:33px"> 
+                                             <option value="">Seleccione la Especialidad</option>                                                                                     
+                                            @foreach ($dataEsp as $keys) 
+                                             <option value="{{ $keys->IdEspecialidad }}" > {{ $keys->IdEspecialidad }} | {{ $keys->Descripcion }}</option>
+                                            @endforeach 
+                                    </select>  
+
+
                                 </div>
                                     
                                 <div class="form-group">
@@ -282,9 +287,10 @@ Alta de Plazas
                                 </div>
                                 <div class="btn-group btn-group-lg">
                                     <button type="submit" class="alert alert-success alert-dismissable margin5" id="IdSaveAltaDePlazas">Guardar Alta</button>
-                               
-                                    <a href="{{ URL::to('admin/altaplaza') }}" class="alert alert-info alert-dismissable margin5" id="SalirAlta" >Nuevo [Salir]</a>
                                 
+                                    <!--<button type="button" class="alert alert-info alert-dismissable margin5">-->
+                                        <a href="{{ URL::to('admin/altaplaza') }}" id="SalirAlta" class="alert alert-info alert-dismissable margin5" >Nuevo | Salir</a>
+                                    <!--</button>-->
                                 </div> 
                                  <div id="IdMensajeAlert"></div>
 
@@ -352,14 +358,12 @@ Alta de Plazas
                                                                 <option value="%">Todos</option>                                
                                                             </select>                            
                                                         </div>
-
-                                                      
-
+                                                
 
                                                     <!-- ==========draw table========== -->
                                                     <div class="panel-body">
                                                         <div class="table-responsive" >
-                                                            <table  class="table dataTable no-footer dtr-inline">
+                                                            <table  class="table dataTable">
                                                                 <thead>
                                                                     <tr class="filters">
                                                                         <th>#</th><th>DEPENDENCIA</th><th>PLAZA</th> <th>NIVEL</th>  <th>CARGO</th>  <th>NOMBRES</th>                       
@@ -476,7 +480,12 @@ Alta de Plazas
 
 <script type="text/javascript" src="{{ asset('assets/js/api-estructura.js') }}"> </script>
 <script type="text/javascript" src="{{ asset('assets/js/api-altaplaza.js') }}"> </script>
-  <script language="javascript" type="text/javascript" src="{{ asset('assets/js/pages/radio_checkbox.js') }}"></script>
+<script language="javascript" type="text/javascript" src="{{ asset('assets/js/pages/radio_checkbox.js') }}"></script>
+
+
+<script src="{{ asset('assets/vendors/sweetalert/js/sweetalert.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('assets/vendors/sweetalert/js/sweetalert-dev.js') }}" type="text/javascript"></script>
+<script src="{{ asset('assets/js/pages/custom_sweetalert.js') }}" type="text/javascript"></script>
 
   <script>
    function formatState (state) {
